@@ -1,6 +1,6 @@
 # SnugFit — Lazy Workouts
 
-**Live app:** https://mimiobuhtig.github.io/snugfit/ (after GitHub Pages is turned on for this repo)
+**Live app:** https://mimiobuhtig.github.io/Snugfit/ (after GitHub Pages is turned on for this repo)
 
 A single-page web app for short, low-effort workouts at home, plus walk prompts that fit your day and the weather. No jumping.
 
