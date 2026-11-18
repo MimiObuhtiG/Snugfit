@@ -1,5 +1,7 @@
 # SnugFit — Lazy Workouts
 
+**Live app:** https://mimiobuhtig.github.io/snugfit/ (after GitHub Pages is turned on for this repo)
+
 A single-page web app for short, low-effort workouts at home, plus walk prompts that fit your day and the weather. No jumping.
 
 **Test it:** https://claude.ai/artifact/HA3sXo8DtENd7cBZ3Uh4TJ (private to you). Live weather and the Apple Health Shortcut can't work in this preview; see "Hosting" below.
@@ -12,6 +14,8 @@ A single-page web app for short, low-effort workouts at home, plus walk prompts 
 - **Challenges (optional).** A different weekly challenge each week (After-Meal Walker, Stair Week, 100-Minute Walk Week, and others), plus longer ones: Core Comeback (the original 28-day plan), 14-Day Walk Streak, 30-Day Home Mover and 1,000 Walking Minutes.
 - **Weight & waist check-ins (v2.1).** A weekly reminder on Today, a check-in form, trend charts for weight and waist (tap a point to see its value), an optional goal weight with a progress bar, lb/kg and in/cm units, and a table of all check-ins. The Apple Health Shortcut can also send weight (`&weight=`).
 - **Air quality (v2.1).** Wildfire smoke and other poor air (US AQI from Open-Meteo) shortens or moves walks indoors.
+- **Night Bloom dark theme (v2.2).** Deep aubergine with SnugFit's pink and plum. Follows the phone's light/dark setting, or pick one under Me → Appearance.
+- **Animated move demos (v2.3).** Every move has a looping figure demo in its scene (bed, couch, counter, wall, doorway, stairs, outdoors), shown in the move details and during workouts. Poses live in `demos.js`.
 - **Steps.** Enter steps by hand, or sync them from Apple Health (including Apple Watch) with an iPhone Shortcut that opens `…/index.html?steps=1234`. The steps are in the app under Me → Connect.
 
 ## Hosting (needed for live weather and the Health Shortcut)

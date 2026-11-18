@@ -14,7 +14,23 @@
   --ink:#22172B;--ink2:#6A5C75;--ink3:#A597AE;--bg:#FFF6FA;--card:#FFFFFF;--line:#F3E4EE;
   --shadow:0 10px 30px -12px rgba(142,58,166,.28);
   --r:22px;
+  --g1:#F2559A;--g2:#8E3AA6;--raise:#FBF1F7;--tile:#fff;--tile-ink:#22172B;--c-wx:#5A62C9;--c-teal:#1F9E88;--coral:#FF6F61;
+  --won:#3C8A2E;--won-bg:#E2F5DC;--rest-in:#EFFBF8;--lvl-bg:#FBFAD9;--lvl-ink:#6b6900;--lime-d:#9DBA2A;
+  --f-core:#F2559A;--fb-core:#FDE7F1;--f-lower:#8E3AA6;--fb-lower:#F3E6F8;--f-upper:#8A8700;--fb-upper:#F7F6C7;--f-cardio:#FF6F61;--fb-cardio:#FFE9E6;
+  --f-warm:#E88A1A;--fb-warm:#FFF0DE;--f-stretch:#1F9E88;--fb-stretch:#E1F7F2;--f-walk:#2E7FBF;--fb-walk:#E2F0FA;
+  --f-home:#E88A1A;--fb-home:#FFF0DE;--f-full:#8E3AA6;--fb-full:#F3E6F8;--f-burn:#FF6F61;--fb-burn:#FFE9E6;
+  --scene:#EFE2EA;--scene2:#E2D0DC;--demo-bg:#FBF3F8;
 }
+/* Night Bloom: dark theme. Same pink and plum family on deep aubergine. */
+html.dark{color-scheme:dark;
+  --pink:#FF6BAA;--pink2:#FF8CC0;--plum:#C98BEA;--plum2:#B46CDE;--lime:#E4E36B;--lime2:#F0EF8A;--coral:#FF8A7A;--teal:#4FD1B8;
+  --ink:#F7EEF8;--ink2:#CDBAD8;--ink3:#9A87A6;--bg:#1B1221;--card:#271A30;--line:#3A2B46;--shadow:0 12px 30px -14px rgba(0,0,0,.7);
+  --g1:#E2468C;--g2:#7A2E96;--raise:#33243E;--tile:#33243E;--tile-ink:#E4E36B;--c-wx:#9AA8FF;--c-teal:#4FD1B8;
+  --won:#8FD67C;--won-bg:#1F2E1E;--rest-in:#17302E;--lvl-bg:#33321E;--lvl-ink:#E4E36B;--lime-d:#C9C64A;
+  --f-core:#FF6BAA;--fb-core:#3A2033;--f-lower:#C98BEA;--fb-lower:#33213F;--f-upper:#E4E36B;--fb-upper:#33321E;--f-cardio:#FF8A7A;--fb-cardio:#3A2226;
+  --f-warm:#FFB15C;--fb-warm:#3A2A1C;--f-stretch:#4FD1B8;--fb-stretch:#17302E;--f-walk:#7CC0F2;--fb-walk:#1B2B3C;
+  --f-home:#FFB15C;--fb-home:#3A2A1C;--f-full:#C98BEA;--fb-full:#33213F;--f-burn:#FF8A7A;--fb-burn:#3A2226;
+  --scene:#33243E;--scene2:#47354F;--demo-bg:#21162A}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 body{min-height:100vh}
@@ -241,6 +257,55 @@ table.bt th{text-align:left;font-size:11.5px;color:var(--ink3);font-weight:800;p
 table.bt td{padding:7px 4px;border-bottom:1px solid var(--line);font-weight:700}
 .linkbtn{padding:4px;color:var(--ink3);border-radius:8px}
 button.chal{width:100%;text-align:left}
+/* move demos */
+.demowrap{background:var(--demo-bg);border-radius:18px;margin-top:14px;overflow:hidden;border:1.5px solid var(--line)}
+svg.demo{display:block;width:100%;height:auto;max-height:200px}
+svg.demo .l{stroke:var(--fig);stroke-linecap:round;fill:none}
+svg.demo .far .l{opacity:.42}
+svg.demo .hd{fill:var(--fig)}
+svg.demo .pr{fill:var(--ink2)}
+svg.demo .sc{fill:var(--scene)}svg.demo .sc2{fill:var(--scene2)}
+svg.demo .fl,svg.demo .rail{stroke:var(--scene2);stroke-width:3;stroke-linecap:round;fill:none}
+.player.hasdemo .ringwrap{width:min(44vw,180px);margin-top:8px}
+.player.hasdemo .ringin .big{font-size:44px}.player.hasdemo .ringin .big.sm{font-size:34px}
+.player.hasdemo .pname{margin-top:12px}
+/* gradients follow the theme */
+.logo,.day.done,.wk i.on,.wkrow .ok,.cbtn.main{background:linear-gradient(140deg,var(--g1),var(--g2))}
+.btn.pink,.tab.on{background:linear-gradient(135deg,var(--g1),var(--g2))}
+.hero{background:radial-gradient(120% 140% at 100% 0%,rgba(255,179,213,.75) 0%,rgba(255,179,213,0) 45%),linear-gradient(140deg,var(--g1) 0%,var(--g2) 100%)}
+/* Night Bloom component surfaces */
+html.dark .streak,html.dark .btn.soft,html.dark .day,html.dark .ex,html.dark .stat,html.dark .iconbtn,html.dark .cues,html.dark .cbtn:not(.main),html.dark .sheet,html.dark .eq,html.dark .mini>div,html.dark .mini>button,html.dark .inp,html.dark .chal,html.dark .wkrow,html.dark .nextwalk .ico,html.dark .chip.on{background:var(--card)}
+html.dark .hero{background:radial-gradient(120% 140% at 100% 0%,rgba(255,120,180,.35) 0%,rgba(255,120,180,0) 45%),linear-gradient(140deg,var(--g1) 0%,var(--g2) 100%)}
+html.dark .hero.rest{background:radial-gradient(120% 140% at 100% 0%,rgba(120,230,210,.25) 0%,rgba(120,230,210,0) 45%),linear-gradient(140deg,#1E8C7A 0%,#3B3F94 100%)}
+html.dark .btn.white{color:#6E2C82}
+html.dark .btn.lime{color:#1B1221}
+html.dark .chip,html.dark .kv div,html.dark .code,html.dark .wk i,html.dark .prog,html.dark .meter{background:var(--raise)}
+html.dark .meter.teal{background:#17302E}html.dark .meter.lime{background:#33321E}
+html.dark .dice,html.dark .chal.offer,html.dark .banner{background:linear-gradient(135deg,#36321C,#2A2716);border-color:#55502A}
+html.dark .dice span,html.dark .banner span{color:#D9D78A}
+html.dark .dice .ico{background:#120C16}
+html.dark .tip .t-ico,html.dark .cues li em,html.dark .pill{background:var(--fb-core)}
+html.dark .tabs nav{background:rgba(18,11,22,.94);box-shadow:0 14px 30px -10px rgba(0,0,0,.8),inset 0 0 0 1px var(--line)}
+html.dark .tab{color:#9A87A6}
+html.dark .day.cur,html.dark .wkrow.today{box-shadow:0 0 0 3px rgba(255,107,170,.28)}
+html.dark .day.rest:not(.done){background:#17302E;border-color:#24453F}
+html.dark .day.done small{color:#FFD0E4}
+html.dark .wkrow.done{background:#2C1E33}
+html.dark .tog{background:#4A3956}html.dark .tog.on{background:var(--pink)}html.dark .tog::after{background:#F7EEF8}
+html.dark .easy{background:#2E1F3A;color:#D9A8F0}
+html.dark .grab{background:#4A3956}
+html.dark .eq.on{background:#3A2033}html.dark .eq i{border-color:#5A4866}
+html.dark .toast,html.dark .ctip{background:#3A2B46;color:var(--ink)}
+html.dark .wx{background:linear-gradient(180deg,#221C38 0%,var(--card) 60%);border-color:#33304F}
+html.dark .wxico,html.dark .wear li i{background:#2C2848}
+html.dark .v-go,html.dark .delta.down{background:#17302E;color:#6FE0C8}
+html.dark .v-caution,html.dark .note{background:#3A2A1C;color:#FFC27A}
+html.dark .v-indoor{background:#3A2226;color:#FF9C8E}
+html.dark .delta.up{background:#33213F;color:#D9A8F0}
+html.dark .nextwalk{background:#17302E}html.dark .nextwalk span{color:#8FE0CE}
+html.dark .nextwalk.now{background:linear-gradient(135deg,#17302E,#221C38)}
+html.dark .chal.won{background:#1F2E1E;border-color:#335A2E}
+html.dark .modal{background:rgba(5,2,8,.6)}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -251,6 +316,7 @@ button.chal{width:100%;text-align:left}
 <div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
 <div class="toast" id="toast"></div>
 
+<script src="demos.js"></script>
 <script>
 /* ---------- ICONS ---------- */
 const IC={
@@ -300,19 +366,8 @@ const IC={
  scale:'<rect x="3.5" y="4" width="17" height="16" rx="4"/><path d="M8.3 10a5 5 0 0 1 7.4 0M12 10.5l1.6-1.8"/>',
  watch:'<rect x="6" y="6" width="12" height="12" rx="3.5"/><path d="M9 6l.6-3h4.8L15 6M9 18l.6 3h4.8L15 18M12 9.5V12l1.6 1"/>'
 };
-function svg(name,size=24,color='currentColor',sw=2.2){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[name]||''}</svg>`}
-const FOCUS={
- core:{label:'Core',color:'#F2559A',bg:'#FDE7F1'},
- lower:{label:'Legs & glutes',color:'#8E3AA6',bg:'#F3E6F8'},
- upper:{label:'Arms & upper body',color:'#8A8700',bg:'#F7F6C7'},
- cardio:{label:'Gentle cardio',color:'#FF6F61',bg:'#FFE9E6'},
- warm:{label:'Warm-up',color:'#E88A1A',bg:'#FFF0DE'},
- stretch:{label:'Stretch',color:'#1F9E88',bg:'#E1F7F2'},
- walk:{label:'Walk',color:'#2E7FBF',bg:'#E2F0FA'},
- home:{label:'Around the house',color:'#E88A1A',bg:'#FFF0DE'},
- full:{label:'Full body',color:'#8E3AA6',bg:'#F3E6F8'},
- burn:{label:'Gentle burn',color:'#FF6F61',bg:'#FFE9E6'}
-};
+function svg(name,size=24,color='currentColor',sw=2.2){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" style="stroke:${color}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[name]||''}</svg>`}
+const FOCUS=Object.fromEntries([['core','Core'],['lower','Legs & glutes'],['upper','Arms & upper body'],['cardio','Gentle cardio'],['warm','Warm-up'],['stretch','Stretch'],['walk','Walk'],['home','Around the house'],['full','Full body'],['burn','Gentle burn']].map(([k,label])=>[k,{label,color:`var(--f-${k})`,bg:`var(--fb-${k})`}]));
 const ICON_OF={full:'lower',burn:'cardio',home:'home'};
 const PLACE={bed:'In bed',seat:'Couch or chair',stand:'Standing',house:'Around the house',stairs:'On the stairs',out:'Outside'};
 const EQUIP={db:'Dumbbells (2, 3 & 5 lb)',chair:'Sturdy chair',bottles:'Water bottles',pillow:'Pillow',towel:'Towel'};
@@ -417,7 +472,7 @@ function h12(h){const d=new Date();d.setHours(h,0,0,0);return d.toLocaleTimeStri
 const KEY='snugfit-v1';
 const DEF={onboarded:false,voice:true,sound:true,equip:{db:true,chair:true,bottles:true,pillow:true,towel:true},history:[],planDone:[],energy:'low',place:'any',mins:7,focus:'core',tipIdx:0,
  home:'one',stairs:false,level:1,levelCount:0,lastProg:'',meals:{b:'08:00',l:'12:30',d:'18:00'},stepGoal:6000,walkGoal:20,
- city:{name:'Calgary',lat:51.0447,lon:-114.0719},health:{},ch:[],chDone:[],wxm:{temp:-5,cond:'clear'},body:[],units:{w:'lb',l:'in'},goalKg:null};
+ city:{name:'Calgary',lat:51.0447,lon:-114.0719},health:{},theme:'auto',ch:[],chDone:[],wxm:{temp:-5,cond:'clear'},body:[],units:{w:'lb',l:'in'},goalKg:null};
 let S;
 try{const raw=JSON.parse(localStorage.getItem(KEY)||'{}');S=Object.assign(JSON.parse(JSON.stringify(DEF)),raw);
  S.equip=Object.assign({},DEF.equip,raw.equip||{});S.meals=Object.assign({},DEF.meals,raw.meals||{});S.wxm=Object.assign({},DEF.wxm,raw.wxm||{});S.units=Object.assign({},DEF.units,raw.units||{});
@@ -661,14 +716,14 @@ function lineChart(id,pts,unit,color,goal){
  const t0=dayOf(pts[0].date).getTime(),span=dayOf(pts[pts.length-1].date).getTime()-t0;
  const X=d=>span?L+(dayOf(d).getTime()-t0)/span*(W-L-R):L+(W-L-R)/2,Y=v=>T+(hi-v)/(hi-lo)*(H-T-B);
  const dec=step<1?1:0;let g='';
- for(let v=lo;v<=hi+1e-9;v+=step){const y=Y(v).toFixed(1);g+=`<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" stroke="#F3E4EE" stroke-width="1"/><text x="${L-6}" y="${(+y+3.5).toFixed(1)}" text-anchor="end" font-size="10" fill="#A597AE" font-weight="700">${v.toFixed(dec)}</text>`}
- if(goal!=null){const y=Y(goal).toFixed(1);g+=`<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" stroke="#9DBA2A" stroke-width="1.5" stroke-dasharray="4 4"/><text x="${W-R+6}" y="${(+y+3.5).toFixed(1)}" font-size="10" fill="#6A5C75" font-weight="800">Goal</text>`}
+ for(let v=lo;v<=hi+1e-9;v+=step){const y=Y(v).toFixed(1);g+=`<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" style="stroke:var(--line)" stroke-width="1"/><text x="${L-6}" y="${(+y+3.5).toFixed(1)}" text-anchor="end" font-size="10" style="fill:var(--ink3)" font-weight="700">${v.toFixed(dec)}</text>`}
+ if(goal!=null){const y=Y(goal).toFixed(1);g+=`<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" style="stroke:var(--lime-d)" stroke-width="1.5" stroke-dasharray="4 4"/><text x="${W-R+6}" y="${(+y+3.5).toFixed(1)}" font-size="10" style="fill:var(--ink2)" font-weight="800">Goal</text>`}
  const xs=pts.map(p=>X(p.date)),ys=pts.map(p=>Y(p.v)),n=pts.length;
  const path=xs.map((x,i)=>(i?'L':'M')+x.toFixed(1)+' '+ys[i].toFixed(1)).join(' ');
- const dots=pts.map((p,i)=>`<circle cx="${xs[i].toFixed(1)}" cy="${ys[i].toFixed(1)}" r="${i===n-1?5:4}" fill="${color}" stroke="#fff" stroke-width="2"/>`).join('');
- const xl=`<text x="${xs[0].toFixed(1)}" y="${H-8}" font-size="10" fill="#A597AE" font-weight="700" text-anchor="${n>1?'start':'middle'}">${fmtD(pts[0].date)}</text>`+(n>1?`<text x="${xs[n-1].toFixed(1)}" y="${H-8}" font-size="10" fill="#A597AE" font-weight="700" text-anchor="end">${fmtD(pts[n-1].date)}</text>`:'');
+ const dots=pts.map((p,i)=>`<circle cx="${xs[i].toFixed(1)}" cy="${ys[i].toFixed(1)}" r="${i===n-1?5:4}" style="fill:${color};stroke:var(--card)" stroke-width="2"/>`).join('');
+ const xl=`<text x="${xs[0].toFixed(1)}" y="${H-8}" font-size="10" style="fill:var(--ink3)" font-weight="700" text-anchor="${n>1?'start':'middle'}">${fmtD(pts[0].date)}</text>`+(n>1?`<text x="${xs[n-1].toFixed(1)}" y="${H-8}" font-size="10" style="fill:var(--ink3)" font-weight="700" text-anchor="end">${fmtD(pts[n-1].date)}</text>`:'');
  CHARTS[id]={xs,ys,pts,unit,W,H};
- return `<div class="chartwrap"><svg class="lc" data-id="${id}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${unit} over time. Latest ${pts[n-1].v} ${unit} on ${fmtD(pts[n-1].date)}.">${g}${n>1?`<path d="${path}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`:''}${dots}<text x="${(xs[n-1]+9).toFixed(1)}" y="${(ys[n-1]+4).toFixed(1)}" font-size="11.5" font-weight="800" fill="#22172B">${pts[n-1].v}</text>${xl}<g class="hov" visibility="hidden"><line y1="${T}" y2="${H-B}" stroke="#A597AE" stroke-width="1"/><circle r="6" fill="${color}" stroke="#fff" stroke-width="2"/></g><rect x="0" y="0" width="${W}" height="${H}" fill="transparent"/></svg><div class="ctip" aria-hidden="true"></div></div>`}
+ return `<div class="chartwrap"><svg class="lc" data-id="${id}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${unit} over time. Latest ${pts[n-1].v} ${unit} on ${fmtD(pts[n-1].date)}.">${g}${n>1?`<path d="${path}" fill="none" style="stroke:${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`:''}${dots}<text x="${(xs[n-1]+9).toFixed(1)}" y="${(ys[n-1]+4).toFixed(1)}" font-size="11.5" font-weight="800" style="fill:var(--ink)">${pts[n-1].v}</text>${xl}<g class="hov" visibility="hidden"><line y1="${T}" y2="${H-B}" style="stroke:var(--ink3)" stroke-width="1"/><circle r="6" style="fill:${color};stroke:var(--card)" stroke-width="2"/></g><rect x="0" y="0" width="${W}" height="${H}" fill="transparent"/></svg><div class="ctip" aria-hidden="true"></div></div>`}
 function chartHover(ev){const el=ev.target&&ev.target.closest?ev.target.closest('svg.lc'):null;
  document.querySelectorAll('svg.lc').forEach(s=>{if(s!==el){const h=s.querySelector('.hov');if(h)h.setAttribute('visibility','hidden');const t=s.parentNode.querySelector('.ctip');if(t)t.classList.remove('show')}});
  if(!el)return;const c=CHARTS[el.dataset.id];if(!c)return;const r=el.getBoundingClientRect();const x=(ev.clientX-r.left)/r.width*c.W;
@@ -683,9 +738,9 @@ function bodyCard(){
  if(ws.length){const last=ws[ws.length-1],first=ws[0],d=r1(wDisp(last.kg)-wDisp(first.kg));
   h+=`<div class="bodyhead"><div><span class="fine">Latest weight · ${fmtD(last.date)}</span><div class="bigv">${r1(wDisp(last.kg))} ${uw}</div></div>${ws.length>1?`<span class="delta ${d<=0?'down':'up'}">${d<=0?'Down':'Up'} ${Math.abs(d)} ${uw} since ${fmtD(first.date)}</span>`:''}</div>`;
   if(S.goalKg){const toGo=r1(wDisp(last.kg)-wDisp(S.goalKg)),tot=wDisp(first.kg)-wDisp(S.goalKg);h+=`<p class="fine" style="margin:8px 0 0">${toGo>0?`<b>${toGo} ${uw}</b> to go to your goal of ${r1(wDisp(S.goalKg))} ${uw}`:`You've reached your goal of ${r1(wDisp(S.goalKg))} ${uw}!`}</p><div class="meter lime"><i style="width:${tot>0?pct(wDisp(first.kg)-wDisp(last.kg),tot):100}%"></i></div>`}
-  h+=`<div class="lbl" style="margin-top:16px">Weight (${uw})</div>`+lineChart('cw',ws.map(e=>({date:e.date,v:r1(wDisp(e.kg))})),uw,'#8E3AA6',S.goalKg?r1(wDisp(S.goalKg)):null)}
+  h+=`<div class="lbl" style="margin-top:16px">Weight (${uw})</div>`+lineChart('cw',ws.map(e=>({date:e.date,v:r1(wDisp(e.kg))})),uw,'var(--f-lower)',S.goalKg?r1(wDisp(S.goalKg)):null)}
  if(cs.length){const lc=cs[cs.length-1],fc=cs[0],dc=r1(lDisp(lc.cm)-lDisp(fc.cm));
-  h+=`<div class="lbl" style="margin-top:16px">Waist (${ul}) · latest ${r1(lDisp(lc.cm))}${cs.length>1?` · ${dc<=0?'down':'up'} ${Math.abs(dc)} since ${fmtD(fc.date)}`:''}</div>`+lineChart('cc',cs.map(e=>({date:e.date,v:r1(lDisp(e.cm))})),ul,'#1F9E88',null)}
+  h+=`<div class="lbl" style="margin-top:16px">Waist (${ul}) · latest ${r1(lDisp(lc.cm))}${cs.length>1?` · ${dc<=0?'down':'up'} ${Math.abs(dc)} since ${fmtD(fc.date)}`:''}</div>`+lineChart('cc',cs.map(e=>({date:e.date,v:r1(lDisp(e.cm))})),ul,'var(--f-stretch)',null)}
  if(b.length&&ws.length<2&&cs.length<2)h+=`<p class="fine" style="margin:10px 0 0">Add another check-in next week to start seeing your trend.</p>`;
  if(b.length)h+=`<details class="tbl"><summary>Show all check-ins</summary><table class="bt"><thead><tr><th>Date</th><th>Weight (${uw})</th><th>Waist (${ul})</th><th></th></tr></thead><tbody>${b.slice().reverse().map(e=>`<tr><td>${fmtD(e.date)}</td><td>${e.kg!=null?r1(wDisp(e.kg)):'—'}</td><td>${e.cm!=null?r1(lDisp(e.cm)):'—'}</td><td><button class="linkbtn" data-delbody="${e.date}" aria-label="Delete check-in from ${fmtD(e.date)}">${svg('x',14)}</button></td></tr>`).join('')}</tbody></table></details>`;
  h+=`<button class="btn pink block" style="margin-top:14px" data-act="checkin">${svg('plus',18)} Log check-in</button>
@@ -737,13 +792,18 @@ const TIPS=[
 ];
 
 /* ---------- RENDER ---------- */
+const MQ=(()=>{try{return matchMedia('(prefers-color-scheme: dark)')}catch(e){return null}})();
+function isDark(){if(S.theme==='dark')return true;if(S.theme==='light')return false;const h=document.documentElement.dataset.theme;if(h==='dark'||h==='light')return h==='dark';return !!(MQ&&MQ.matches)}
+function applyTheme(){const d=isDark();document.documentElement.classList.toggle('dark',d);const m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',d?'#1B1221':'#F2559A')}
+try{MQ&&MQ.addEventListener('change',()=>{if(S.theme==='auto')render()})}catch(e){}
 function render(){
+ applyTheme();
  const app=$('#app');
- app.innerHTML=`<div class="top"><div class="brand"><div class="logo">${svg('db',22,'#fff',2.6)}</div><b>Snug<span>Fit</span></b></div><div class="streak" title="Day streak">${svg('flame',18,'#FF6F61',2.2)}${streak()}</div></div><div class="fadein">${TAB==='home'?home():TAB==='plan'?plan():TAB==='moves'?moves():me()}</div>`;
+ app.innerHTML=`<div class="top"><div class="brand"><div class="logo">${svg('db',22,'#fff',2.6)}</div><b>Snug<span>Fit</span></b></div><div class="streak" title="Day streak">${svg('flame',18,'var(--coral)',2.2)}${streak()}</div></div><div class="fadein">${TAB==='home'?home():TAB==='plan'?plan():TAB==='moves'?moves():me()}</div>`;
  $('#tabs').innerHTML=[['home','Today','home'],['plan','Program','plan'],['moves','Moves','lib'],['me','Me','me']].map(([k,l,i])=>`<button class="tab ${TAB===k?'on':''}" data-tab="${k}">${svg(i,22)}${l}</button>`).join('');
 }
 function levelBanner(){if(S.level>=6||S.levelCount<LEVEL_UP)return '';const L=LEVELS[S.level+1];
- return `<div class="banner">${iconBadge('trophy','#22172B','#fff',44)}<div style="flex:1;min-width:0"><b>Ready for Level ${S.level+1}?</b><span>You've done ${S.levelCount} sessions at this level. Next: ${L.w}-min workouts and ${L.walk}-min walks.</span><div class="row" style="margin-top:10px"><button class="btn pink sm" data-act="levelup">Level up</button><button class="btn soft sm" data-act="levelwait">Not yet</button></div></div></div>`}
+ return `<div class="banner">${iconBadge('trophy','var(--tile-ink)','var(--tile)',44)}<div style="flex:1;min-width:0"><b>Ready for Level ${S.level+1}?</b><span>You've done ${S.levelCount} sessions at this level. Next: ${L.w}-min workouts and ${L.walk}-min walks.</span><div class="row" style="margin-top:10px"><button class="btn pink sm" data-act="levelup">Level up</button><button class="btn soft sm" data-act="levelwait">Not yet</button></div></div></div>`}
 function hero(){
  const p=progSession();const done=progDone(ds());const L=LEVELS[S.level];
  const tag=`<span class="tag">${svg('flame',14,'#fff')} Level ${S.level} · ${L.n}</span>`;
@@ -756,20 +816,20 @@ function hero(){
 function walkCard(){
  const L=LEVELS[S.level];const w=wxNow();const adv=wear(w);const nw=nextWalk();const today=ds();const wm=walkMinsOn(today);
  let head;
- if(WX.status==='loading'||WX.status==='idle')head=`<div class="wxtop"><div class="wxico">${svg('cloud',28,'#5A62C9')}</div><div><b>Checking ${esc(S.city.name)} weather…</b><div class="wxsub">One moment</div></div></div>`;
- else if(w.live)head=`<div class="wxtop"><div class="wxico">${svg(wxIcon(w.code,w.isDay),30,'#5A62C9')}</div><div style="flex:1;min-width:0"><div class="wxtemp">${Math.round(w.temp)}°<small>feels ${Math.round(w.feels)}°</small></div><div class="wxsub">${wxText(w.code)} · wind ${Math.round(w.wind)} km/h${w.aqi!=null?' · air quality '+w.aqi:''} · ${esc(S.city.name)}</div></div><button class="iconbtn sm" data-act="city" aria-label="Change location">${svg('pin',19)}</button></div>`;
- else head=`<div class="wxtop"><div class="wxico">${svg('cloud',28,'#5A62C9')}</div><div style="flex:1;min-width:0"><b>What's it like outside?</b><div class="wxsub">Live weather for ${esc(S.city.name)} can't load here, so set it yourself.</div></div><button class="iconbtn sm" data-act="wxretry" aria-label="Try live weather again">${svg('refresh',19)}</button></div>
+ if(WX.status==='loading'||WX.status==='idle')head=`<div class="wxtop"><div class="wxico">${svg('cloud',28,'var(--c-wx)')}</div><div><b>Checking ${esc(S.city.name)} weather…</b><div class="wxsub">One moment</div></div></div>`;
+ else if(w.live)head=`<div class="wxtop"><div class="wxico">${svg(wxIcon(w.code,w.isDay),30,'var(--c-wx)')}</div><div style="flex:1;min-width:0"><div class="wxtemp">${Math.round(w.temp)}°<small>feels ${Math.round(w.feels)}°</small></div><div class="wxsub">${wxText(w.code)} · wind ${Math.round(w.wind)} km/h${w.aqi!=null?' · air quality '+w.aqi:''} · ${esc(S.city.name)}</div></div><button class="iconbtn sm" data-act="city" aria-label="Change location">${svg('pin',19)}</button></div>`;
+ else head=`<div class="wxtop"><div class="wxico">${svg('cloud',28,'var(--c-wx)')}</div><div style="flex:1;min-width:0"><b>What's it like outside?</b><div class="wxsub">Live weather for ${esc(S.city.name)} can't load here, so set it yourself.</div></div><button class="iconbtn sm" data-act="wxretry" aria-label="Try live weather again">${svg('refresh',19)}</button></div>
  <div class="manual"><label for="wxtemp">Temperature (°C)<input id="wxtemp" class="inp" type="number" inputmode="numeric" value="${esc(S.wxm.temp)}"></label><div class="chips">${[['clear','Clear'],['cloudy','Cloudy'],['rain','Rain'],['snow','Snow'],['windy','Windy'],['icy','Icy']].map(([k,l])=>`<button class="chip ${S.wxm.cond===k?'on':''}" data-wxc="${k}">${l}</button>`).join('')}</div></div>`;
  const vcls={go:'v-go',caution:'v-caution',indoor:'v-indoor'}[adv.verdict];
  const len=Math.min(L.walk,adv.max||99);const indoor=adv.verdict==='indoor';
  let nwHTML='';
- if(nw)nwHTML=`<div class="nextwalk ${nw.now?'now':''}"><div class="ico">${svg('walk',22,'#1F9E88')}</div><div style="flex:1;min-width:0"><b>${nw.now?'Good time for a walk now':'Next walk: '+nw.label.toLowerCase()}</b><span>${nw.now&&nw.label!=='Evening stroll'?nw.label+' · ':''}${nw.now?'':t12(nw.st)+' to '+t12(nw.en)+' · '}${len} min ${indoor?'indoors':'easy-to-brisk'}</span></div></div>`;
- else nwHTML=wm>=S.walkGoal?`<div class="nextwalk"><div class="ico">${svg('check',22,'#1F9E88')}</div><div><b>Walking goal hit for today</b><span>${wm} min walked. Rest up.</span></div></div>`:`<div class="nextwalk"><div class="ico">${svg('rest',22,'#1F9E88')}</div><div><b>Getting late for a walk</b><span>${wm?wm+' min walked today. ':''}Tomorrow, try one after breakfast (${t12(toMin(S.meals.b)+15)}).</span></div></div>`;
+ if(nw)nwHTML=`<div class="nextwalk ${nw.now?'now':''}"><div class="ico">${svg('walk',22,'var(--c-teal)')}</div><div style="flex:1;min-width:0"><b>${nw.now?'Good time for a walk now':'Next walk: '+nw.label.toLowerCase()}</b><span>${nw.now&&nw.label!=='Evening stroll'?nw.label+' · ':''}${nw.now?'':t12(nw.st)+' to '+t12(nw.en)+' · '}${len} min ${indoor?'indoors':'easy-to-brisk'}</span></div></div>`;
+ else nwHTML=wm>=S.walkGoal?`<div class="nextwalk"><div class="ico">${svg('check',22,'var(--c-teal)')}</div><div><b>Walking goal hit for today</b><span>${wm} min walked. Rest up.</span></div></div>`:`<div class="nextwalk"><div class="ico">${svg('rest',22,'var(--c-teal)')}</div><div><b>Getting late for a walk</b><span>${wm?wm+' min walked today. ':''}Tomorrow, try one after breakfast (${t12(toMin(S.meals.b)+15)}).</span></div></div>`;
  let best='';if(w.live&&!indoor){const b=bestTime();best=b?`<p class="fine" style="margin:10px 0 0">Best window left today: around <b>${h12(b.hour)}</b> (feels ${Math.round(b.f)}°${b.pp>=30?', '+b.pp+'% chance of rain or snow':''}).</p>`:`<p class="fine" style="margin:10px 0 0">It's dark for the rest of today. If you head out, wear something reflective.</p>`}
  return `<div class="sec"><h3>Walk coach</h3><small>${wm}/${S.walkGoal} min today</small></div>
  <div class="card wx">${head}
   <span class="verdict ${vcls}">${svg(adv.verdict==='go'?'check':adv.verdict==='indoor'?'home':'bulb',15)} ${adv.head}</span>
-  ${indoor?'':`<div class="lbl" style="margin-top:14px">What to wear</div><ul class="wear">${adv.items.map(([i,t])=>`<li><i>${svg(i,17,'#5A62C9')}</i>${t}</li>`).join('')}</ul>`}
+  ${indoor?'':`<div class="lbl" style="margin-top:14px">What to wear</div><ul class="wear">${adv.items.map(([i,t])=>`<li><i>${svg(i,17,'var(--c-wx)')}</i>${t}</li>`).join('')}</ul>`}
   ${nwHTML}${best}
   <div class="meter teal"><i style="width:${pct(wm,S.walkGoal)}%"></i></div>
   <div class="row" style="margin-top:14px;flex-wrap:nowrap">${indoor?'':`<button class="btn pink" style="flex:1;padding-inline:12px" data-walk="out" data-wm="${len}">${svg('walk',18)} Guided walk</button>`}<button class="btn ${indoor?'pink':'soft'}" style="flex:1;padding-inline:12px" data-walk="in" data-wm="${len}">${svg('home',18)} Indoor walk</button><button class="btn soft" style="padding-inline:14px" data-act="logwalk" aria-label="Log a walk">${svg('plus',18)}</button></div>
@@ -780,15 +840,15 @@ function chalCards(limit){
  for(const c of S.ch){const def=CH[c.id];const p=chProg(c);const won=isWon(c);const {end}=chWindow(c);
   const left=def.plan?'':(Math.max(0,Math.round((dayOf(end)-dayOf(ds()))/864e5))+1)+' days left';
   let extra='';if(def.plan){const pd=curPlanDay();extra=pd?`<button class="btn pink sm" style="margin-top:10px" data-plan="${pd.day}">${svg('play',16)} Day ${pd.day}</button>`:''}
-  out.push(`<div class="chal ${won?'won':''}">${iconBadge(won?'trophy':def.icon,won?'#3C8A2E':'#8E3AA6',won?'#E2F5DC':'#F3E6F8')}<div class="body"><b>${def.name}</b><span>${won?'Complete! ':''}${p.v}/${p.goal} ${p.unit}${left?' · '+left:''}</span><div class="meter ${won?'lime':''}"><i style="width:${pct(p.v,p.goal)}%"></i></div>${extra}</div></div>`)}
- const wk=weeklyNow();if(!S.ch.some(c=>c.id===wk.id)&&!S.chDone.some(x=>x.id===wk.id&&x.start===ds(mondayOf())))out.push(`<div class="chal offer">${iconBadge(wk.icon,'#22172B','#fff')}<div class="body"><b>This week: ${wk.name}</b><span>${wk.desc}</span><button class="btn lime sm" style="margin-top:10px" data-join="${wk.id}">Join challenge</button></div></div>`);
+  out.push(`<div class="chal ${won?'won':''}">${iconBadge(won?'trophy':def.icon,won?'var(--won)':'var(--f-lower)',won?'var(--won-bg)':'var(--fb-lower)')}<div class="body"><b>${def.name}</b><span>${won?'Complete! ':''}${p.v}/${p.goal} ${p.unit}${left?' · '+left:''}</span><div class="meter ${won?'lime':''}"><i style="width:${pct(p.v,p.goal)}%"></i></div>${extra}</div></div>`)}
+ const wk=weeklyNow();if(!S.ch.some(c=>c.id===wk.id)&&!S.chDone.some(x=>x.id===wk.id&&x.start===ds(mondayOf())))out.push(`<div class="chal offer">${iconBadge(wk.icon,'var(--tile-ink)','var(--tile)')}<div class="body"><b>This week: ${wk.name}</b><span>${wk.desc}</span><button class="btn lime sm" style="margin-top:10px" data-join="${wk.id}">Join challenge</button></div></div>`);
  return (limit?out.slice(0,limit):out).join('');
 }
 function home(){
  const today=ds();const todayDone=activeDays().has(today);const st=stepsOn(today);
  const mini=`<div class="mini"><button data-act="steps"><b>${st==null?'—':st.toLocaleString()}</b><span>steps${st==null?' · add':' / '+S.stepGoal.toLocaleString()}</span><div class="meter lime"><i style="width:${pct(st||0,S.stepGoal)}%"></i></div></button><div><b>${walkMinsOn(today)}</b><span>walk min / ${S.walkGoal}</span><div class="meter teal"><i style="width:${pct(walkMinsOn(today),S.walkGoal)}%"></i></div></div><div><b>${workoutsOn(today)}</b><span>workouts today</span><div class="meter"><i style="width:${workoutsOn(today)?100:0}%"></i></div></div></div>`;
  const ch=chalCards(2);const lc=lastCheck();
- const nudge=checkDue()?`<button class="chal offer" style="margin-top:14px;margin-bottom:0" data-act="checkin">${iconBadge('scale','#22172B','#fff')}<div class="body"><b>Weekly check-in</b><span>${lc?'Last one was '+fmtD(lc.date)+'. ':''}Log your weight and waist. It takes 30 seconds.</span></div></button>`:'';
+ const nudge=checkDue()?`<button class="chal offer" style="margin-top:14px;margin-bottom:0" data-act="checkin">${iconBadge('scale','var(--tile-ink)','var(--tile)')}<div class="body"><b>Weekly check-in</b><span>${lc?'Last one was '+fmtD(lc.date)+'. ':''}Log your weight and waist. It takes 30 seconds.</span></div></button>`:'';
  return `<div class="hello">${greet()}${todayDone?' · you moved today':''}</div><div class="h1 disp">${todayDone?'Look at you go.':'Tiny effort. Real results.'}</div>${levelBanner()}${hero()}${mini}${nudge}
  ${walkCard()}
  ${ch?`<div class="sec"><h3>Challenges</h3><small>optional</small></div>${ch}`:''}
@@ -801,7 +861,7 @@ function home(){
   <div style="margin-top:16px"><button class="btn pink block" data-act="quick">${svg('play',18)} Start ${S.mins}-min workout</button></div>
  </div>
  <button class="dice" data-act="random"><div class="ico">${svg('dice',26,'#F4F28A')}</div><div><b>Surprise me</b><span>A random workout picked for you</span></div></button>
- <div class="card tip"><div class="t-ico">${svg('bulb',20,'#F2559A')}</div><p>${TIPS[S.tipIdx%TIPS.length]}</p></div>`;
+ <div class="card tip"><div class="t-ico">${svg('bulb',20,'var(--pink)')}</div><p>${TIPS[S.tipIdx%TIPS.length]}</p></div>`;
 }
 function plan(){
  const L=LEVELS[S.level];const mon=mondayOf();const today=ds();
@@ -813,15 +873,15 @@ function plan(){
  <div class="row" style="margin-top:12px"><button class="btn soft sm" data-act="leveldown" ${S.level<=1?'disabled style="opacity:.4"':''}>Make it easier</button><button class="btn soft sm" data-act="levelup" ${S.level>=6?'disabled style="opacity:.4"':''}>Make it harder</button></div></div>
  <div class="sec"><h3>This week</h3><small>${[...Array(7)].filter((_,i)=>progDone(ds(addDays(mon,i)))).length}/7 done</small></div>`;
  h+=[...Array(7)].map((_,i)=>{const d=addDays(mon,i);const k=ds(d);const s=progSession(d);const done=progDone(k);const isT=k===today;
-  return `<button class="wkrow ${isT?'today':''} ${done?'done':''}" data-wk="${k}"><span class="dname">${d.toLocaleDateString(undefined,{weekday:'short'})}</span>${badge(s.focus==='stretch'?'stretch':s.focus,40)}<div class="body"><b>${s.title}</b><span>${s.mins} min${isT?' · today':''}</span></div>${done?`<span class="ok">${svg('check',16,'#fff',3)}</span>`:`<span class="chev">${svg('chev',18,'#A597AE')}</span>`}</button>`}).join('');
+  return `<button class="wkrow ${isT?'today':''} ${done?'done':''}" data-wk="${k}"><span class="dname">${d.toLocaleDateString(undefined,{weekday:'short'})}</span>${badge(s.focus==='stretch'?'stretch':s.focus,40)}<div class="body"><b>${s.title}</b><span>${s.mins} min${isT?' · today':''}</span></div>${done?`<span class="ok">${svg('check',16,'#fff',3)}</span>`:`<span class="chev">${svg('chev',18,'var(--ink3)')}</span>`}</button>`}).join('');
  h+=`<div class="sec"><h3>Challenges</h3><small>join any time</small></div>${chalCards()}`;
  const avail=LONG.filter(c=>!S.ch.some(x=>x.id===c.id));
- if(avail.length)h+=`<div class="lbl" style="margin-top:16px">Longer challenges</div>`+avail.map(c=>`<div class="chal">${iconBadge(c.icon,'#8E3AA6','#F3E6F8')}<div class="body"><b>${c.name}</b><span>${c.desc}</span><button class="btn soft sm" style="margin-top:10px" data-join="${c.id}">Join · ${c.days} days</button></div></div>`).join('');
+ if(avail.length)h+=`<div class="lbl" style="margin-top:16px">Longer challenges</div>`+avail.map(c=>`<div class="chal">${iconBadge(c.icon,'var(--f-lower)','var(--fb-lower)')}<div class="body"><b>${c.name}</b><span>${c.desc}</span><button class="btn soft sm" style="margin-top:10px" data-join="${c.id}">Join · ${c.days} days</button></div></div>`).join('');
  if(S.ch.some(c=>c.id==='core28')){const cur=curPlanDay();
   h+=`<div class="sec"><h3>Core Comeback</h3><small>${S.planDone.length}/28</small></div>`;
   for(let w=0;w<4;w++){const days=PLAN.slice(w*7,w*7+7);h+=`<div class="weekh">Week ${w+1}: ${WEEKS[w]}<small>${days.filter(d=>!d.rest)[0].mins} min</small></div><div class="days">${days.map(d=>{const done=S.planDone.includes(d.day);const c=cur&&cur.day===d.day;return `<button class="day ${done?'done':''} ${c?'cur':''} ${d.rest?'rest':''}" data-day="${d.day}">${done?svg('check',18,'#fff',3):d.day}<small>${d.rest?'rest':d.mins+'m'}</small></button>`}).join('')}</div>`}
   h+=`<div style="margin-top:14px" class="row"><button class="btn soft sm" data-act="resetplan">Restart Core Comeback</button><button class="btn soft sm" data-leave="core28">Leave challenge</button></div>`}
- const won=S.chDone.length;if(won)h+=`<p class="fine" style="margin-top:14px">${svg('trophy',14,'#A597AE')} ${won} challenge${won>1?'s':''} completed so far.</p>`;
+ const won=S.chDone.length;if(won)h+=`<p class="fine" style="margin-top:14px">${svg('trophy',14,'var(--ink3)')} ${won} challenge${won>1?'s':''} completed so far.</p>`;
  return h;
 }
 let LIBF='all';
@@ -864,6 +924,8 @@ function me(){
   <div class="set"><div>Weather location<small>${esc(S.city.name)}</small></div><button class="btn soft sm" data-act="city">Change</button></div>
   <div class="setcol"><small>Usual meal times (for after-meal walk prompts)</small><div class="times"><label for="meal-b">Breakfast<input class="inp" type="time" id="meal-b" value="${S.meals.b}"></label><label for="meal-l">Lunch<input class="inp" type="time" id="meal-l" value="${S.meals.l}"></label><label for="meal-d">Dinner<input class="inp" type="time" id="meal-d" value="${S.meals.d}"></label></div></div>
  </div>
+ <div class="sec"><h3>Appearance</h3></div>
+ <div class="card"><div class="setcol"><small>Theme. Auto follows your phone's light or dark setting.</small>${chips('theme',[['auto','Auto'],['light','Light'],['dark','Dark']],S.theme)}</div></div>
  <div class="sec"><h3>Coaching</h3></div>
  <div class="card">
   <div class="set"><div>Voice coach<small>Talks you through each move</small></div><button class="tog ${S.voice?'on':''}" data-tog="voice" aria-label="Voice coach"></button></div>
@@ -873,8 +935,12 @@ function me(){
  <div class="sec"><h3>Safety</h3></div>
  <div class="card"><p class="fine" style="margin:0">SnugFit offers general fitness guidance and isn't medical advice. Check with a doctor before starting a new exercise program, especially if you're pregnant, recovering from surgery or injury, or have a health condition. Hold the railing on stairs. Stop if you feel pain, dizziness or shortness of breath. In extreme cold, follow Environment Canada's wind chill warnings.</p></div>
  <div style="margin-top:14px"><button class="btn soft block" data-act="wipe">Reset all data</button></div>
- <p class="fine" style="text-align:center;margin-top:16px">SnugFit v2.1 · Made for lazy days</p>`;
+ <p class="fine" style="text-align:center;margin-top:16px">SnugFit v2.3 · Made for lazy days</p>`;
 }
+
+/* ---------- DEMOS ---------- */
+function demoHTML(id,color){try{return window.SnugDemos&&SnugDemos.has(id)?`<div class="demowrap">${SnugDemos.svgFor(id,color)}</div>`:''}catch(e){return ''}}
+function startDemos(root){try{window.SnugDemos&&SnugDemos.start(root)}catch(e){}}
 
 /* ---------- MODALS ---------- */
 function openModal(html){$('#sheet').innerHTML='<div class="grab"></div>'+html;$('#modal').classList.add('show')}
@@ -882,7 +948,7 @@ function closeModal(){$('#modal').classList.remove('show')}
 function equipHTML(){return `<div class="eqgrid">${Object.entries(EQUIP).map(([k,l])=>`<button class="eq ${S.equip[k]?'on':''}" data-eq="${k}"><i>${S.equip[k]?'✓':''}</i>${l}</button>`).join('')}</div>`}
 function homeHTML(){return `<div class="eqgrid">${Object.entries(HOMES).map(([k,l])=>`<button class="eq ${S.home===k?'on':''}" data-home="${k}"><i>${S.home===k?'✓':''}</i>${l}</button>`).join('')}</div>`}
 function onboarding(){openModal(`<div class="logo" style="width:56px;height:56px;border-radius:18px;margin-bottom:14px">${svg('db',30,'#fff',2.6)}</div><h2>Welcome to SnugFit</h2><p>Workouts for real life: in bed, on the couch or around the house, plus walk prompts that fit your day and the weather. No jumping.</p><div class="lbl" style="margin-top:18px">What kind of home do you have?</div><div id="homepick">${homeHTML()}</div><div class="lbl">What do you have at home?</div>${equipHTML()}<p class="fine">General fitness guidance, not medical advice. Check with your doctor before starting, and stop if anything hurts.</p><button class="btn pink block" data-act="onboarded" style="margin-top:12px">Let's go</button>`)}
-function exModal(id){const e=EXM[id];const F=FOCUS[e.f];openModal(`<div style="display:flex;gap:12px;align-items:center;margin-bottom:10px">${badge(e.f,54)}<div><h2 style="margin:0">${e.n}</h2><span class="pill" style="background:${F.bg};color:${F.color}">${F.label}</span>${e.s?'<span class="pill">Both sides</span>':''}</div></div><p>${e.p.map(x=>PLACE[x]).join(' · ')}</p><ul class="cues">${e.c.map((c,i)=>`<li><em>${i+1}</em>${c}</li>`).join('')}</ul>${e.easy?`<div class="easy">Easier: ${e.easy}</div>`:''}${e.opt?`<div class="easy" style="background:#FBFAD9;color:#6b6900">Level up: ${e.opt}</div>`:''}${e.req?`<p class="fine" style="margin-top:10px">Needs: ${EQUIP[e.req]}</p>`:''}${e.p.includes('stairs')?'<p class="fine" style="margin-top:10px">Always hold the railing. Skip stair moves on days you feel dizzy or unsteady.</p>':''}<button class="btn pink block" style="margin-top:16px" data-try="${e.id}">${svg('play',18)} Try it for 40 seconds</button>`)}
+function exModal(id){const e=EXM[id];const F=FOCUS[e.f];openModal(`<div style="display:flex;gap:12px;align-items:center;margin-bottom:10px">${badge(e.f,54)}<div><h2 style="margin:0">${e.n}</h2><span class="pill" style="background:${F.bg};color:${F.color}">${F.label}</span>${e.s?'<span class="pill">Both sides</span>':''}</div></div><p>${e.p.map(x=>PLACE[x]).join(' · ')}</p>${demoHTML(e.id,F.color)}<ul class="cues">${e.c.map((c,i)=>`<li><em>${i+1}</em>${c}</li>`).join('')}</ul>${e.easy?`<div class="easy">Easier: ${e.easy}</div>`:''}${e.opt?`<div class="easy" style="background:var(--lvl-bg);color:var(--lvl-ink)">Level up: ${e.opt}</div>`:''}${e.req?`<p class="fine" style="margin-top:10px">Needs: ${EQUIP[e.req]}</p>`:''}${e.p.includes('stairs')?'<p class="fine" style="margin-top:10px">Always hold the railing. Skip stair moves on days you feel dizzy or unsteady.</p>':''}<button class="btn pink block" style="margin-top:16px" data-try="${e.id}">${svg('play',18)} Try it for 40 seconds</button>`);startDemos($('#sheet'))}
 function confirmModal(title,text,yes,fn){openModal(`<h2>${title}</h2><p>${text}</p><div class="row" style="margin-top:16px"><button class="btn soft" style="flex:1" data-act="close">Cancel</button><button class="btn pink" style="flex:1" id="yesbtn">${yes}</button></div>`);$('#yesbtn').onclick=()=>{closeModal();fn()}}
 let LW={mins:15,where:'out'};
 function logWalkModal(){const mk=()=>`<h2>Log a walk</h2><p>Walks you take with your phone or watch count here too.</p><div class="lbl" style="margin-top:14px">How long?</div><div class="chips">${[10,15,20,30,45,60].map(m=>`<button class="chip ${LW.mins===m?'on':''}" data-lwm="${m}">${m} min</button>`).join('')}</div><div class="lbl">Where?</div><div class="chips"><button class="chip ${LW.where==='out'?'on':''}" data-lww="out">Outside</button><button class="chip ${LW.where==='in'?'on':''}" data-lww="in">Indoors</button></div><button class="btn pink block" style="margin-top:18px" data-act="savewalk">Save walk</button>`;openModal(mk());logWalkModal.mk=mk}
@@ -932,18 +998,20 @@ function go(d,auto){if(!P)return;const ni=P.i+d;if(ni<0)return;if(ni>=P.w.steps.
 function workIndex(){let n=0,c=0;P.w.steps.forEach((s,i)=>{if(s.type==='work'){n++;if(i<=P.i)c++}});return [c,n]}
 function bigTime(){const l=Math.max(0,P.left);return l>=60?fmt(Math.ceil(l)):String(Math.ceil(l))}
 function drawPlayer(){const s=P.w.steps[P.i];const ex=s.type==='work'?s.ex:s.next;const F=FOCUS[ex?ex.f:'core'];const isWork=s.type==='work';const [c,n]=workIndex();
- const color=isWork?F.color:'#2EBFA5';const long=P.left>=60;
- $('#ov').innerHTML=`<div class="player ${isWork?'':'restmode'}">
- <div class="ptop"><button class="iconbtn" data-act="quitask" aria-label="End workout">${svg('x',20)}</button><div class="prog"><i id="pbar"></i></div><button class="iconbtn" data-act="voice" aria-label="Voice coach">${svg('volume',20,S.voice?'#F2559A':'#C9BCD2')}</button></div>
+ const color=isWork?F.color:'var(--c-teal)';const long=P.left>=60;
+ const demo=ex?demoHTML(ex.id,isWork?F.color:'var(--c-teal)'):'';
+ $('#ov').innerHTML=`<div class="player ${isWork?'':'restmode'} ${demo?'hasdemo':''}">
+ <div class="ptop"><button class="iconbtn" data-act="quitask" aria-label="End workout">${svg('x',20)}</button><div class="prog"><i id="pbar"></i></div><button class="iconbtn" data-act="voice" aria-label="Voice coach">${svg('volume',20,S.voice?'var(--pink)':'var(--ink3)')}</button></div>
  <div class="phase">${isWork?s.phase+' · '+c+' of '+n:s.type==='ready'?'Get ready':'Rest'}</div>
- <div class="ringwrap"><svg class="ring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="none" stroke="${isWork?F.bg:'#E1F7F2'}" stroke-width="10"/><circle id="ringc" cx="60" cy="60" r="54" fill="none" stroke="${color}" stroke-width="10" stroke-linecap="round" stroke-dasharray="339.3" stroke-dashoffset="0"/></svg>
- <div class="ringin" style="background:${isWork?F.bg:'#EFFBF8'}"><div><div class="${P.running?'pulse':''}" style="display:grid;place-items:center;margin-bottom:6px">${svg(isWork?ex.f:'rest',38,color)}</div><div class="big ${long?'sm':''}" id="tleft">${bigTime()}</div><div class="sub">${long?'min left':'seconds'}</div></div></div></div>
+ <div class="ringwrap"><svg class="ring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="none" style="stroke:${isWork?F.bg:'var(--fb-stretch)'}" stroke-width="10"/><circle id="ringc" cx="60" cy="60" r="54" fill="none" style="stroke:${color}" stroke-width="10" stroke-linecap="round" stroke-dasharray="339.3" stroke-dashoffset="0"/></svg>
+ <div class="ringin" style="background:${isWork?F.bg:'var(--rest-in)'}"><div><div class="${P.running?'pulse':''}" style="display:grid;place-items:center;margin-bottom:6px">${svg(isWork?ex.f:'rest',38,color)}</div><div class="big ${long?'sm':''}" id="tleft">${bigTime()}</div><div class="sub">${long?'min left':'seconds'}</div></div></div></div>
  <div class="pname disp">${isWork?ex.n:s.type==='ready'?(P.meta.walk&&!P.meta.indoor?'Shoes on':'Get comfy'):'Breathe'}</div>
  <div class="pmeta">${isWork?(ex.s?'Switch sides halfway · ':'')+ex.p.map(x=>PLACE[x]).join(' / '):'Next up: <b>'+(ex?ex.n:'')+'</b>'}</div>
+ ${demo}
  ${isWork?`<ul class="cues">${ex.c.map((x,i)=>`<li><em>${i+1}</em>${x}</li>`).join('')}</ul>${ex.easy?`<div class="easy">Easier: ${ex.easy}</div>`:''}`:(ex?`<ul class="cues">${ex.c.slice(0,1).map(x=>`<li><em>1</em>${x}</li>`).join('')}</ul>`:'')}
  <div class="ctrls"><button class="cbtn" data-act="prev" aria-label="Previous">${svg('prev',22)}</button><button class="cbtn main" data-act="pause" aria-label="Pause or play">${svg(P.running?'pause':'play',30,'#fff')}</button><button class="cbtn" data-act="next" aria-label="Next">${svg('next',22)}</button></div>
  <div class="nextup">${fmt(remaining())} left in ${P.meta.walk?'walk':'workout'}</div>
- </div>`;updatePlayer()}
+ </div>`;updatePlayer();startDemos($('#ov'))}
 function remaining(){let t=Math.max(0,P.left);for(let j=P.i+1;j<P.w.steps.length;j++)t+=P.w.steps[j].secs;return t}
 function updatePlayer(){const s=P.w.steps[P.i];const el=$('#tleft');if(el){el.textContent=bigTime();el.classList.toggle('sm',P.left>=60)}const rc=$('#ringc');if(rc)rc.setAttribute('stroke-dashoffset',String(339.3*(1-Math.max(0,P.left)/s.secs)));const pb=$('#pbar');if(pb)pb.style.width=(100*(1-remaining()/P.w.total))+'%';const nu=document.querySelector('.nextup');if(nu)nu.textContent=fmt(remaining())+' left in '+(P.meta.walk?'walk':'workout')}
 function stopTimer(){clearInterval(startWorkout._t);try{speechSynthesis.cancel()}catch(e){}try{P&&P.lock&&P.lock.release()}catch(e){}}
