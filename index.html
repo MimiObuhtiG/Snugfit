@@ -306,6 +306,28 @@ html.dark .nextwalk{background:#17302E}html.dark .nextwalk span{color:#8FE0CE}
 html.dark .nextwalk.now{background:linear-gradient(135deg,#17302E,#221C38)}
 html.dark .chal.won{background:#1F2E1E;border-color:#335A2E}
 html.dark .modal{background:rgba(5,2,8,.6)}
+/* sheets: close button, swipe-down to close, no accidental page refresh */
+html,body{overscroll-behavior-y:none}
+.sheet{position:relative;overscroll-behavior:contain;touch-action:pan-y}
+.sheet.dragging{transition:none!important;animation:none}
+.sheet.snap{transition:transform .2s ease}
+.grab{cursor:grab}
+.grabzone{position:sticky;top:-22px;z-index:3;margin:-22px -20px 6px;padding:10px 0 4px;background:inherit;display:flex;justify-content:center;touch-action:none}
+.grabzone .grab{margin:0}
+.xclose{position:absolute;right:12px;top:10px;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--raise);color:var(--ink2);z-index:4}
+.sheet.locked .xclose{display:none}
+.steps-dots{display:flex;gap:6px;margin:4px 0 14px}.steps-dots i{height:6px;flex:1;border-radius:9px;background:var(--raise)}.steps-dots i.on{background:linear-gradient(90deg,var(--g1),var(--g2))}
+.setupnav{display:flex;gap:10px;margin-top:16px}.setupnav .btn{flex:1}
+.paceopt{display:grid;gap:8px;margin-top:8px}
+.eq.wide{grid-column:1/-1}
+.habit{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1.5px solid var(--line)}
+.habit:last-of-type{border-bottom:0}
+.habit .hl{min-width:0}.habit b{display:block;font-size:15px}.habit span{font-size:12.5px;color:var(--ink3);font-weight:700}
+.stepper{display:flex;align-items:center;gap:8px;flex:none}
+.stepper button{width:36px;height:36px;border-radius:12px;background:var(--raise);display:grid;place-items:center;color:var(--ink)}
+.stepper output{min-width:46px;text-align:center;font-family:Fredoka;font-weight:700;font-size:18px;font-variant-numeric:tabular-nums}
+.drops{display:flex;gap:3px;margin-top:6px;flex-wrap:wrap}.drops i{width:10px;height:14px;border-radius:5px 5px 6px 6px;background:var(--raise)}.drops i.on{background:var(--c-wx)}
+.condtag{display:inline-block;font-size:11.5px;font-weight:800;color:var(--ink3);background:var(--raise);border-radius:999px;padding:2px 8px;margin-left:4px}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -363,6 +385,7 @@ const IC={
  link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
  refresh:'<path d="M20 11a8 8 0 1 0-2.3 5.7M20 4.5V11h-6.5"/>',
  plus:'<path d="M12 5v14M5 12h14"/>',
+ minus:'<path d="M5 12h14"/>',
  scale:'<rect x="3.5" y="4" width="17" height="16" rx="4"/><path d="M8.3 10a5 5 0 0 1 7.4 0M12 10.5l1.6-1.8"/>',
  watch:'<rect x="6" y="6" width="12" height="12" rx="3.5"/><path d="M9 6l.6-3h4.8L15 6M9 18l.6 3h4.8L15 18M12 9.5V12l1.6 1"/>'
 };
@@ -472,7 +495,7 @@ function h12(h){const d=new Date();d.setHours(h,0,0,0);return d.toLocaleTimeStri
 const KEY='snugfit-v1';
 const DEF={onboarded:false,voice:true,sound:true,equip:{db:true,chair:true,bottles:true,pillow:true,towel:true},history:[],planDone:[],energy:'low',place:'any',mins:7,focus:'core',tipIdx:0,
  home:'one',stairs:false,level:1,levelCount:0,lastProg:'',meals:{b:'08:00',l:'12:30',d:'18:00'},stepGoal:6000,walkGoal:20,
- city:{name:'Calgary',lat:51.0447,lon:-114.0719},health:{},theme:'auto',ch:[],chDone:[],wxm:{temp:-5,cond:'clear'},body:[],units:{w:'lb',l:'in'},goalKg:null};
+ city:{name:'Calgary',lat:51.0447,lon:-114.0719},health:{},theme:'auto',cond:[],goalType:'',pace:'steady',paceStart:null,setup2:false,habits:{},waterGoal:8,vegGoal:5,ch:[],chDone:[],wxm:{temp:-5,cond:'clear'},body:[],units:{w:'lb',l:'in'},goalKg:null};
 let S;
 try{const raw=JSON.parse(localStorage.getItem(KEY)||'{}');S=Object.assign(JSON.parse(JSON.stringify(DEF)),raw);
  S.equip=Object.assign({},DEF.equip,raw.equip||{});S.meals=Object.assign({},DEF.meals,raw.meals||{});S.wxm=Object.assign({},DEF.wxm,raw.wxm||{});S.units=Object.assign({},DEF.units,raw.units||{});
@@ -527,6 +550,9 @@ const WEEKLY=[
  {id:'w-five',name:'Five & Done',desc:'Finish 5 workouts of any length.',metric:'workouts',goal:5,unit:'workouts',icon:'core'},
  {id:'w-steps',name:'Step It Up',desc:'Hit your step goal on 3 days.',metric:'stepDays',goal:3,unit:'days',icon:'feet'},
  {id:'w-short',name:'Commercial Break Club',desc:'Squeeze in 6 workouts of 5 minutes or so.',metric:'short',goal:6,unit:'workouts',icon:'flame'},
+ {id:'w-water',name:'Water Week',desc:'Hit your water goal on 5 days.',metric:'waterDays',goal:5,unit:'days',icon:'drop'},
+ {id:'w-protein',name:'Protein at Every Meal',desc:'Have protein with 15 meals this week.',metric:'protMeals',goal:15,unit:'meals',icon:'check'},
+ {id:'w-veg',name:'Five a Day',desc:'Eat 5 servings of veggies or fruit on 4 days.',metric:'vegDays',goal:4,unit:'days',icon:'cardio'},
  {id:'w-active',name:'Show Up Daily',desc:'Move on all 7 days. Even a 5-minute walk counts.',metric:'activeDays',goal:7,unit:'days',icon:'check'}];
 const LONG=[
  {id:'core28',name:'Core Comeback',days:28,plan:true,desc:'The original 28-day core plan. Short daily sessions from 6 to 10 minutes.',icon:'core'},
@@ -547,6 +573,7 @@ function metric(m,hs,start,end){switch(m){
  case 'short':return hs.filter(h=>!h.walk&&h.mins<=6).length;
  case 'walkDays':return new Set(hs.filter(h=>h.walk).map(h=>h.date)).size;
  case 'activeDays':return new Set(hs.map(h=>h.date)).size;
+ case 'waterDays':case 'protMeals':case 'vegDays':{let n=0;for(let d=dayOf(start);ds(d)<=end;d=addDays(d,1)){const h=habitsOn(ds(d));n+=m==='waterDays'?(h.w>=S.waterGoal?1:0):m==='vegDays'?(h.v>=S.vegGoal?1:0):h.p.filter(Boolean).length}return n}
  case 'stepDays':{let n=0;for(let d=dayOf(start);ds(d)<=end;d=addDays(d,1)){const x=S.health[ds(d)];if(x&&x.steps>=S.stepGoal)n++}return n}}
  return 0}
 function chProg(c){const def=CH[c.id];if(def.plan)return {v:S.planDone.length,goal:28,unit:'days'};
@@ -562,7 +589,18 @@ function joinCh(id){const def=CH[id];if(S.ch.some(c=>c.id===id))return;const sta
 const ENERGY={low:{w:30,r:20,max:2,min:1,label:'Low energy'},med:{w:40,r:15,max:3,min:1,label:'Steady'},high:{w:45,r:15,max:3,min:2,label:'Spicy'}};
 function rng(seed){let s=(seed*2654435761)>>>0||7;return()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296}}
 function shuffle(a,r){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function okAvail(e){return e.f!=='walk'&&(!e.req||S.equip[e.req])&&(S.stairs||!e.p.every(x=>x==='stairs'))}
+/* Moves skipped for health conditions picked in the health check. A general, conservative guide, not medical advice. */
+const COND={knee:'Knees',back:'Lower back',wrist:'Wrists or shoulders',balance:'Balance or dizziness',preg:'Pregnant or recently gave birth',heart:'Heart condition or high blood pressure',injury:'Recent surgery or injury'};
+const AVOID={
+ knee:['wallsit','doublestep','chairsquat','laundrysquat','tidysprint','stepcalf'],
+ back:['flutter','bicycle','revcrunch','kneetuck','leanback','legraise','forwardfold','laundrysquat','tidysprint'],
+ wrist:['incline','counterpush','stairpush','dips','stairdips','press','sideplank','counterplank','birddog','donkey','catcow'],
+ balance:['heeltoe','standquad','standcrunch','counterkick','stepjack','doublestep'],
+ preg:['deadbug','pelvictilt','toetaps','revcrunch','bicycle','legraise','flutter','bridge','chestpress','lyingmarch','kneechest','supinetwist','cobra','leanback','kneetuck','sideplank','doublestep']};
+function hasCond(c){return (S.cond||[]).includes(c)}
+function avoidReason(e){for(const c of (S.cond||[])){if(c==='balance'&&e.p.every(x=>x==='stairs'))return COND[c];if(AVOID[c]&&AVOID[c].includes(e.id))return COND[c]}return ''}
+function capEnergy(en){return (en==='high'&&(hasCond('heart')||hasCond('injury')||hasCond('preg')))?'med':en}
+function okAvail(e){return e.f!=='walk'&&(!e.req||S.equip[e.req])&&(S.stairs||!e.p.every(x=>x==='stairs'))&&!avoidReason(e)}
 function placeSet(place){if(place==='any')return null;if(place==='home'||place==='house')return ['house','stand'].concat(S.stairs?['stairs']:[]);if(place==='stairs')return ['stairs','stand'];return [place]}
 function okPlace(e,place){const set=placeSet(place);return !set||e.p.some(x=>set.includes(x))}
 function pick(f,place,E,r,n,used){
@@ -572,12 +610,12 @@ function pick(f,place,E,r,n,used){
  return out}
 const RANK={bed:0,seat:1,stand:2,house:2,stairs:3,out:4};
 function build({mins,energy,place,focus,seed,title}){
- const r=seed!=null?rng(seed):Math.random;const E=ENERGY[energy]||ENERGY.low;const used=new Set();const steps=[];
+ const r=seed!=null?rng(seed):Math.random;const E=ENERGY[capEnergy(energy)]||ENERGY.low;const used=new Set();const steps=[];
  if(focus==='home')place='home';
  const T=mins*60;
  steps.push({type:'ready',secs:6});
  if(focus==='stretch'){
-  const pool=pick('stretch',place,E,r,6,used).concat(pick('warm',place,E,r,3,used));
+  let pool=pick('stretch',place,E,r,6,used).concat(pick('warm',place,E,r,3,used));if(!pool.length)pool=shuffle(EX.filter(okAvail),r).slice(0,4);
   const n=Math.max(3,Math.floor(T/55));
   for(let k=0;k<n;k++){const ex=pool[k%pool.length];steps.push({type:'work',ex,secs:45,phase:'Stretch'});if(k<n-1)steps.push({type:'rest',secs:10})}
  } else {
@@ -594,6 +632,8 @@ function build({mins,energy,place,focus,seed,title}){
   const got={};for(const f in want)got[f]=pick(f,place,E,r,want[f],used);
   const ptr={};order.slice(0,K).forEach(f=>{ptr[f]=ptr[f]||0;const e=got[f][ptr[f]++];if(e)chosen.push(e)});
   const set=placeSet(place);const prim=e=>(set&&e.p.find(x=>set.includes(x)))||e.p[0];
+  if(chosen.length<3){for(const e of shuffle(EX.filter(e=>okAvail(e)&&okPlace(e,place)&&!used.has(e.id)&&e.f!=='stretch'),r)){if(chosen.length>=3)break;chosen.push(e);used.add(e.id)}}
+  if(!chosen.length)chosen.push(...shuffle(EX.filter(okAvail),r).slice(0,3));
   chosen.sort((a,b)=>RANK[prim(a)]-RANK[prim(b)]);
   for(let k=0;k<N;k++){const ex=chosen[k%chosen.length];steps.push({type:'work',ex,secs:E.w,phase:'Round '+(Math.floor(k/chosen.length)+1)});steps.push({type:'rest',secs:E.r})}
   const cool=pick('stretch',place,E,r,2,used);
@@ -613,7 +653,7 @@ function buildWalk(mins,indoor,title){
  steps.push({type:'work',ex:E,secs:120,phase:'Warm-up'});
  let i=0;while(rem>=60){
   if(i%2===0){const d=Math.min(180,rem);steps.push({type:'work',ex:B,secs:d,phase:'Brisk'});rem-=d}
-  else if(indoor&&S.stairs&&i%4===1){steps.push({type:'work',ex:EXM.stairclimb,secs:60,phase:'Stairs'});rem-=60}
+  else if(indoor&&S.stairs&&!hasCond('balance')&&i%4===1){steps.push({type:'work',ex:EXM.stairclimb,secs:60,phase:'Stairs'});rem-=60}
   else{const d=Math.min(120,rem);steps.push({type:'work',ex:E,secs:d,phase:'Easy'});rem-=d}
   i++}
  steps.push({type:'work',ex:E,secs:120+Math.max(0,rem),phase:'Cool-down'});
@@ -738,6 +778,7 @@ function bodyCard(){
  if(ws.length){const last=ws[ws.length-1],first=ws[0],d=r1(wDisp(last.kg)-wDisp(first.kg));
   h+=`<div class="bodyhead"><div><span class="fine">Latest weight · ${fmtD(last.date)}</span><div class="bigv">${r1(wDisp(last.kg))} ${uw}</div></div>${ws.length>1?`<span class="delta ${d<=0?'down':'up'}">${d<=0?'Down':'Up'} ${Math.abs(d)} ${uw} since ${fmtD(first.date)}</span>`:''}</div>`;
   if(S.goalKg){const toGo=r1(wDisp(last.kg)-wDisp(S.goalKg)),tot=wDisp(first.kg)-wDisp(S.goalKg);h+=`<p class="fine" style="margin:8px 0 0">${toGo>0?`<b>${toGo} ${uw}</b> to go to your goal of ${r1(wDisp(S.goalKg))} ${uw}`:`You've reached your goal of ${r1(wDisp(S.goalKg))} ${uw}!`}</p><div class="meter lime"><i style="width:${tot>0?pct(wDisp(first.kg)-wDisp(last.kg),tot):100}%"></i></div>`}
+  const ps=paceStatus();if(ps)h+=`<p class="fine" style="margin:6px 0 0">${ps.diff<=0.5?'<b>On pace.</b>':'<b>A little behind pace.</b> That\'s normal week to week.'} Your pace aims for about ${ps.exp} ${uw} by your last check-in and reaches your goal around ${ps.eta.toLocaleDateString(undefined,{month:'short',day:'numeric'})}.</p>`;
   h+=`<div class="lbl" style="margin-top:16px">Weight (${uw})</div>`+lineChart('cw',ws.map(e=>({date:e.date,v:r1(wDisp(e.kg))})),uw,'var(--f-lower)',S.goalKg?r1(wDisp(S.goalKg)):null)}
  if(cs.length){const lc=cs[cs.length-1],fc=cs[0],dc=r1(lDisp(lc.cm)-lDisp(fc.cm));
   h+=`<div class="lbl" style="margin-top:16px">Waist (${ul}) · latest ${r1(lDisp(lc.cm))}${cs.length>1?` · ${dc<=0?'down':'up'} ${Math.abs(dc)} since ${fmtD(fc.date)}`:''}</div>`+lineChart('cc',cs.map(e=>({date:e.date,v:r1(lDisp(e.cm))})),ul,'var(--f-stretch)',null)}
@@ -849,9 +890,10 @@ function home(){
  const mini=`<div class="mini"><button data-act="steps"><b>${st==null?'—':st.toLocaleString()}</b><span>steps${st==null?' · add':' / '+S.stepGoal.toLocaleString()}</span><div class="meter lime"><i style="width:${pct(st||0,S.stepGoal)}%"></i></div></button><div><b>${walkMinsOn(today)}</b><span>walk min / ${S.walkGoal}</span><div class="meter teal"><i style="width:${pct(walkMinsOn(today),S.walkGoal)}%"></i></div></div><div><b>${workoutsOn(today)}</b><span>workouts today</span><div class="meter"><i style="width:${workoutsOn(today)?100:0}%"></i></div></div></div>`;
  const ch=chalCards(2);const lc=lastCheck();
  const nudge=checkDue()?`<button class="chal offer" style="margin-top:14px;margin-bottom:0" data-act="checkin">${iconBadge('scale','var(--tile-ink)','var(--tile)')}<div class="body"><b>Weekly check-in</b><span>${lc?'Last one was '+fmtD(lc.date)+'. ':''}Log your weight and waist. It takes 30 seconds.</span></div></button>`:'';
- return `<div class="hello">${greet()}${todayDone?' · you moved today':''}</div><div class="h1 disp">${todayDone?'Look at you go.':'Tiny effort. Real results.'}</div>${levelBanner()}${hero()}${mini}${nudge}
+ return `<div class="hello">${greet()}${todayDone?' · you moved today':''}</div><div class="h1 disp">${todayDone?'Look at you go.':'Tiny effort. Real results.'}</div>${levelBanner()}${S.onboarded&&!S.setup2?`<button class="chal offer" style="margin-bottom:14px" data-act="setup">${iconBadge('trophy','var(--tile-ink)','var(--tile)')}<div class="body"><b>Personalize SnugFit</b><span>Set your goal and a quick health check so workouts fit you. 1 minute.</span></div></button>`:''}${hero()}${mini}${nudge}
  ${walkCard()}
  ${ch?`<div class="sec"><h3>Challenges</h3><small>optional</small></div>${ch}`:''}
+ ${habitsCard()}
  <div class="sec"><h3>Quick workout</h3><small>your way</small></div>
  <div class="card">
   <div class="lbl">How do you feel?</div>${chips('energy',[['low','Low energy'],['med','Steady'],['high','Spicy']],S.energy)}
@@ -891,7 +933,7 @@ function moves(){
  return `<div class="hello">${lib.length} moves</div><div class="h1 disp">Move library</div>
  ${chips('libf',[['all','All'],['core','Core'],['lower','Legs'],['upper','Arms'],['cardio','Cardio'],['stretch','Stretch'],['warm','Warm-up'],['house','Around the house'],['stairs','Stairs']],LIBF)}
  ${LIBF==='stairs'&&!S.stairs?`<div class="note">You've said you don't have stairs, so these won't show up in your workouts. Turn on "I have stairs I can use" in Me if that changes.</div>`:''}
- <div style="margin-top:14px">${list.map(e=>`<button class="ex" data-ex="${e.id}">${badge(e.f)}<div><b>${e.n}</b><span>${e.p.map(x=>PLACE[x]).join(' · ')}${e.req?' · needs '+(e.req==='db'?'dumbbells':EQUIP[e.req].toLowerCase()):''}</span></div><span class="chev">${svg('chev',20)}</span></button>`).join('')}</div>`;
+ <div style="margin-top:14px">${list.map(e=>`<button class="ex" data-ex="${e.id}">${badge(e.f)}<div><b>${e.n}</b><span>${e.p.map(x=>PLACE[x]).join(' · ')}${e.req?' · needs '+(e.req==='db'?'dumbbells':EQUIP[e.req].toLowerCase()):''}${avoidReason(e)?'<br><span class="condtag">Skipped for your '+avoidReason(e).toLowerCase()+'</span>':''}</span></div><span class="chev">${svg('chev',20)}</span></button>`).join('')}</div>`;
 }
 function me(){
  const a=activeDays();const tot=S.history.filter(h=>!h.walk).length;
@@ -913,6 +955,13 @@ function me(){
  </div>
  <div class="sec"><h3>Recent</h3></div>
  <div class="card">${hist.length?hist.map(h=>`<div class="hist"><div>${esc(h.title)}<br><span>${dayOf(h.date).toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'})}${h.t?' · '+t12(toMin(h.t)):''}</span></div><span>${h.walk?h.mins+' min '+(h.where==='indoor'?'indoor walk':'walk'):h.mins+' min'}</span></div>`).join(''):'<p class="fine" style="margin:0">No workouts yet. Your first one is just a few minutes away.</p>'}</div>
+ <div class="sec"><h3>Goals & health</h3></div>
+ <div class="card">
+  <div class="set"><div>Goal<small>${S.goalType?GOALS[S.goalType]:'Not set'}${S.goalType==='lose'&&S.goalKg?' · '+r1(wDisp(S.goalKg))+' '+S.units.w+' · '+PACES[S.pace].n.toLowerCase()+' pace':''}</small></div></div>
+  <div class="set"><div>Working around<small>${(S.cond||[]).length?S.cond.map(c=>COND[c]).join(', '):'Nothing'}</small></div></div>
+  <button class="btn soft block" style="margin-top:10px" data-act="setup">Update goals & health check</button>
+ </div>
+ ${(()=>{const w=habitsWeek();return `<div class="sec"><h3>Habits this week</h3><small>${w.days} day${w.days>1?'s':''} so far</small></div><div class="stats"><div class="stat"><b>${w.wd}</b><span>days water goal</span></div><div class="stat"><b>${w.pm}</b><span>meals with protein</span></div><div class="stat"><b>${w.vd}</b><span>days 5 veg & fruit</span></div></div>`})()}
  <div class="sec"><h3>Your home</h3></div>
  <div class="card">
   <div class="setcol"><small>What kind of home do you have?</small>${chips('home',Object.entries(HOMES),S.home)}</div>
@@ -935,7 +984,7 @@ function me(){
  <div class="sec"><h3>Safety</h3></div>
  <div class="card"><p class="fine" style="margin:0">SnugFit offers general fitness guidance and isn't medical advice. Check with a doctor before starting a new exercise program, especially if you're pregnant, recovering from surgery or injury, or have a health condition. Hold the railing on stairs. Stop if you feel pain, dizziness or shortness of breath. In extreme cold, follow Environment Canada's wind chill warnings.</p></div>
  <div style="margin-top:14px"><button class="btn soft block" data-act="wipe">Reset all data</button></div>
- <p class="fine" style="text-align:center;margin-top:16px">SnugFit v2.3 · Made for lazy days</p>`;
+ <p class="fine" style="text-align:center;margin-top:16px">SnugFit v2.4 · Made for lazy days</p>`;
 }
 
 /* ---------- DEMOS ---------- */
@@ -943,12 +992,28 @@ function demoHTML(id,color){try{return window.SnugDemos&&SnugDemos.has(id)?`<div
 function startDemos(root){try{window.SnugDemos&&SnugDemos.start(root)}catch(e){}}
 
 /* ---------- MODALS ---------- */
-function openModal(html){$('#sheet').innerHTML='<div class="grab"></div>'+html;$('#modal').classList.add('show')}
-function closeModal(){$('#modal').classList.remove('show')}
+function openModal(html,opts){opts=opts||{};const sh=$('#sheet');sh.classList.toggle('locked',!!opts.locked);sh.style.transform='';
+ sh.innerHTML='<div class="grabzone"><div class="grab"></div></div><button class="xclose" data-act="close" aria-label="Close">'+svg('x',18)+'</button>'+html;
+ const m=$('#modal');if(!m.classList.contains('show'))sh.scrollTop=0;m.classList.add('show');document.body.style.overflow='hidden'}
+function closeModal(){$('#modal').classList.remove('show');$('#sheet').style.transform='';if(!$('#ov').classList.contains('show'))document.body.style.overflow=''}
+function dismissModal(){if($('#sheet').classList.contains('locked'))return;closeModal();if(P&&$('#modal').dataset.resume){P.running=true;P.last=performance.now();$('#modal').dataset.resume=''}}
+/* swipe down on a sheet to close it (only when it is scrolled to the top) */
+(function(){let y0=null,dy=0,drag=false;
+ const sh=()=>$('#sheet');
+ document.addEventListener('touchstart',ev=>{const s=sh();if(!s||!$('#modal').classList.contains('show')||!s.contains(ev.target))return;if(ev.target.closest('input,select,textarea'))return;
+  if(s.scrollTop>0&&!ev.target.closest('.grabzone'))return;y0=ev.touches[0].clientY;dy=0;drag=false},{passive:true});
+ document.addEventListener('touchmove',ev=>{if(y0==null)return;const s=sh();dy=ev.touches[0].clientY-y0;
+  if(!drag&&dy>8&&(s.scrollTop<=0||ev.target.closest('.grabzone'))){drag=true;s.classList.add('dragging')}
+  if(drag){ev.preventDefault();s.style.transform='translateY('+Math.max(0,dy)+'px)'}},{passive:false});
+ document.addEventListener('touchend',()=>{if(y0==null)return;const s=sh();y0=null;if(!drag)return;drag=false;s.classList.remove('dragging');
+  if(dy>110&&!s.classList.contains('locked')){s.classList.add('snap');s.style.transform='translateY(110%)';setTimeout(()=>{s.classList.remove('snap');dismissModal()},180)}
+  else{s.classList.add('snap');s.style.transform='';setTimeout(()=>s.classList.remove('snap'),220)}});
+ document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&$('#modal').classList.contains('show'))dismissModal()});
+})();
 function equipHTML(){return `<div class="eqgrid">${Object.entries(EQUIP).map(([k,l])=>`<button class="eq ${S.equip[k]?'on':''}" data-eq="${k}"><i>${S.equip[k]?'✓':''}</i>${l}</button>`).join('')}</div>`}
 function homeHTML(){return `<div class="eqgrid">${Object.entries(HOMES).map(([k,l])=>`<button class="eq ${S.home===k?'on':''}" data-home="${k}"><i>${S.home===k?'✓':''}</i>${l}</button>`).join('')}</div>`}
-function onboarding(){openModal(`<div class="logo" style="width:56px;height:56px;border-radius:18px;margin-bottom:14px">${svg('db',30,'#fff',2.6)}</div><h2>Welcome to SnugFit</h2><p>Workouts for real life: in bed, on the couch or around the house, plus walk prompts that fit your day and the weather. No jumping.</p><div class="lbl" style="margin-top:18px">What kind of home do you have?</div><div id="homepick">${homeHTML()}</div><div class="lbl">What do you have at home?</div>${equipHTML()}<p class="fine">General fitness guidance, not medical advice. Check with your doctor before starting, and stop if anything hurts.</p><button class="btn pink block" data-act="onboarded" style="margin-top:12px">Let's go</button>`)}
-function exModal(id){const e=EXM[id];const F=FOCUS[e.f];openModal(`<div style="display:flex;gap:12px;align-items:center;margin-bottom:10px">${badge(e.f,54)}<div><h2 style="margin:0">${e.n}</h2><span class="pill" style="background:${F.bg};color:${F.color}">${F.label}</span>${e.s?'<span class="pill">Both sides</span>':''}</div></div><p>${e.p.map(x=>PLACE[x]).join(' · ')}</p>${demoHTML(e.id,F.color)}<ul class="cues">${e.c.map((c,i)=>`<li><em>${i+1}</em>${c}</li>`).join('')}</ul>${e.easy?`<div class="easy">Easier: ${e.easy}</div>`:''}${e.opt?`<div class="easy" style="background:var(--lvl-bg);color:var(--lvl-ink)">Level up: ${e.opt}</div>`:''}${e.req?`<p class="fine" style="margin-top:10px">Needs: ${EQUIP[e.req]}</p>`:''}${e.p.includes('stairs')?'<p class="fine" style="margin-top:10px">Always hold the railing. Skip stair moves on days you feel dizzy or unsteady.</p>':''}<button class="btn pink block" style="margin-top:16px" data-try="${e.id}">${svg('play',18)} Try it for 40 seconds</button>`);startDemos($('#sheet'))}
+function onboarding(){setupModal(0,true)}
+function exModal(id){const e=EXM[id];const F=FOCUS[e.f];openModal(`<div style="display:flex;gap:12px;align-items:center;margin-bottom:10px">${badge(e.f,54)}<div><h2 style="margin:0">${e.n}</h2><span class="pill" style="background:${F.bg};color:${F.color}">${F.label}</span>${e.s?'<span class="pill">Both sides</span>':''}</div></div><p>${e.p.map(x=>PLACE[x]).join(' · ')}</p>${demoHTML(e.id,F.color)}<ul class="cues">${e.c.map((c,i)=>`<li><em>${i+1}</em>${c}</li>`).join('')}</ul>${e.easy?`<div class="easy">Easier: ${e.easy}</div>`:''}${e.opt?`<div class="easy" style="background:var(--lvl-bg);color:var(--lvl-ink)">Level up: ${e.opt}</div>`:''}${e.req?`<p class="fine" style="margin-top:10px">Needs: ${EQUIP[e.req]}</p>`:''}${avoidReason(e)?`<div class="note">This move is left out of your workouts because you mentioned: ${avoidReason(e).toLowerCase()}. Change this under Me → Goals & health.</div>`:''}${e.p.includes('stairs')?'<p class="fine" style="margin-top:10px">Always hold the railing. Skip stair moves on days you feel dizzy or unsteady.</p>':''}<button class="btn pink block" style="margin-top:16px" data-try="${e.id}">${svg('play',18)} Try it for 40 seconds</button>`);startDemos($('#sheet'))}
 function confirmModal(title,text,yes,fn){openModal(`<h2>${title}</h2><p>${text}</p><div class="row" style="margin-top:16px"><button class="btn soft" style="flex:1" data-act="close">Cancel</button><button class="btn pink" style="flex:1" id="yesbtn">${yes}</button></div>`);$('#yesbtn').onclick=()=>{closeModal();fn()}}
 let LW={mins:15,where:'out'};
 function logWalkModal(){const mk=()=>`<h2>Log a walk</h2><p>Walks you take with your phone or watch count here too.</p><div class="lbl" style="margin-top:14px">How long?</div><div class="chips">${[10,15,20,30,45,60].map(m=>`<button class="chip ${LW.mins===m?'on':''}" data-lwm="${m}">${m} min</button>`).join('')}</div><div class="lbl">Where?</div><div class="chips"><button class="chip ${LW.where==='out'?'on':''}" data-lww="out">Outside</button><button class="chip ${LW.where==='in'?'on':''}" data-lww="in">Indoors</button></div><button class="btn pink block" style="margin-top:18px" data-act="savewalk">Save walk</button>`;openModal(mk());logWalkModal.mk=mk}
@@ -967,6 +1032,61 @@ function healthModal(){
 let CITYRES=[];
 function cityModal(){openModal(`<h2>Weather location</h2><p>Walk and clothing tips use the weather here. Currently: <b>${esc(S.city.name)}</b>.</p><div class="row" style="margin-top:12px;flex-wrap:nowrap"><input id="cityq" class="inp" type="search" placeholder="Search a city" autocomplete="off"><button class="btn pink" data-act="citysearch">Search</button></div><div class="cityres" id="cityres"></div><div class="row" style="margin-top:14px"><button class="btn soft sm" data-act="geo">${svg('pin',16)} Use my location</button><button class="btn soft sm" data-act="calgary">Calgary</button></div>`)}
 function setCity(c){S.city=c;save();WX={status:'idle',data:null,at:0};closeModal();toast('Weather location: '+c.name);loadWeather(true);render()}
+
+/* ---------- SETUP: health check, goal, pace, home ---------- */
+const GOALS={lose:'Lose weight',core:'Build a stronger core',move:'Move more every day',feel:'Feel better and sleep better'};
+const PACES={gentle:{n:'Gentle',kg:0.2268,lb:'½ lb (0.2 kg) a week'},steady:{n:'Steady',kg:0.4536,lb:'1 lb (0.45 kg) a week'},faster:{n:'Faster',kg:0.6804,lb:'1½ lb (0.7 kg) a week'}};
+let SU={step:0,first:false,cur:'',goal:''};
+function paceRate(kg){const r=PACES[S.pace]?PACES[S.pace].kg:0.5;return Math.min(r,kg*0.01)}
+function paceText(curKg,goalKg){if(!curKg||!goalKg)return '';if(goalKg>=curKg)return 'Your goal needs to be below your current weight.';
+ const wks=Math.ceil((curKg-goalKg)/paceRate(curKg));const d=addDays(new Date(),wks*7);
+ let t=`About ${wks} week${wks>1?'s':''} at this pace, around ${d.toLocaleDateString(undefined,{month:'long',day:'numeric',year:d.getFullYear()!==new Date().getFullYear()?'numeric':undefined})}.`;
+ if(goalKg<curKg*0.8)t+=' That\'s a big change. Consider a first goal closer to where you are now, then set a new one when you get there.';return t}
+function setupModal(step,first){SU.step=step;if(first!=null)SU.first=first;const N=4;const lc=lastCheck();
+ if(SU.cur===''&&lc&&lc.kg!=null)SU.cur=String(r1(wDisp(lc.kg)));if(SU.goal===''&&S.goalKg)SU.goal=String(r1(wDisp(S.goalKg)));
+ const dots=`<div class="steps-dots">${[...Array(N)].map((_,i)=>`<i class="${i<=step?'on':''}"></i>`).join('')}</div>`;
+ let h='';
+ if(step===0)h=`<div class="logo" style="width:56px;height:56px;border-radius:18px;margin-bottom:14px">${svg('db',30,'#fff',2.6)}</div><h2>${SU.first?'Welcome to SnugFit':'Goals & health'}</h2><p>${SU.first?'Workouts for real life: in bed, on the couch or around the house, plus walk prompts that fit your day and the weather. No jumping.':'Update your health check, your goal and your home setup.'}</p><p>Four quick questions so SnugFit fits you. About a minute.</p>`;
+ else if(step===1)h=`${dots}<h2>Anything to work around?</h2><p>Pick any that apply. SnugFit will leave out moves that commonly bother these areas.</p><div class="eqgrid">${Object.entries(COND).map(([k,l])=>`<button class="eq ${['preg','heart','injury'].includes(k)?'wide':''} ${hasCond(k)?'on':''}" data-cond="${k}"><i>${hasCond(k)?'✓':''}</i>${l}</button>`).join('')}<button class="eq wide ${!(S.cond||[]).length?'on':''}" data-cond="none"><i>${!(S.cond||[]).length?'✓':''}</i>None of these</button></div>${(hasCond('preg')||hasCond('heart')||hasCond('injury'))?'<div class="note">Please check with your doctor or midwife before starting, and follow their advice over the app\'s. SnugFit will keep the intensity moderate.</div>':''}<p class="fine">This is a general guide, not medical advice. Stop any move that hurts.</p>`;
+ else if(step===2){const preg=hasCond('preg');h=`${dots}<h2>What's your main goal?</h2><div class="eqgrid">${Object.entries(GOALS).map(([k,l])=>{const dis=preg&&k==='lose';return `<button class="eq wide ${S.goalType===k?'on':''}" data-sgoal="${k}" ${dis?'disabled style="opacity:.45"':''}><i>${S.goalType===k?'✓':''}</i>${l}</button>`}).join('')}</div>${preg?'<p class="fine">During pregnancy and soon after, the focus is on moving comfortably, so weight-loss goals are turned off.</p>':''}`;
+  if(S.goalType==='lose'&&!preg)h+=`<div class="times" style="grid-template-columns:1fr 1fr"><label for="su-cur">Current weight (${S.units.w})<input id="su-cur" class="inp" type="number" inputmode="decimal" step="0.1" value="${esc(SU.cur)}"></label><label for="su-goal">Goal weight (${S.units.w})<input id="su-goal" class="inp" type="number" inputmode="decimal" step="0.1" value="${esc(SU.goal)}"></label></div>
+  <div class="lbl">Pace</div><div class="chips">${Object.entries(PACES).map(([k,v])=>`<button class="chip ${S.pace===k?'on':''}" data-space="${k}">${v.n}</button>`).join('')}</div>
+  <p class="fine" id="su-pace" style="margin-top:8px">${PACES[S.pace].n}: ${PACES[S.pace].lb}, capped at 1% of your weight per week. ${paceText(SU.cur?wIn(+SU.cur):0,SU.goal?wIn(+SU.goal):0)}</p>
+  <div class="chips" style="margin-top:4px">${chips('uw',[['lb','lb'],['kg','kg']],S.units.w).replace(/^<div class="chips">|<\/div>$/g,'')}</div>`}
+ else if(step===3)h=`${dots}<h2>Your home</h2><p>So house circuits use what you have.</p><div class="lbl">What kind of home?</div><div id="homepick">${homeHTML()}</div><div class="lbl">What do you have?</div>${equipHTML()}`;
+ else h=`${dots}<h2>You're all set</h2><ul class="cues">${[S.goalType?'Goal: '+GOALS[S.goalType]+(S.goalType==='lose'&&S.goalKg?' · '+r1(wDisp(S.goalKg))+' '+S.units.w+' at a '+PACES[S.pace].n.toLowerCase()+' pace':''):'No goal picked yet',(S.cond||[]).length?'Working around: '+S.cond.map(c=>COND[c].toLowerCase()).join(', '):'No health limits picked',HOMES[S.home]+(S.stairs?' with stairs':'')].map((t,i)=>`<li><em>${i+1}</em>${esc(t)}</li>`).join('')}</ul><p class="fine">You can change any of this under Me → Goals & health.</p>`;
+ const nav=`<div class="setupnav">${step>0?'<button class="btn soft" data-act="suback">Back</button>':''}<button class="btn pink" data-act="${step>=4?'sudone':'sunext'}">${step===0?'Let\'s go':step>=4?'Start':'Next'}</button></div>`;
+ openModal(h+nav,{locked:SU.first})}
+function suCollect(){const c=$('#su-cur'),g=$('#su-goal');if(c)SU.cur=c.value;if(g)SU.goal=g.value}
+function suNext(){suCollect();
+ if(SU.step===2&&S.goalType==='lose'&&!hasCond('preg')){const cur=parseFloat(SU.cur),goal=parseFloat(SU.goal);
+  if(SU.cur!==''||SU.goal!==''){
+   if(isNaN(cur)||wIn(cur)<25||wIn(cur)>350){toast('Enter your current weight in '+S.units.w);return}
+   if(isNaN(goal)||wIn(goal)<25||wIn(goal)>=wIn(cur)){toast('Enter a goal weight below your current weight');return}
+   const lc=lastCheck();if(!lc||lc.date!==ds()||lc.kg==null||Math.abs(wDisp(lc.kg)-cur)>0.05)saveCheck(ds(),wIn(cur),null);
+   const gk=wIn(goal);if(!S.goalKg||Math.abs(S.goalKg-gk)>0.01||!S.paceStart)S.paceStart={date:ds(),kg:wIn(cur)};S.goalKg=gk;save()}}
+ if(SU.step===2&&!S.goalType){toast('Pick a goal, or tap Next again to skip');S.goalType=S.goalType||'';SU.skip=(SU.skip||0)+1;if(SU.skip<2)return}
+ setupModal(Math.min(4,SU.step+1))}
+function suDone(){const firstTime=!S.setup2;S.onboarded=true;S.setup2=true;
+ if(firstTime&&S.goalType==='lose'&&S.walkGoal===20)S.walkGoal=30;
+ if(S.goalType==='core')S.focus='core';
+ if(hasCond('preg')&&S.goalType==='lose')S.goalType='move';
+ save();SU.first=false;$('#sheet').classList.remove('locked');closeModal();toast('You\'re set up. Have a good one!');render()}
+function paceStatus(){if(!S.goalKg||!S.paceStart)return null;const ws=bodySorted().filter(e=>e.kg!=null);if(!ws.length)return null;const last=ws[ws.length-1];
+ const weeks=Math.max(0,(dayOf(last.date)-dayOf(S.paceStart.date))/(7*864e5));const exp=Math.max(S.goalKg,S.paceStart.kg-paceRate(S.paceStart.kg)*weeks);
+ const diff=wDisp(last.kg)-wDisp(exp);const wks=Math.ceil(Math.max(0,S.paceStart.kg-S.goalKg)/paceRate(S.paceStart.kg));
+ return {exp:r1(wDisp(exp)),diff:r1(diff),eta:addDays(dayOf(S.paceStart.date),wks*7)}}
+
+/* ---------- DAILY HABITS (water, protein, veggies) ---------- */
+function habitsOn(d){const x=S.habits[d]||{};return {w:x.w||0,p:x.p||[0,0,0],v:x.v||0}}
+function setHabit(fn){const d=ds();const x=habitsOn(d);fn(x);S.habits[d]=x;save();checkChallenges();render()}
+function habitsCard(){const h=habitsOn(ds());const pm=h.p.filter(Boolean).length;
+ return `<div class="sec"><h3>Daily habits</h3><small>no calorie counting</small></div><div class="card">
+ <div class="habit"><div class="hl"><b>Water</b><span>${h.w>=S.waterGoal?'Goal reached. Nice!':'A glass is about 250 ml (1 cup)'}</span><div class="drops">${[...Array(S.waterGoal)].map((_,i)=>`<i class="${i<h.w?'on':''}"></i>`).join('')}</div></div><div class="stepper"><button data-hab="w-" aria-label="One less glass">${svg('minus',16)}</button><output>${h.w}/${S.waterGoal}</output><button data-hab="w+" aria-label="One more glass">${svg('plus',16)}</button></div></div>
+ <div class="habit"><div class="hl"><b>Protein with meals</b><span>A palm-sized portion: eggs, chicken, fish, beans, tofu or Greek yogurt</span><div class="chips" style="margin-top:8px">${['Breakfast','Lunch','Dinner'].map((l,i)=>`<button class="chip ${h.p[i]?'on':''}" data-prot="${i}">${h.p[i]?'✓ ':''}${l}</button>`).join('')}</div></div></div>
+ <div class="habit"><div class="hl"><b>Veggies & fruit</b><span>A serving is about a fist-sized portion</span></div><div class="stepper"><button data-hab="v-" aria-label="One less serving">${svg('minus',16)}</button><output>${h.v}/${S.vegGoal}</output><button data-hab="v+" aria-label="One more serving">${svg('plus',16)}</button></div></div>
+ </div>`}
+function habitsWeek(){const mon=mondayOf();let wd=0,pm=0,vd=0,days=0;for(let i=0;i<7;i++){const d=addDays(mon,i);if(ds(d)>ds())break;days++;const h=habitsOn(ds(d));if(h.w>=S.waterGoal)wd++;pm+=h.p.filter(Boolean).length;if(h.v>=S.vegGoal)vd++}return {wd,pm,vd,days}}
 
 /* ---------- PLAYER ---------- */
 let P=null;
@@ -1038,7 +1158,7 @@ function startProg(dateStr){const d=dateStr?dayOf(dateStr):new Date();const s=pr
  const seed=Math.floor(dayOf(ds(d)).getTime()/864e5)*97;
  startWorkout(build({mins:s.mins,energy:s.energy,place:s.focus==='home'?'home':'any',focus:s.focus,seed,title:s.title}),{prog:true,house:s.focus==='home'})}
 function randomWorkout(){const pk=a=>a[Math.floor(Math.random()*a.length)];const f=pk(['core','full','burn','core','stretch','home']);const names={core:['Couch Core Crush','Pillow-Top Abs','Belly Wake-Up'],full:['Lazy Sunday Flow','Blanket Burrito Burn','Snooze-Button Sculpt'],burn:['Netflix Sweat','Sofa Sizzle','Remote-Control Cardio'],stretch:['Melt-Into-Bed Stretch','Unwind & Unkink'],home:['Hallway Hustle','Kitchen Counter Club','Grand House Tour']};const w=build({mins:pk([5,7,10]),energy:pk(['low','med','med','high']),place:f==='home'?'home':pk(['any','bed','seat','any']),focus:f,title:pk(names[f])});startWorkout(w,{house:f==='home'})}
-function savePref(k,v){if(k==='uw'||k==='ul'){S.units[k==='uw'?'w':'l']=v;save();return}const num=['mins','stepGoal','walkGoal'];S[k]=num.includes(k)?+v:v;if(k==='home'){S.stairs=(v==='two'||v==='split');if(S.place==='stairs'&&!S.stairs)S.place='any'}save()}
+function savePref(k,v){if(k==='uw'||k==='ul'){if(k==='uw'&&$('#su-cur')){suCollect();const f=v==='kg'?1/KG_LB:KG_LB;if(S.units.w!==v){SU.cur=SU.cur?String(r1(+SU.cur*f)):'';SU.goal=SU.goal?String(r1(+SU.goal*f)):''}}S.units[k==='uw'?'w':'l']=v;save();if($('#su-cur'))setTimeout(()=>setupModal(2),0);return}const num=['mins','stepGoal','walkGoal'];S[k]=num.includes(k)?+v:v;if(k==='home'){S.stairs=(v==='two'||v==='split');if(S.place==='stairs'&&!S.stairs)S.place='any'}save()}
 document.addEventListener('click',ev=>{
  const t=ev.target.closest('button');if(!t||t.disabled)return;
  if(t.dataset.tab){TAB=t.dataset.tab;try{history.replaceState(null,'','#'+TAB)}catch(e){try{location.hash=TAB}catch(_){}}render();window.scrollTo(0,0);if(TAB==='home')loadWeather();return}
@@ -1050,11 +1170,16 @@ document.addEventListener('click',ev=>{
  if(t.dataset.tog){S[t.dataset.tog]=!S[t.dataset.tog];if(t.dataset.tog==='stairs'&&!S.stairs&&S.place==='stairs')S.place='any';save();t.classList.toggle('on');return}
  if(t.dataset.wxc){S.wxm.cond=t.dataset.wxc;save();render();return}
  if(t.dataset.walk){startWalk(+t.dataset.wm||LEVELS[S.level].walk,t.dataset.walk==='in',{prog:!!t.dataset.prog,title:t.dataset.prog?progSession().title:undefined});return}
+ if(t.dataset.cond){const c=t.dataset.cond;if(c==='none')S.cond=[];else{const a=new Set(S.cond||[]);a.has(c)?a.delete(c):a.add(c);S.cond=[...a]}if(hasCond('preg')&&S.goalType==='lose')S.goalType='move';save();setupModal(1);return}
+ if(t.dataset.sgoal){suCollect();S.goalType=t.dataset.sgoal;save();setupModal(2);return}
+ if(t.dataset.space){suCollect();S.pace=t.dataset.space;save();setupModal(2);return}
+ if(t.dataset.hab){const k=t.dataset.hab;setHabit(x=>{if(k==='w+')x.w=Math.min(20,x.w+1);if(k==='w-')x.w=Math.max(0,x.w-1);if(k==='v+')x.v=Math.min(15,x.v+1);if(k==='v-')x.v=Math.max(0,x.v-1)});return}
+ if(t.dataset.prot){const i=+t.dataset.prot;setHabit(x=>{x.p=x.p.slice();x.p[i]=x.p[i]?0:1});return}
  if(t.dataset.delbody){const d=t.dataset.delbody;confirmModal('Delete this check-in?','The check-in from '+fmtD(d)+' will be removed.','Delete',()=>{S.body=S.body.filter(e=>e.date!==d);save();render()});return}
  if(t.dataset.join){joinCh(t.dataset.join);return}
  if(t.dataset.leave){const id=t.dataset.leave;confirmModal('Leave '+CH[id].name+'?','Your workouts and walks stay in your history.','Leave',()=>{S.ch=S.ch.filter(c=>c.id!==id);save();render()});return}
- if(t.dataset.lwm){LW.mins=+t.dataset.lwm;$('#sheet').innerHTML='<div class="grab"></div>'+logWalkModal.mk();return}
- if(t.dataset.lww){LW.where=t.dataset.lww;$('#sheet').innerHTML='<div class="grab"></div>'+logWalkModal.mk();return}
+ if(t.dataset.lwm){LW.mins=+t.dataset.lwm;openModal(logWalkModal.mk());return}
+ if(t.dataset.lww){LW.where=t.dataset.lww;openModal(logWalkModal.mk());return}
  if(t.dataset.city){const c=CITYRES[+t.dataset.city];if(c)setCity(c);return}
  if(t.dataset.wk){const s=progSession(dayOf(t.dataset.wk));const done=progDone(t.dataset.wk);const isT=t.dataset.wk===ds();
   openModal(`<div style="display:flex;gap:12px;align-items:center;margin-bottom:6px">${badge(s.focus,54)}<div><h2 style="margin:0">${s.title}</h2><span class="pill">${dayOf(t.dataset.wk).toLocaleDateString(undefined,{weekday:'long'})}${done?' · done':''}</span></div></div><p>${s.mins} minutes · ${ENERGY[s.energy].label}</p><p>${s.about}</p>${s.focus==='walk'?`<div class="row" style="margin-top:12px"><button class="btn pink" style="flex:1" data-walk="out" data-wm="${s.mins}" ${isT?'data-prog="1"':''}>${svg('walk',18)} Outside</button><button class="btn soft" style="flex:1" data-walk="in" data-wm="${s.mins}" ${isT?'data-prog="1"':''}>${svg('home',18)} Indoors</button></div>`:`<button class="btn pink block" style="margin-top:12px" data-progday="${t.dataset.wk}">${svg('play',18)} ${isT?'Start today\'s session':'Do this one now'}</button>`}`);return}
@@ -1081,7 +1206,7 @@ document.addEventListener('click',ev=>{
    if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||d>ds()){toast('Pick a date up to today');return}
    saveCheck(d,kg,cm);closeModal();toast('Check-in saved');render()},
   goal:goalModal,
-  savegoal:()=>{const v=parseFloat(($('#goalin')||{}).value);if(isNaN(v)||wIn(v)<25||wIn(v)>350){toast('Enter a goal weight in '+S.units.w);return}S.goalKg=wIn(v);save();closeModal();toast('Goal saved');render()},
+  savegoal:()=>{const v=parseFloat(($('#goalin')||{}).value);if(isNaN(v)||wIn(v)<25||wIn(v)>350){toast('Enter a goal weight in '+S.units.w);return}S.goalKg=wIn(v);const lc2=lastCheck();S.paceStart={date:ds(),kg:lc2&&lc2.kg!=null?lc2.kg:S.goalKg};save();closeModal();toast('Goal saved');render()},
   cleargoal:()=>{S.goalKg=null;save();closeModal();render()},
   steps:stepsModal,
   savesteps:()=>{const v=parseInt(($('#stepsin')||{}).value,10);if(isNaN(v)||v<0){toast('Enter a number of steps');return}const x=S.health[ds()]||{};x.steps=v;x.src='';x.at=hm();S.health[ds()]=x;save();checkChallenges();closeModal();toast('Steps saved');render()},
@@ -1099,14 +1224,15 @@ document.addEventListener('click',ev=>{
   next:()=>go(1),prev:()=>go(-1),
   voice:()=>{S.voice=!S.voice;save();if(!S.voice)try{speechSynthesis.cancel()}catch(e){};drawPlayer()},
   quitask:()=>{const was=P.running;P.running=false;confirmModal('End '+(P.meta.walk?'walk':'workout')+'?','This session won\'t be saved.','End it',quit);$('#modal').dataset.resume=was?'1':''},
-  close:()=>{closeModal();if(P&&$('#modal').dataset.resume){P.running=true;P.last=performance.now();$('#modal').dataset.resume=''}},
+  close:dismissModal,
   closeov:()=>{P=null;$('#ov').classList.remove('show');document.body.style.overflow='';render()},
   again:()=>startWorkout(build({mins:5,energy:'low',place:'any',focus:'core',title:'Bonus Round'}),{}),
   equip:()=>openModal(`<h2>My equipment</h2><p>Moves that need something you don't have will be skipped.</p>${equipHTML()}<button class="btn pink block" data-act="eqdone">Save</button>`),
   eqdone:()=>{closeModal();render()},
   onboarded:()=>{S.onboarded=true;save();closeModal();render()},
+  setup:()=>setupModal(S.setup2?1:0,false),sunext:suNext,suback:()=>{suCollect();setupModal(Math.max(0,SU.step-1))},sudone:suDone,
   resetplan:()=>confirmModal('Restart Core Comeback?','Your streak and history stay. Only the 28-day challenge goes back to Day 1.','Restart',()=>{S.planDone=[];save();render()}),
-  wipe:()=>confirmModal('Reset everything?','This clears your streak, history, level, challenges and check-ins on this device. Your home, equipment, units and location settings stay.','Reset',()=>{const keep={units:S.units,equip:S.equip,home:S.home,stairs:S.stairs,city:S.city,meals:S.meals,stepGoal:S.stepGoal,walkGoal:S.walkGoal};S=Object.assign(JSON.parse(JSON.stringify(DEF)),keep,{onboarded:true});save();render()})
+  wipe:()=>confirmModal('Reset everything?','This clears your streak, history, level, challenges and check-ins on this device. Your home, equipment, units and location settings stay.','Reset',()=>{const keep={cond:S.cond,goalType:S.goalType,pace:S.pace,setup2:S.setup2,units:S.units,equip:S.equip,home:S.home,stairs:S.stairs,city:S.city,meals:S.meals,stepGoal:S.stepGoal,walkGoal:S.walkGoal};S=Object.assign(JSON.parse(JSON.stringify(DEF)),keep,{onboarded:true});save();render()})
  })[a]?.();
 });
 function selectText(sel){try{const el=$(sel);const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r)}catch(e){}}
@@ -1118,8 +1244,9 @@ async function citySearch(){const q=(($('#cityq')||{}).value||'').trim();const b
 document.addEventListener('change',ev=>{const t=ev.target;if(!t||!t.id)return;
  if(t.id.startsWith('meal-')){const k=t.id.slice(5);if(/^\d{2}:\d{2}$/.test(t.value)){S.meals[k]=t.value;save()}return}
  if(t.id==='wxtemp'){const v=parseFloat(t.value);if(!isNaN(v)){S.wxm.temp=Math.max(-50,Math.min(50,v));save();render()}return}});
+document.addEventListener('input',ev=>{const t=ev.target;if(t&&(t.id==='su-cur'||t.id==='su-goal')){suCollect();const el=$('#su-pace');if(el)el.textContent=PACES[S.pace].n+': '+PACES[S.pace].lb+', capped at 1% of your weight per week. '+paceText(SU.cur?wIn(+SU.cur):0,SU.goal?wIn(+SU.goal):0)}});
 document.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&ev.target&&ev.target.id==='cityq'){ev.preventDefault();citySearch()}});
-$('#modal').addEventListener('click',e=>{if(e.target.id==='modal'){if(!S.onboarded)return;closeModal();if(P&&$('#modal').dataset.resume){P.running=true;P.last=performance.now();$('#modal').dataset.resume=''}}});
+$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')dismissModal()});
 window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');if(['home','plan','moves','me'].includes(h)&&h!==TAB){TAB=h;render()}});
 pruneChallenges();save();
 render();
