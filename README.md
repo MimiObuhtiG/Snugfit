@@ -19,6 +19,7 @@ A single-page web app for short, low-effort workouts at home, plus walk prompts 
 - **Goals & health check (v2.4).** Setup asks about knees, lower back, wrists/shoulders, balance, pregnancy, heart or blood pressure, and recent surgery or injury, then leaves out moves that commonly bother those areas and keeps intensity moderate where needed. Goal (lose weight, stronger core, move more, feel better), with a weight-loss pace (½, 1 or 1½ lb a week, capped at 1% of body weight) and an on-pace note on the weight chart.
 - **Daily habits (v2.4).** Water, protein at each meal, and veggies & fruit, with weekly totals and three habit challenges. No calorie counting.
 - **Easier pop-ups (v2.4).** Close button, swipe down to close, and no accidental page refresh.
+- **Installable & offline (v2.5).** Add to Home Screen from Safari (or Install in Chrome). A service worker (`sw.js`) keeps the app working offline; weather refreshes when back online. Icons in `icons/`, app details in `manifest.webmanifest`.
 - **Steps.** Enter steps by hand, or sync them from Apple Health (including Apple Watch) with an iPhone Shortcut that opens `…/index.html?steps=1234`. The steps are in the app under Me → Connect.
 
 ## Hosting (needed for live weather and the Health Shortcut)

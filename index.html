@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F2559A">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SnugFit">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>SnugFit — Lazy Workouts</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -973,18 +980,19 @@ function me(){
   <div class="set"><div>Weather location<small>${esc(S.city.name)}</small></div><button class="btn soft sm" data-act="city">Change</button></div>
   <div class="setcol"><small>Usual meal times (for after-meal walk prompts)</small><div class="times"><label for="meal-b">Breakfast<input class="inp" type="time" id="meal-b" value="${S.meals.b}"></label><label for="meal-l">Lunch<input class="inp" type="time" id="meal-l" value="${S.meals.l}"></label><label for="meal-d">Dinner<input class="inp" type="time" id="meal-d" value="${S.meals.d}"></label></div></div>
  </div>
+ ${STANDALONE?'':`<div class="sec"><h3>Install the app</h3><small>works offline</small></div>${installCard()}`}
  <div class="sec"><h3>Appearance</h3></div>
  <div class="card"><div class="setcol"><small>Theme. Auto follows your phone's light or dark setting.</small>${chips('theme',[['auto','Auto'],['light','Light'],['dark','Dark']],S.theme)}</div></div>
  <div class="sec"><h3>Coaching</h3></div>
  <div class="card">
   <div class="set"><div>Voice coach<small>Talks you through each move</small></div><button class="tog ${S.voice?'on':''}" data-tog="voice" aria-label="Voice coach"></button></div>
   <div class="set"><div>Sounds<small>Beeps for the last 3 seconds</small></div><button class="tog ${S.sound?'on':''}" data-tog="sound" aria-label="Sounds"></button></div>
-  <div class="set"><div>Reminders<small>Walk and workout reminders on your lock screen need the installed app version. For now, the Today tab tells you when to walk.</small></div></div>
+  <div class="set"><div>Reminders<small>Lock-screen reminders are coming next. They need the installed app plus sign-in, which is the next step we're building. For now, the Today tab tells you when to walk.</small></div></div>
  </div>
  <div class="sec"><h3>Safety</h3></div>
  <div class="card"><p class="fine" style="margin:0">SnugFit offers general fitness guidance and isn't medical advice. Check with a doctor before starting a new exercise program, especially if you're pregnant, recovering from surgery or injury, or have a health condition. Hold the railing on stairs. Stop if you feel pain, dizziness or shortness of breath. In extreme cold, follow Environment Canada's wind chill warnings.</p></div>
  <div style="margin-top:14px"><button class="btn soft block" data-act="wipe">Reset all data</button></div>
- <p class="fine" style="text-align:center;margin-top:16px">SnugFit v2.4 · Made for lazy days</p>`;
+ <p class="fine" style="text-align:center;margin-top:16px">SnugFit v2.5 · Made for lazy days</p>`;
 }
 
 /* ---------- DEMOS ---------- */
@@ -1230,6 +1238,7 @@ document.addEventListener('click',ev=>{
   equip:()=>openModal(`<h2>My equipment</h2><p>Moves that need something you don't have will be skipped.</p>${equipHTML()}<button class="btn pink block" data-act="eqdone">Save</button>`),
   eqdone:()=>{closeModal();render()},
   onboarded:()=>{S.onboarded=true;save();closeModal();render()},
+  install:()=>{if(!INSTALL_EVT)return;INSTALL_EVT.prompt();INSTALL_EVT.userChoice.finally(()=>{INSTALL_EVT=null;render()})},
   setup:()=>setupModal(S.setup2?1:0,false),sunext:suNext,suback:()=>{suCollect();setupModal(Math.max(0,SU.step-1))},sudone:suDone,
   resetplan:()=>confirmModal('Restart Core Comeback?','Your streak and history stay. Only the 28-day challenge goes back to Day 1.','Restart',()=>{S.planDone=[];save();render()}),
   wipe:()=>confirmModal('Reset everything?','This clears your streak, history, level, challenges and check-ins on this device. Your home, equipment, units and location settings stay.','Reset',()=>{const keep={cond:S.cond,goalType:S.goalType,pace:S.pace,setup2:S.setup2,units:S.units,equip:S.equip,home:S.home,stairs:S.stairs,city:S.city,meals:S.meals,stepGoal:S.stepGoal,walkGoal:S.walkGoal};S=Object.assign(JSON.parse(JSON.stringify(DEF)),keep,{onboarded:true});save();render()})
@@ -1248,6 +1257,18 @@ document.addEventListener('input',ev=>{const t=ev.target;if(t&&(t.id==='su-cur'|
 document.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&ev.target&&ev.target.id==='cityq'){ev.preventDefault();citySearch()}});
 $('#modal').addEventListener('click',e=>{if(e.target.id==='modal')dismissModal()});
 window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');if(['home','plan','moves','me'].includes(h)&&h!==TAB){TAB=h;render()}});
+/* ---------- INSTALL & OFFLINE ---------- */
+const STANDALONE=(()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}})();
+const IOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+let INSTALL_EVT=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();INSTALL_EVT=e;if(TAB==='me')render()});
+if(HOSTED&&'serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})})}
+window.addEventListener('offline',()=>toast('You\'re offline. Workouts still work; weather will update when you\'re back.'));
+window.addEventListener('online',()=>{toast('Back online');loadWeather(true)});
+function installCard(){if(STANDALONE)return '';
+ if(!HOSTED)return `<div class="card"><div class="set"><div>Install SnugFit<small>Open SnugFit from your own web address (mimiobuhtig.github.io/Snugfit) to add it to your home screen and use it offline.</small></div></div></div>`;
+ if(INSTALL_EVT)return `<div class="card"><div class="set"><div>Install SnugFit<small>Adds it to your home screen. Works offline.</small></div><button class="btn pink sm" data-act="install">Install</button></div></div>`;
+ return `<div class="card"><div class="setcol"><small>${IOS?'In Safari: tap the Share button (the square with an arrow), then <b>Add to Home Screen</b>, then <b>Add</b>. SnugFit then opens full screen like an app and works without internet.':'In your browser menu, choose <b>Install app</b> or <b>Add to Home screen</b>. SnugFit then opens like an app and works without internet.'}</small></div></div>`}
 pruneChallenges();save();
 render();
 loadWeather();
