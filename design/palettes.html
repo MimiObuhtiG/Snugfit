@@ -1,0 +1,150 @@
+<title>SnugFit Dark Palettes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: a short research note, then three phone mockups side by side (stacked on phones), each a self-contained dark palette. */
+:root{
+  --bg:#FBF6F9;--fg:#22172B;--fg2:#6A5C75;--fg3:#9A8CA4;--line:#EBDDE6;--card:#FFFFFF;--pick:#C2347A;
+  --display:Fredoka,Nunito,system-ui,sans-serif;--body:Nunito,system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#141016;--fg:#F3ECF5;--fg2:#C2B3CA;--fg3:#8C7D96;--line:#2E2534;--card:#1D1720;--pick:#FF7DB5;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141016;--fg:#F3ECF5;--fg2:#C2B3CA;--fg3:#8C7D96;--line:#2E2534;--card:#1D1720;--pick:#FF7DB5;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);margin:0;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding-block:28px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(26px,5vw,36px);margin:0 0 8px;text-wrap:balance}
+.lede{color:var(--fg2);font-weight:700;font-size:15.5px;line-height:1.55;max-width:68ch;margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:22px 0 30px}
+.fact{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:14px 16px;min-width:0}
+.fact b{display:block;font-family:var(--display);font-weight:600;font-size:16px;margin-bottom:4px}
+.fact p{margin:0;color:var(--fg2);font-size:13.5px;font-weight:600;line-height:1.5}
+.fact a{color:var(--pick)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;align-items:start}
+.opt{min-width:0}
+.opt h2{font-family:var(--display);font-weight:600;font-size:21px;margin:0;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tagrec{font-family:var(--body);font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--pick);color:var(--bg);padding:4px 9px;border-radius:999px}
+.opt p{color:var(--fg2);font-size:13.5px;font-weight:600;line-height:1.5;margin:6px 0 12px}
+.sw{display:flex;gap:6px;margin-bottom:12px}
+.sw i{width:26px;height:26px;border-radius:9px;border:1.5px solid var(--line)}
+
+/* ---- phone mockup: every color comes from the palette set on .ph ---- */
+.ph{border-radius:34px;padding:16px 14px 18px;background:var(--m-bg);color:var(--m-ink);font-family:var(--body);border:6px solid #0B080D;max-width:340px;margin:0 auto;box-shadow:0 24px 50px -24px rgba(0,0,0,.55)}
+.ph[data-p="bloom"]{--m-bg:#1B1221;--m-surf:#271A30;--m-raise:#33243E;--m-line:#3A2B46;--m-ink:#F7EEF8;--m-ink2:#CDBAD8;--m-ink3:#9A87A6;--m-a1:#FF6BAA;--m-a2:#B46CDE;--m-win:#E4E36B;--m-cool:#4FD1B8;--m-onA:#1B1221;--m-hero:linear-gradient(140deg,#E2468C 0%,#7A2E96 100%)}
+.ph[data-p="lagoon"]{--m-bg:#0E1C21;--m-surf:#152A30;--m-raise:#1E363E;--m-line:#27444D;--m-ink:#EEF6F4;--m-ink2:#B2CBC6;--m-ink3:#7F9C97;--m-a1:#FF8068;--m-a2:#3DD6BE;--m-win:#F4C88E;--m-cool:#7CC7F2;--m-onA:#0E1C21;--m-hero:linear-gradient(140deg,#F2735C 0%,#B5466A 100%)}
+.ph[data-p="citrus"]{--m-bg:#111318;--m-surf:#1A1D25;--m-raise:#242833;--m-line:#2E3340;--m-ink:#F2F3F7;--m-ink2:#BCC0CD;--m-ink3:#828899;--m-a1:#D6F25A;--m-a2:#9C8DFF;--m-win:#FF8E6E;--m-cool:#5CD3E8;--m-onA:#111318;--m-hero:linear-gradient(140deg,#7B6CF0 0%,#3A2F8F 100%)}
+.ph .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.ph .brand{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;font-size:19px}
+.ph .brand span{color:var(--m-a1)}
+.ph .logo{width:32px;height:32px;border-radius:11px;background:var(--m-hero);display:grid;place-items:center}
+.ph .streak{background:var(--m-surf);border:1.5px solid var(--m-line);border-radius:999px;padding:5px 10px;font-weight:800;font-size:13px;display:flex;gap:5px;align-items:center}
+.ph .hi{color:var(--m-ink2);font-weight:700;font-size:13px}
+.ph .h1{font-family:var(--display);font-weight:700;font-size:22px;margin:2px 0 12px}
+.ph .hero{border-radius:22px;padding:16px;background:var(--m-hero);color:#fff;position:relative;overflow:hidden}
+.ph .hero .tag{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:4px 10px;font-size:11px;font-weight:800}
+.ph .hero h3{font-family:var(--display);font-size:22px;margin:9px 0 4px;font-weight:700}
+.ph .hero p{margin:0 0 12px;font-size:12.5px;font-weight:700;opacity:.9}
+.ph .hero .bar{height:6px;border-radius:9px;background:rgba(255,255,255,.22);margin-bottom:12px;overflow:hidden}
+.ph .hero .bar i{display:block;height:100%;width:40%;background:var(--m-win);border-radius:9px}
+.ph .hero .go{display:inline-flex;gap:6px;align-items:center;background:#fff;color:#2A1A33;border-radius:13px;padding:10px 14px;font-weight:800;font-size:13.5px}
+.ph .mini{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
+.ph .mini div{background:var(--m-surf);border:1.5px solid var(--m-line);border-radius:14px;padding:9px}
+.ph .mini b{font-family:var(--display);font-size:17px;display:block}
+.ph .mini span{font-size:10.5px;color:var(--m-ink3);font-weight:800}
+.ph .mini u{display:block;height:5px;border-radius:9px;background:var(--m-raise);margin-top:6px;text-decoration:none;overflow:hidden}
+.ph .mini u i{display:block;height:100%;border-radius:9px}
+.ph .sec{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 7px}
+.ph .sec b{font-family:var(--display);font-weight:600;font-size:15.5px}
+.ph .sec small{color:var(--m-ink3);font-weight:800;font-size:11px}
+.ph .wx{background:var(--m-surf);border:1.5px solid var(--m-line);border-radius:18px;padding:12px}
+.ph .wxrow{display:flex;gap:10px;align-items:center}
+.ph .wxico{width:40px;height:40px;border-radius:13px;background:var(--m-raise);display:grid;place-items:center}
+.ph .t{font-family:var(--display);font-size:22px;font-weight:700}
+.ph .t small{font-family:var(--body);font-size:11.5px;color:var(--m-ink2);font-weight:800;margin-left:3px}
+.ph .wxs{font-size:11.5px;color:var(--m-ink2);font-weight:700}
+.ph .pill{display:inline-block;margin-top:10px;font-size:11.5px;font-weight:800;padding:5px 10px;border-radius:999px;background:var(--m-raise);color:var(--m-cool)}
+.ph .wear{margin:9px 0 0;padding:0;list-style:none;display:grid;gap:6px}
+.ph .wear li{font-size:12.5px;font-weight:700;color:var(--m-ink2);display:flex;gap:8px;align-items:center}
+.ph .wear li i{width:22px;height:22px;border-radius:7px;background:var(--m-raise);display:grid;place-items:center}
+.ph .btns{display:flex;gap:7px;margin-top:11px}
+.ph .b1{flex:1;text-align:center;padding:10px;border-radius:13px;font-weight:800;font-size:13px;background:var(--m-a1);color:var(--m-onA)}
+.ph .b2{flex:1;text-align:center;padding:10px;border-radius:13px;font-weight:800;font-size:13px;background:var(--m-raise);color:var(--m-ink)}
+.ph .chips{display:flex;gap:6px;flex-wrap:wrap}
+.ph .chip{padding:7px 11px;border-radius:999px;font-weight:800;font-size:12px;background:var(--m-surf);color:var(--m-ink2);border:1.5px solid var(--m-line)}
+.ph .chip.on{border-color:var(--m-a1);color:var(--m-a1)}
+.ph .player{margin-top:14px;background:var(--m-surf);border:1.5px solid var(--m-line);border-radius:18px;padding:12px;display:flex;gap:12px;align-items:center}
+.ph .ring{width:84px;height:84px;flex:none}
+.ph .player b{font-family:var(--display);font-size:17px;display:block}
+.ph .player span{font-size:11.5px;color:var(--m-ink2);font-weight:700}
+.ph .player .ph2{font-size:10.5px;font-weight:800;letter-spacing:.08em;color:var(--m-a1);text-transform:uppercase}
+.ph .tabs{margin-top:14px;display:flex;gap:4px;background:var(--m-raise);border-radius:18px;padding:5px}
+.ph .tabs span{flex:1;text-align:center;padding:7px 2px;border-radius:13px;font-size:10.5px;font-weight:800;color:var(--m-ink3)}
+.ph .tabs span.on{background:var(--m-a1);color:var(--m-onA)}
+.note{margin-top:34px;background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:16px 18px;color:var(--fg2);font-weight:600;font-size:14px;line-height:1.55;max-width:760px}
+.note b{color:var(--fg)}
+.src{margin-top:18px;font-size:12.5px;color:var(--fg3);font-weight:600;line-height:1.6;max-width:760px}
+.src a{color:var(--fg2)}
+</style>
+
+<div class="wrap">
+  <h1>Three darker looks for SnugFit</h1>
+  <p class="lede">Each phone shows the same Today screen and workout timer in a different dark palette. Pick the one you'd want to open at 7 a.m. and at 10 p.m.</p>
+
+  <div class="facts">
+    <div class="fact"><b>Who uses fitness apps</b><p>Roughly 60% of fitness app users are women, and the average user is about 35. SnugFit's lazy-day, at-home angle points to women in their 30s to 50s who are starting out or starting again.</p></div>
+    <div class="fact"><b>What colors people like</b><p>Blue is the most popular color worldwide. Women rate purple much higher than men do, and many people dislike plain brown and yellow. Purples and berry tones suit your audience.</p></div>
+    <div class="fact"><b>Dark screens</b><p>About half of health and fitness apps open in dark mode, and most people keep their phones dark at night. Training apps tend to use a dark base with one bright accent. Calm apps lean warmer and softer.</p></div>
+  </div>
+
+  <div class="grid">
+    <section class="opt">
+      <h2>A · Night Bloom <span class="tagrec">My pick</span></h2>
+      <p>Your current pink and plum, set on a deep aubergine. It keeps the look you like, feels warm instead of techy, and leans into the purple tones your audience favors.</p>
+      <div class="sw"><i style="background:#1B1221"></i><i style="background:#271A30"></i><i style="background:#FF6BAA"></i><i style="background:#B46CDE"></i><i style="background:#E4E36B"></i><i style="background:#4FD1B8"></i></div>
+      <div class="ph" data-p="bloom" data-mock></div>
+    </section>
+    <section class="opt">
+      <h2>B · Deep Lagoon</h2>
+      <p>Dark teal with a coral accent and warm sand highlights. Calm and fresh, closer to wellness apps, and less tied to pink if you want SnugFit to feel more neutral.</p>
+      <div class="sw"><i style="background:#0E1C21"></i><i style="background:#152A30"></i><i style="background:#FF8068"></i><i style="background:#3DD6BE"></i><i style="background:#F4C88E"></i><i style="background:#7CC7F2"></i></div>
+      <div class="ph" data-p="lagoon" data-mock></div>
+    </section>
+    <section class="opt">
+      <h2>C · Ink &amp; Citrus</h2>
+      <p>Near-black with a lime accent and violet hero. Sporty and energetic, like a training app. It stands out, but it's the furthest from SnugFit's cozy, lazy-day personality.</p>
+      <div class="sw"><i style="background:#111318"></i><i style="background:#1A1D25"></i><i style="background:#D6F25A"></i><i style="background:#9C8DFF"></i><i style="background:#FF8E6E"></i><i style="background:#5CD3E8"></i></div>
+      <div class="ph" data-p="citrus" data-mock></div>
+    </section>
+  </div>
+
+  <div class="note"><b>How I'd ship it:</b> whichever you pick becomes the dark theme, and the app follows your phone's light or dark setting automatically, with a manual switch under Me. The current light pink look stays as the light theme unless you'd like that refreshed too.</div>
+
+  <p class="src">Sources: <a href="https://exercise.com/grow/fitness-app-statistics" target="_blank" rel="noopener">Exercise.com fitness app statistics</a> · <a href="https://www.frontiersin.org/journals/sports-and-active-living/articles/10.3389/fspor.2026.1855668/full" target="_blank" rel="noopener">Frontiers, digital fitness app users (2026)</a> · <a href="https://yougov.com/en-us/articles/12336-why-blue-worlds-favorite-color-1" target="_blank" rel="noopener">YouGov favourite colours</a> · <a href="https://www.smartinsights.com/user-experience/website-design/men-womens-favourite-colours-chartoftheday/" target="_blank" rel="noopener">Smart Insights colour preferences</a> · <a href="https://www.lazyweb.com/research/what-theme-do-health-fitness-apps-use.md" target="_blank" rel="noopener">Lazyweb, themes in health &amp; fitness apps</a> · <a href="https://www.inspoai.io/blogs/fitness-app-color-palette" target="_blank" rel="noopener">Inspo AI fitness palettes</a> · <a href="https://android.gadgethacks.com/news/dark-mode-vs-light-mode-what-research-says-about-when-each-works-best/" target="_blank" rel="noopener">Gadget Hacks, dark vs light mode</a></p>
+</div>
+
+<script>
+const I={
+ db:'<path d="M3 9.5v5M6 7.5v9M18 7.5v9M21 9.5v5M6 12h12"/>',
+ flame:'<path d="M12 21c-4 0-6.5-2.7-6.5-6.2 0-3.6 2.8-5.4 3.6-8.8 2 1.2 3 3 3 4.6 1-.6 1.7-1.7 1.9-3.1 2.2 1.6 3.5 4.1 3.5 7.3 0 3.5-2.5 6.2-5.5 6.2z"/>',
+ play:'<path d="M8 5.5v13l11-6.5z" fill="currentColor"/>',
+ snow:'<path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/>',
+ shirt:'<path d="M8.5 4L4 7l2 3.5 2-1V20h8V9.5l2 1L20 7l-4.5-3c-.6 1.5-1.9 2.4-3.5 2.4S9.1 5.5 8.5 4z"/>',
+ boot:'<path d="M8 3h5.5v9.5l5 2.4c1 .5 1.5 1.4 1.5 2.4V19H5V12.5z"/>',
+ warm:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5"/>'
+};
+const ic=(n,s,c,w)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c||'currentColor'}" stroke-width="${w||2.2}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
+const mock=`<div class="top"><div class="brand"><div class="logo">${ic('db',18,'#fff',2.6)}</div>Snug<span>Fit</span></div><div class="streak">${ic('flame',14,'var(--m-win)')}4</div></div>
+<div class="hi">Good morning</div><div class="h1">Tiny effort. Real results.</div>
+<div class="hero"><span class="tag">Level 2 · Finding your rhythm</span><h3>House Circuit</h3><p>7 min · Low energy · Around the house + stairs</p><div class="bar"><i></i></div><span class="go">${ic('play',14)} Start today's workout</span></div>
+<div class="mini"><div><b>4,321</b><span>steps / 6,000</span><u><i style="width:72%;background:var(--m-win)"></i></u></div><div><b>12</b><span>walk min / 20</span><u><i style="width:60%;background:var(--m-cool)"></i></u></div><div><b>1</b><span>workouts</span><u><i style="width:100%;background:var(--m-a1)"></i></u></div></div>
+<div class="sec"><b>Walk coach</b><small>12/20 min today</small></div>
+<div class="wx"><div class="wxrow"><div class="wxico">${ic('snow',22,'var(--m-cool)')}</div><div><div class="t">-9°<small>feels -16°</small></div><div class="wxs">Light snow · wind 22 km/h · Calgary</div></div></div>
+<span class="pill">Cold and snowy, but walkable</span>
+<ul class="wear"><li><i>${ic('shirt',13,'var(--m-cool)')}</i>Thermal base layer + winter parka</li><li><i>${ic('boot',13,'var(--m-cool)')}</i>Winter boots with good grip</li></ul>
+<div class="btns"><span class="b1">Guided walk</span><span class="b2">Indoor walk</span></div></div>
+<div class="sec"><b>Quick workout</b><small>your way</small></div>
+<div class="chips"><span class="chip on">Low energy</span><span class="chip">Steady</span><span class="chip">Spicy</span></div>
+<div class="player"><svg class="ring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" fill="none" stroke="var(--m-raise)" stroke-width="11"/><circle cx="60" cy="60" r="50" fill="none" stroke="var(--m-a2)" stroke-width="11" stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="110" transform="rotate(-90 60 60)"/><text x="60" y="68" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="30" fill="var(--m-ink)">20</text></svg><div><span class="ph2">Warm-up · 1 of 8</span><b>Arm Circles</b><span>Couch or chair / Standing</span></div></div>
+<div class="tabs"><span class="on">Today</span><span>Program</span><span>Moves</span><span>Me</span></div>`;
+document.querySelectorAll('[data-mock]').forEach(el=>{el.innerHTML=mock});
+</script>

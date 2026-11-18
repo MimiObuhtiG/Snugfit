@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F2559A">
+<title>SnugFit — Lazy Workouts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#F2559A;--pink2:#FF8CC0;--plum:#8E3AA6;--plum2:#C25BD0;--lime:#DCDA2E;--lime2:#F4F28A;
+  --coral:#FF6F61;--teal:#2EBFA5;--orange:#FFA03A;
+  --ink:#22172B;--ink2:#6A5C75;--ink3:#A597AE;--bg:#FFF6FA;--card:#FFFFFF;--line:#F3E4EE;
+  --shadow:0 10px 30px -12px rgba(142,58,166,.28);
+  --r:22px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{min-height:100vh}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+h1,h2,h3,.disp{font-family:Fredoka,Nunito,sans-serif;margin:0;letter-spacing:-.01em}
+.app{max-width:480px;margin:0 auto;min-height:100vh;padding:calc(env(safe-area-inset-top) + 14px) 18px calc(env(safe-area-inset-bottom) + 96px);position:relative}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:40px;height:40px;border-radius:13px;background:linear-gradient(135deg,var(--pink),var(--plum));display:grid;place-items:center;box-shadow:0 6px 16px -6px rgba(242,85,154,.7)}
+.brand b{font-family:Fredoka;font-size:22px;font-weight:700}
+.brand b span{color:var(--pink)}
+.streak{display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--line);padding:7px 12px;border-radius:999px;font-weight:800;font-size:15px}
+.hello{font-size:15px;color:var(--ink2);font-weight:700;margin:2px 0 4px}
+.h1{font-size:28px;line-height:1.1;font-weight:700;margin-bottom:16px}
+.hero{border-radius:28px;padding:20px;color:#fff;background:radial-gradient(120% 140% at 100% 0%,#FFB3D5 0%,rgba(255,179,213,0) 45%),linear-gradient(140deg,var(--pink) 0%,var(--plum) 100%);box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero.rest{background:radial-gradient(120% 140% at 100% 0%,#B9F3E8 0%,rgba(185,243,232,0) 45%),linear-gradient(140deg,#35C9AE 0%,#5A62C9 100%)}
+.hero .tag{display:inline-flex;gap:6px;align-items:center;background:rgba(255,255,255,.2);padding:5px 11px;border-radius:999px;font-size:12.5px;font-weight:800;letter-spacing:.02em;backdrop-filter:blur(6px)}
+.hero h2{font-size:27px;margin:12px 0 6px;font-weight:700}
+.hero p{margin:0 0 16px;opacity:.92;font-weight:600;font-size:14.5px}
+.hero .bar{height:8px;background:rgba(255,255,255,.25);border-radius:9px;overflow:hidden;margin-bottom:16px}
+.hero .bar i{display:block;height:100%;background:var(--lime2);border-radius:9px}
+.hero .deco{position:absolute;right:-18px;bottom:-22px;opacity:.18;pointer-events:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;border-radius:16px;font-weight:800;font-size:16px;transition:transform .12s}
+.btn:active{transform:scale(.97)}
+.btn.white{background:#fff;color:var(--plum)}
+.btn.ghost{background:rgba(255,255,255,.18);color:#fff}
+.btn.pink{background:linear-gradient(135deg,var(--pink),var(--plum2));color:#fff;box-shadow:0 8px 20px -8px rgba(242,85,154,.8)}
+.btn.lime{background:var(--lime);color:var(--ink)}
+.btn.soft{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+.btn.block{width:100%}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.sec{margin:24px 0 10px;display:flex;justify-content:space-between;align-items:baseline}
+.sec h3{font-size:19px;font-weight:600}
+.sec small{color:var(--ink3);font-weight:700}
+.card{background:var(--card);border-radius:var(--r);padding:16px;border:1.5px solid var(--line)}
+.lbl{font-size:12.5px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin:14px 0 8px}
+.lbl:first-child{margin-top:0}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:9px 14px;border-radius:999px;background:#FBF1F7;border:1.5px solid transparent;font-weight:800;font-size:14px;color:var(--ink2)}
+.chip.on{background:#fff;border-color:var(--pink);color:var(--pink);box-shadow:0 4px 12px -6px rgba(242,85,154,.6)}
+.dice{display:flex;align-items:center;gap:14px;padding:16px;border-radius:var(--r);background:linear-gradient(135deg,#FFFBD1,#F4F28A);border:1.5px solid #ECE77A;width:100%;text-align:left;margin-top:12px}
+.dice .ico{width:48px;height:48px;border-radius:15px;background:var(--ink);display:grid;place-items:center;flex:none}
+.dice b{font-family:Fredoka;font-size:18px;font-weight:600;display:block}
+.dice span{font-size:13.5px;color:#5c5a1a;font-weight:700}
+.tip{display:flex;gap:12px;align-items:flex-start;margin-top:12px}
+.tip .t-ico{width:36px;height:36px;border-radius:12px;background:#FDE7F1;display:grid;place-items:center;flex:none}
+.tip p{margin:0;font-size:14px;color:var(--ink2);font-weight:600;line-height:1.45}
+.tip b{color:var(--ink)}
+/* tabs */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:center;padding:0 12px calc(env(safe-area-inset-bottom) + 10px);pointer-events:none}
+.tabs nav{pointer-events:auto;display:flex;gap:4px;background:rgba(34,23,43,.94);backdrop-filter:blur(12px);padding:7px;border-radius:24px;box-shadow:0 14px 30px -10px rgba(34,23,43,.5);max-width:456px;width:100%}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;border-radius:17px;color:#BFB2C9;font-size:11.5px;font-weight:800}
+.tab.on{background:linear-gradient(135deg,var(--pink),var(--plum2));color:#fff}
+/* plan */
+.weekh{font-family:Fredoka;font-weight:600;font-size:16px;margin:18px 0 8px;display:flex;justify-content:space-between}
+.weekh small{font-family:Nunito;color:var(--ink3);font-weight:800;font-size:12.5px}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
+.day{aspect-ratio:1/1.18;border-radius:14px;background:#fff;border:1.5px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-weight:800;font-size:15px;position:relative}
+.day small{font-size:9.5px;color:var(--ink3);font-weight:800}
+.day.done{background:linear-gradient(140deg,var(--pink),var(--plum));color:#fff;border-color:transparent}
+.day.done small{color:#ffd9ea}
+.day.cur{border-color:var(--pink);box-shadow:0 0 0 3px #FFD3E6}
+.day.rest:not(.done){background:#EFFBF8;border-color:#CFF1EA}
+/* list */
+.ex{display:flex;gap:12px;align-items:center;padding:12px;background:#fff;border:1.5px solid var(--line);border-radius:18px;margin-bottom:9px;width:100%;text-align:left}
+.badge{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;flex:none}
+.ex b{display:block;font-size:15.5px;font-weight:800}
+.ex span{font-size:12.5px;color:var(--ink3);font-weight:700}
+.ex .chev{margin-left:auto;color:var(--ink3)}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.stat{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:14px 10px;text-align:center}
+.stat b{font-family:Fredoka;font-size:26px;font-weight:700;display:block;color:var(--plum)}
+.stat span{font-size:12px;font-weight:800;color:var(--ink3)}
+.wk{display:flex;justify-content:space-between;margin-top:6px}
+.wk div{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--ink3)}
+.wk i{width:34px;height:34px;border-radius:12px;background:#F7EAF2;display:grid;place-items:center}
+.wk i.on{background:linear-gradient(140deg,var(--pink),var(--plum))}
+.wk i.today{outline:2px dashed var(--pink);outline-offset:2px}
+.hist{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1.5px solid var(--line);font-weight:700;font-size:14.5px}
+.hist:last-child{border-bottom:0}
+.hist span{color:var(--ink3);font-size:12.5px}
+.set{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1.5px solid var(--line);font-weight:700}
+.set:last-child{border-bottom:0}
+.set small{display:block;color:var(--ink3);font-weight:700;font-size:12.5px}
+.tog{width:50px;height:30px;border-radius:99px;background:#E9DCE5;position:relative;transition:.2s;flex:none}
+.tog::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.2);transition:.2s}
+.tog.on{background:var(--pink)}
+.tog.on::after{left:23px}
+.fine{font-size:12.5px;color:var(--ink3);line-height:1.5;font-weight:600}
+/* overlay / player */
+.ov{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;display:none}
+.ov.show{display:block}
+.player{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 14px) 20px calc(env(safe-area-inset-bottom) + 20px)}
+.ptop{display:flex;justify-content:space-between;align-items:center}
+.iconbtn{width:44px;height:44px;border-radius:14px;background:#fff;border:1.5px solid var(--line);display:grid;place-items:center}
+.prog{flex:1;margin:0 12px;height:8px;background:#F3E1EC;border-radius:9px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--plum2));transition:width .3s}
+.phase{text-align:center;margin-top:18px;font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--pink)}
+.ringwrap{position:relative;width:min(70vw,270px);aspect-ratio:1;margin:12px auto 0}
+.ringwrap svg.ring{width:100%;height:100%;transform:rotate(-90deg)}
+.ringin{position:absolute;inset:14%;border-radius:50%;display:grid;place-items:center;text-align:center}
+.ringin .big{font-family:Fredoka;font-size:58px;font-weight:700;line-height:1}
+.ringin .sub{font-size:13px;font-weight:800;color:var(--ink3);margin-top:4px}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.pname{text-align:center;font-size:27px;font-weight:700;margin:16px 0 4px}
+.pmeta{text-align:center;color:var(--ink2);font-weight:700;font-size:14px}
+.cues{margin:16px 0 0;padding:14px 16px;background:#fff;border:1.5px solid var(--line);border-radius:18px;list-style:none}
+.cues li{display:flex;gap:10px;font-size:14.5px;font-weight:600;color:var(--ink2);line-height:1.4;padding:4px 0}
+.cues li em{font-style:normal;width:22px;height:22px;border-radius:8px;background:#FDE7F1;color:var(--pink);display:grid;place-items:center;font-weight:800;font-size:12px;flex:none}
+.easy{margin-top:10px;font-size:13.5px;font-weight:700;color:var(--plum);background:#F6EAFB;padding:10px 14px;border-radius:14px}
+.ctrls{display:flex;justify-content:center;align-items:center;gap:22px;margin-top:auto;padding-top:18px}
+.cbtn{width:58px;height:58px;border-radius:20px;background:#fff;border:1.5px solid var(--line);display:grid;place-items:center}
+.cbtn.main{width:78px;height:78px;border-radius:28px;background:linear-gradient(135deg,var(--pink),var(--plum));border:0;box-shadow:0 12px 26px -10px rgba(242,85,154,.9)}
+.nextup{margin-top:12px;text-align:center;font-weight:700;color:var(--ink3);font-size:13.5px}
+.nextup b{color:var(--ink)}
+.restmode .phase{color:var(--teal)}
+/* modal */
+.modal{position:fixed;inset:0;z-index:80;background:rgba(34,23,43,.5);display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px)}
+.modal.show{display:flex}
+.sheet{background:#fff;width:100%;max-width:480px;border-radius:28px 28px 0 0;padding:22px 20px calc(env(safe-area-inset-bottom) + 20px);max-height:92vh;overflow:auto;animation:up .25s ease}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.sheet h2{font-size:24px;font-weight:700;margin-bottom:6px}
+.sheet p{color:var(--ink2);font-weight:600;font-size:14.5px;line-height:1.5;margin:6px 0}
+.grab{width:42px;height:5px;border-radius:9px;background:#E9DCE5;margin:-8px auto 14px}
+.eqgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0}
+.eq{padding:13px;border-radius:16px;border:1.5px solid var(--line);font-weight:800;font-size:14px;text-align:left;display:flex;gap:9px;align-items:center;background:#fff}
+.eq.on{border-color:var(--pink);background:#FFF2F8;color:var(--pink)}
+.eq i{width:20px;height:20px;border-radius:7px;border:2px solid #DCCBD7;flex:none;display:grid;place-items:center;font-style:normal;font-size:12px}
+.eq.on i{background:var(--pink);border-color:var(--pink);color:#fff}
+/* finish */
+.done-wrap{text-align:center;padding-top:8vh}
+.trophy{width:120px;height:120px;border-radius:40px;margin:0 auto;background:linear-gradient(140deg,var(--lime2),var(--lime));display:grid;place-items:center;box-shadow:0 18px 36px -14px rgba(220,218,46,.9);animation:pop .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{from{transform:scale(.4)}to{transform:scale(1)}}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:60}
+.confetti i{position:absolute;top:-20px;width:10px;height:14px;border-radius:3px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.fadein{animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.pill{display:inline-block;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:800;background:#FDE7F1;color:var(--pink);margin:2px 4px 2px 0}
+.toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 18px;border-radius:14px;font-weight:700;font-size:14px;z-index:90;opacity:0;transition:.25s;pointer-events:none}
+.toast.show{opacity:1}
+/* ---- v2 additions: walk coach, weather, program, challenges ---- */
+button:focus-visible,.inp:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+.iconbtn.sm{width:38px;height:38px;border-radius:12px}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}
+.mini>div,.mini>button{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:12px;text-align:left;min-width:0}
+.mini b{font-family:Fredoka;font-size:20px;font-weight:700;display:block;font-variant-numeric:tabular-nums}
+.mini span{font-size:11.5px;font-weight:800;color:var(--ink3);display:block}
+.meter{height:7px;background:#F3E1EC;border-radius:9px;overflow:hidden;margin-top:8px}
+.meter i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--plum2));border-radius:9px}
+.meter.teal{background:#DDF3EE}.meter.teal i{background:linear-gradient(90deg,#2EBFA5,#5A62C9)}
+.meter.lime{background:#F1F0C9}.meter.lime i{background:linear-gradient(90deg,#C9C61E,#9DBA2A)}
+.wx{background:linear-gradient(180deg,#F1F6FF 0%,#fff 60%);border-color:#DFE7F7}
+.wxtop{display:flex;align-items:center;gap:12px}
+.wxico{width:52px;height:52px;border-radius:17px;background:#E3EBFB;display:grid;place-items:center;flex:none}
+.wxtemp{font-family:Fredoka;font-size:30px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.wxtemp small{font-family:Nunito;font-size:14px;font-weight:800;color:var(--ink2);margin-left:4px}
+.wxsub{font-size:13px;font-weight:700;color:var(--ink2);margin-top:4px}
+.verdict{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-weight:800;font-size:13px;margin-top:14px}
+.v-go{background:#E1F7F2;color:#137a68}.v-caution{background:#FFF0DE;color:#9a5300}.v-indoor{background:#FFE9E6;color:#b8352a}
+.wear{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}
+.wear li{display:flex;gap:10px;align-items:center;font-weight:700;font-size:14px;color:var(--ink2);line-height:1.35}
+.wear li i{width:30px;height:30px;border-radius:10px;background:#EEF2FC;display:grid;place-items:center;flex:none}
+.nextwalk{display:flex;gap:12px;align-items:center;padding:12px;border-radius:16px;background:#EFFBF8;margin-top:14px}
+.nextwalk .ico{width:42px;height:42px;border-radius:14px;background:#fff;display:grid;place-items:center;flex:none}
+.nextwalk b{display:block;font-size:15px}
+.nextwalk span{font-size:13px;font-weight:700;color:#2a6f62}
+.nextwalk.now{background:linear-gradient(135deg,#D9F6EF,#E3EBFB)}
+.manual{display:grid;gap:10px;margin-top:12px}
+.manual label{font-size:12.5px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;display:grid;gap:6px}
+.inp{width:100%;padding:12px 14px;border-radius:14px;border:1.5px solid var(--line);font:inherit;font-weight:700;font-size:16px;background:#fff;color:var(--ink)}
+.chal{display:flex;gap:12px;align-items:center;padding:14px;border-radius:var(--r);background:#fff;border:1.5px solid var(--line);margin-bottom:9px}
+.chal .badge{width:44px;height:44px}
+.chal .body{flex:1;min-width:0}
+.chal b{display:block;font-size:15px;font-weight:800}
+.chal span{display:block;font-size:12.5px;font-weight:700;color:var(--ink3);line-height:1.4}
+.chal.offer{background:linear-gradient(135deg,#FFFBD1,#F7F5B5);border-color:#ECE77A}
+.chal.won{background:#F3FBF0;border-color:#CBEBC0}
+.btn.sm{padding:9px 14px;font-size:14px;border-radius:13px}
+.wkrow{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:16px;background:#fff;border:1.5px solid var(--line);margin-bottom:8px;width:100%;text-align:left}
+.wkrow.today{border-color:var(--pink);box-shadow:0 0 0 3px #FFD3E6}
+.wkrow.done{background:#FFF7FB}
+.wkrow .dname{width:36px;font-weight:800;color:var(--ink3);font-size:13px;flex:none}
+.wkrow .body{flex:1;min-width:0}
+.wkrow b{display:block;font-size:15px}
+.wkrow span{font-size:12.5px;color:var(--ink3);font-weight:700}
+.wkrow .ok{width:28px;height:28px;border-radius:10px;background:linear-gradient(140deg,var(--pink),var(--plum));display:grid;place-items:center;flex:none}
+.banner{display:flex;gap:12px;align-items:center;padding:14px;border-radius:var(--r);background:linear-gradient(135deg,#FFFBD1,#F4F28A);border:1.5px solid #ECE77A;margin-bottom:14px}
+.banner b{display:block;font-family:Fredoka;font-size:17px;font-weight:600}
+.banner span{font-size:13px;font-weight:700;color:#5c5a1a}
+.lvl{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.lvl b{font-family:Fredoka;font-size:22px;font-weight:700}
+.lvl small{font-weight:800;color:var(--ink3);font-size:12.5px}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.kv div{background:#FBF1F7;border-radius:14px;padding:10px;text-align:center}
+.kv b{font-family:Fredoka;font-size:18px;display:block;color:var(--plum)}
+.kv span{font-size:11.5px;font-weight:800;color:var(--ink3)}
+.steps{margin:10px 0 0;padding-left:20px;color:var(--ink2);font-weight:600;font-size:14px;line-height:1.5}
+.steps li{margin-bottom:6px}
+.code{display:block;padding:10px 12px;border-radius:12px;background:#F7EEF4;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;word-break:break-all;color:var(--ink);margin:8px 0}
+.note{font-size:13px;font-weight:700;color:#9a5300;background:#FFF0DE;border-radius:12px;padding:10px 12px;margin-top:10px;line-height:1.45}
+.cityres{display:grid;gap:8px;margin-top:10px}
+.ringin .big.sm{font-size:44px}
+.set .row{flex-wrap:nowrap}
+.setcol{padding:12px 0;border-bottom:1.5px solid var(--line);font-weight:700}
+.setcol:last-child{border-bottom:0}
+.setcol small{display:block;color:var(--ink3);font-weight:700;font-size:12.5px;margin-bottom:8px}
+.times{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.times label{font-size:12px;font-weight:800;color:var(--ink3);display:grid;gap:4px}
+.times .inp{padding:10px;font-size:15px}
+.chartwrap{position:relative;margin-top:8px}
+svg.lc{width:100%;height:auto;display:block;touch-action:pan-y;overflow:visible}
+.ctip{position:absolute;transform:translate(-50%,calc(-100% - 12px));background:var(--ink);color:#fff;padding:6px 10px;border-radius:10px;font-size:12px;font-weight:700;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .12s;z-index:2}
+.ctip.show{opacity:1}.ctip b{display:block;font-size:13px}
+.bodyhead{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap}
+.bigv{font-family:Fredoka;font-size:30px;font-weight:700;font-variant-numeric:tabular-nums}
+.delta{font-weight:800;font-size:12.5px;padding:5px 10px;border-radius:999px}
+.delta.down{background:#E1F7F2;color:#137a68}.delta.up{background:#F3E6F8;color:#6E2C82}
+details.tbl summary{cursor:pointer;font-weight:800;color:var(--ink2);font-size:13px;margin-top:12px}
+table.bt{width:100%;border-collapse:collapse;font-size:13.5px;font-variant-numeric:tabular-nums;margin-top:8px}
+table.bt th{text-align:left;font-size:11.5px;color:var(--ink3);font-weight:800;padding:6px 4px;border-bottom:1.5px solid var(--line)}
+table.bt td{padding:7px 4px;border-bottom:1px solid var(--line);font-weight:700}
+.linkbtn{padding:4px;color:var(--ink3);border-radius:8px}
+button.chal{width:100%;text-align:left}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<div class="tabs"><nav id="tabs"></nav></div>
+<div class="ov" id="ov"></div>
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- ICONS ---------- */
+const IC={
+ core:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/>',
+ lower:'<path d="M4 19l5-7 4 3 7-10"/><path d="M15 5h5v5"/>',
+ upper:'<path d="M3 9.5v5M6 7.5v9M18 7.5v9M21 9.5v5M6 12h12"/>',
+ cardio:'<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.3a4.2 4.2 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"/>',
+ warm:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/>',
+ stretch:'<path d="M2.5 12c2.4-5 4.8 5 7.2 0s4.8 5 7.2 0 3.4-2 4.6 0"/>',
+ rest:'<path d="M20 14.5A8.2 8.2 0 1 1 9.5 4a6.4 6.4 0 0 0 10.5 10.5z"/>',
+ flame:'<path d="M12 21c-4 0-6.5-2.7-6.5-6.2 0-3.6 2.8-5.4 3.6-8.8 2 1.2 3 3 3 4.6 1-.6 1.7-1.7 1.9-3.1 2.2 1.6 3.5 4.1 3.5 7.3 0 3.5-2.5 6.2-5.5 6.2z"/>',
+ home:'<path d="M4 11l8-6.5 8 6.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/>',
+ plan:'<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+ lib:'<rect x="4" y="4" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2"/>',
+ me:'<circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20.5c1.2-3.8 4-5.6 7.5-5.6s6.3 1.8 7.5 5.6"/>',
+ play:'<path d="M8 5.5v13l11-6.5z" fill="currentColor"/>',
+ pause:'<path d="M8 5.5v13M16 5.5v13" stroke-width="3.2"/>',
+ next:'<path d="M6 6l8 6-8 6zM17.5 6v12" fill="currentColor"/>',
+ prev:'<path d="M18 6l-8 6 8 6zM6.5 6v12" fill="currentColor"/>',
+ x:'<path d="M6 6l12 12M18 6L6 18"/>',
+ dice:'<rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="9" cy="9" r="1.3" fill="currentColor"/><circle cx="15" cy="15" r="1.3" fill="currentColor"/><circle cx="15" cy="9" r="1.3" fill="currentColor"/><circle cx="9" cy="15" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/>',
+ bulb:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3z"/>',
+ check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+ trophy:'<path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20.5h7M10 17h4"/>',
+ volume:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>',
+ chev:'<path d="M9 6l6 6-6 6"/>',
+ db:'<path d="M3 9.5v5M6 7.5v9M18 7.5v9M21 9.5v5M6 12h12"/>',
+ walk:'<circle cx="13.5" cy="4.5" r="1.9"/><path d="M9.5 21l2.6-6.4 2.9 2.6V21M12.1 14.6L11 9.6l-3.2 2.6v3M11 9.6l3.3 1.7 2.6 3.2"/>',
+ stairs:'<path d="M3 20h5v-4.5h4.5V11H17V6.5h4"/>',
+ sun:'<circle cx="12" cy="12" r="4.3"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>',
+ cloud:'<path d="M7 18.5h10.2a4 4 0 0 0 .4-8 6 6 0 0 0-11.4-1A4.5 4.5 0 0 0 7 18.5z"/>',
+ rainc:'<path d="M7 15h10.2a4 4 0 0 0 .4-8 6 6 0 0 0-11.4-1A4.5 4.5 0 0 0 7 15z"/><path d="M9 18l-1 2.5M13 18l-1 2.5M17 18l-1 2.5"/>',
+ snow:'<path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9M9.5 4.5L12 7l2.5-2.5M9.5 19.5L12 17l2.5 2.5"/>',
+ fog:'<path d="M4 9h16M6 13h12M4 17h16"/>',
+ wind:'<path d="M3 9h11a3 3 0 1 0-3-3M3 15h15a3 3 0 1 1-3 3M3 12h8"/>',
+ shirt:'<path d="M8.5 4L4 7l2 3.5 2-1V20h8V9.5l2 1L20 7l-4.5-3c-.6 1.5-1.9 2.4-3.5 2.4S9.1 5.5 8.5 4z"/>',
+ hat:'<path d="M5 16a7 7 0 0 1 14 0z"/><path d="M4 16h16v2.6H4z"/><circle cx="12" cy="6.3" r="1.4"/>',
+ hand:'<path d="M8 12V6.5a1.5 1.5 0 0 1 3 0V11M11 10V5a1.5 1.5 0 0 1 3 0v6M14 10.5V7a1.5 1.5 0 0 1 3 0v6.5a7 7 0 0 1-7 7h-.3A5.7 5.7 0 0 1 4 14.8V13a1.5 1.5 0 0 1 3 0v1"/>',
+ boot:'<path d="M8 3h5.5v9.5l5 2.4c1 .5 1.5 1.4 1.5 2.4V19H5V12.5z"/><path d="M5 21h15"/>',
+ drop:'<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',
+ clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+ pin:'<path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',
+ feet:'<path d="M8 3c1.6 0 2.4 2 2.4 4.4S9.5 12 8 12s-2.4-2.2-2.4-4.6S6.4 3 8 3zM6 14h4v1.8a2 2 0 0 1-4 0zM16 7c1.6 0 2.4 2 2.4 4.4S17.5 16 16 16s-2.4-2.2-2.4-4.6S14.4 7 16 7zM14 18h4v.8a2 2 0 0 1-4 0z"/>',
+ link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+ refresh:'<path d="M20 11a8 8 0 1 0-2.3 5.7M20 4.5V11h-6.5"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',
+ scale:'<rect x="3.5" y="4" width="17" height="16" rx="4"/><path d="M8.3 10a5 5 0 0 1 7.4 0M12 10.5l1.6-1.8"/>',
+ watch:'<rect x="6" y="6" width="12" height="12" rx="3.5"/><path d="M9 6l.6-3h4.8L15 6M9 18l.6 3h4.8L15 18M12 9.5V12l1.6 1"/>'
+};
+function svg(name,size=24,color='currentColor',sw=2.2){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[name]||''}</svg>`}
+const FOCUS={
+ core:{label:'Core',color:'#F2559A',bg:'#FDE7F1'},
+ lower:{label:'Legs & glutes',color:'#8E3AA6',bg:'#F3E6F8'},
+ upper:{label:'Arms & upper body',color:'#8A8700',bg:'#F7F6C7'},
+ cardio:{label:'Gentle cardio',color:'#FF6F61',bg:'#FFE9E6'},
+ warm:{label:'Warm-up',color:'#E88A1A',bg:'#FFF0DE'},
+ stretch:{label:'Stretch',color:'#1F9E88',bg:'#E1F7F2'},
+ walk:{label:'Walk',color:'#2E7FBF',bg:'#E2F0FA'},
+ home:{label:'Around the house',color:'#E88A1A',bg:'#FFF0DE'},
+ full:{label:'Full body',color:'#8E3AA6',bg:'#F3E6F8'},
+ burn:{label:'Gentle burn',color:'#FF6F61',bg:'#FFE9E6'}
+};
+const ICON_OF={full:'lower',burn:'cardio',home:'home'};
+const PLACE={bed:'In bed',seat:'Couch or chair',stand:'Standing',house:'Around the house',stairs:'On the stairs',out:'Outside'};
+const EQUIP={db:'Dumbbells (2, 3 & 5 lb)',chair:'Sturdy chair',bottles:'Water bottles',pillow:'Pillow',towel:'Towel'};
+const HOMES={apt:'Apartment or condo',one:'One-floor home',two:'Two or more floors',split:'Split-level (a few steps)'};
+
+/* ---------- EXERCISES ---------- */
+const EX=[
+ // CORE
+ {id:'deadbug',n:'Dead Bug',p:['bed'],f:'core',i:2,c:['Lie on your back, arms reaching up, knees bent over your hips.','Slowly lower your right arm and left leg toward the bed.','Bring them back and switch. Keep your lower back pressed down.'],easy:'Keep both arms up and just lower one leg at a time.'},
+ {id:'pelvictilt',n:'Pelvic Tilts',p:['bed'],f:'warm',i:1,c:['Lie on your back, knees bent, feet flat.','Gently flatten your lower back into the mattress by tightening your belly.','Release and repeat slowly with your breath.'],easy:'Make the movement tiny. Small is fine.'},
+ {id:'toetaps',n:'Alternating Toe Taps',p:['bed'],f:'core',i:2,c:['Lie on your back with knees bent over your hips.','Slowly lower one foot to tap the bed, then bring it back.','Switch legs. Belly button stays pulled in.'],easy:'Start with feet resting on the bed and lift one knee at a time.'},
+ {id:'revcrunch',n:'Reverse Crunch',p:['bed'],f:'core',i:2,c:['Lie on your back, knees bent, hands by your sides.','Use your lower belly to curl your knees toward your chest.','Lower slowly. No swinging.'],easy:'Make the curl smaller and slower.'},
+ {id:'bicycle',n:'Slow Bicycles',p:['bed'],f:'core',i:3,c:['Lie on your back, hands lightly behind your head.','Bring one knee in as you turn the opposite elbow toward it.','Switch sides slowly, like pedalling in slow motion.'],easy:'Keep your head down and just do the leg part.'},
+ {id:'legraise',n:'Bent-Knee Leg Raises',p:['bed'],f:'core',i:2,c:['Lie on your back, knees bent, feet on the bed.','Lift both feet so your knees come over your hips.','Lower slowly until your toes just touch the bed.'],easy:'Lift one leg at a time.'},
+ {id:'flutter',n:'Flutter Kicks',p:['bed'],f:'core',i:3,c:['Lie on your back, hands under your hips.','Lift both legs a little and take small, quick kicks.','Keep your lower back heavy on the bed.'],easy:'Bend your knees and lift the legs higher.'},
+ {id:'leanback',n:'Seated Lean-Back Hold',p:['seat'],f:'core',i:2,c:['Sit near the edge of the couch, feet flat.','Cross your arms and lean back a little until your belly switches on.','Hold and breathe. Sit tall, don\'t slump.'],easy:'Lean back only a few inches.'},
+ {id:'seatedtwist',n:'Seated Twists',p:['seat'],f:'core',i:1,opt:'Hold a water bottle or a 2-lb dumbbell',c:['Sit tall with your hands together at your chest.','Turn your upper body to the right, then to the left.','Move from your waist, hips stay still.'],easy:'Twist slowly with no weight.'},
+ {id:'kneetuck',n:'Seated Knee Tucks',p:['seat'],f:'core',i:2,c:['Sit on the edge, hands holding the seat beside you.','Lean back slightly and lift your feet.','Pull your knees toward your chest, then stretch your legs out.'],easy:'Keep one foot on the floor and tuck one knee at a time.'},
+ {id:'sidebend',n:'Seated Side Bends',p:['seat'],f:'core',i:1,s:true,opt:'Hold a 3-lb dumbbell in one hand',c:['Sit tall, one hand behind your head.','Lean sideways toward the other hip, then lift back up.','Switch sides halfway.'],easy:'Skip the weight and keep the bend small.'},
+ {id:'birddog',n:'Bird Dog',p:['bed'],f:'core',i:2,c:['Get on hands and knees on the bed or floor.','Reach your right arm forward and left leg back.','Hold for a breath, return and switch.'],easy:'Slide just one leg back, keep hands down.'},
+ {id:'sideplank',n:'Knee Side Plank',p:['bed'],f:'core',i:3,s:true,c:['Lie on your side, propped on your forearm, knees bent.','Lift your hips so you make a straight line from knees to head.','Hold, then switch sides halfway.'],easy:'Lift and lower your hips instead of holding.'},
+ {id:'standcrunch',n:'Standing Knee-to-Elbow',p:['stand','house'],f:'core',i:2,c:['Stand tall, hands lightly behind your head.','Lift one knee and bring the opposite elbow down to meet it.','Switch sides with a steady rhythm.'],easy:'Hold the counter with one hand and just lift your knees.'},
+ {id:'counterplank',n:'Counter Plank',p:['house'],f:'core',i:2,c:['Rest your forearms on the kitchen counter and walk your feet back.','Make a straight line from your head to your heels.','Hold and breathe. Squeeze your belly and glutes.'],easy:'Step your feet closer to the counter.'},
+ // LOWER
+ {id:'bridge',n:'Glute Bridge',p:['bed'],f:'lower',i:1,opt:'Rest a 5-lb dumbbell on your hips',c:['Lie on your back, knees bent, feet hip-width apart.','Squeeze your glutes and lift your hips up.','Pause at the top, lower slowly.'],easy:'Lift your hips just a little.'},
+ {id:'clamshell',n:'Clamshells',p:['bed'],f:'lower',i:1,s:true,c:['Lie on your side with knees bent and stacked.','Keep your feet together and open your top knee like a clam.','Close slowly. Switch sides halfway.'],easy:'Open only partway.'},
+ {id:'sideleg',n:'Side-Lying Leg Lifts',p:['bed'],f:'lower',i:1,s:true,c:['Lie on your side, bottom knee bent for balance.','Lift your straight top leg up toward the ceiling.','Lower with control. Switch sides halfway.'],easy:'Bend the top knee too.'},
+ {id:'sittostand',n:'Sit-to-Stand',p:['seat'],f:'lower',i:2,opt:'Hold a 5-lb dumbbell at your chest',c:['Sit on the edge of the couch or chair, feet hip-width.','Lean forward and stand up, pushing through your heels.','Sit back down slowly, like you\'re barely touching the seat.'],easy:'Use your hands on your knees to help push up.'},
+ {id:'legext',n:'Seated Leg Extensions',p:['seat'],f:'lower',i:1,c:['Sit tall, holding the edge of the seat.','Straighten one leg out in front and squeeze your thigh.','Lower and switch legs.'],easy:'Lift the leg only halfway.'},
+ {id:'calfraise',n:'Calf Raises',p:['stand','house'],f:'lower',i:1,c:['Stand behind the couch or at the counter, hands resting on it.','Rise up onto your toes.','Lower slowly back down.'],easy:'Raise both heels just a little.'},
+ {id:'donkey',n:'Donkey Kicks',p:['bed'],f:'lower',i:2,s:true,c:['On hands and knees, keep one knee bent at 90°.','Press that foot up toward the ceiling, squeezing your glute.','Lower and repeat. Switch sides halfway.'],easy:'Make the lift smaller.'},
+ {id:'chairsquat',n:'Goblet Chair Squat',p:['seat'],f:'lower',i:3,req:'db',c:['Hold a 5-lb dumbbell at your chest, stand in front of the couch.','Sit your hips back until you lightly tap the seat.','Stand up tall and squeeze your glutes.'],easy:'Do it without the dumbbell.'},
+ {id:'wallsit',n:'Wall Sit',p:['house'],f:'lower',i:3,c:['Stand with your back flat against a wall, feet a step out.','Slide down until your knees are bent, like sitting in an invisible chair.','Hold and breathe. Push back up when the timer says rest.'],easy:'Slide only a little way down.'},
+ {id:'countersquat',n:'Counter-Hold Squats',p:['house'],f:'lower',i:1,c:['Stand facing the kitchen counter, hands resting on the edge.','Sit your hips back and down like you\'re reaching for a chair.','Stand back up and squeeze your glutes.'],easy:'Make the squat shallower.'},
+ {id:'sidesteps',n:'Counter Side Steps',p:['house'],f:'lower',i:1,c:['Stand side-on to the counter with a light hand on it.','Bend your knees a little and step sideways along the counter.','Step back the other way. Stay low the whole time.'],easy:'Stand taller and take smaller steps.'},
+ {id:'laundrysquat',n:'Laundry Basket Squats',p:['house'],f:'lower',i:2,opt:'Add a few folded towels to the basket',c:['Hold a light laundry basket at your chest.','Squat down as if sitting on a chair, chest up.','Stand up tall. Keep the basket close.'],easy:'Do it without the basket.'},
+ {id:'counterkick',n:'Counter Back Kicks',p:['house'],f:'lower',i:1,s:true,c:['Hold the counter with both hands, stand tall.','Kick one straight leg back behind you and squeeze your glute.','Lower with control. Switch legs halfway.'],easy:'Make the kick smaller.'},
+ // UPPER
+ {id:'curl',n:'Bicep Curls',p:['seat'],f:'upper',i:1,req:'db',c:['Sit tall holding a dumbbell in each hand, palms up.','Curl the weights up toward your shoulders.','Lower slowly. Elbows stay by your sides.'],easy:'Use the 2-lb dumbbells.'},
+ {id:'press',n:'Overhead Press',p:['seat'],f:'upper',i:2,req:'db',c:['Sit tall, dumbbells at shoulder height.','Press them up over your head.','Lower back to your shoulders with control.'],easy:'Use 2-lb dumbbells or one arm at a time.'},
+ {id:'row',n:'Seated Rows',p:['seat'],f:'upper',i:2,req:'db',c:['Sit on the edge, lean forward with a flat back.','Pull the dumbbells up toward your ribs.','Squeeze your shoulder blades, then lower.'],easy:'Use the 2-lb dumbbells.'},
+ {id:'chestpress',n:'Lying Chest Press',p:['bed'],f:'upper',i:2,req:'db',c:['Lie on your back, knees bent, dumbbells by your chest.','Press them straight up toward the ceiling.','Lower slowly until your elbows touch the bed.'],easy:'Use the 2-lb dumbbells.'},
+ {id:'bottlecurl',n:'Water Bottle Curls',p:['seat'],f:'upper',i:1,req:'bottles',c:['Hold a full water bottle in each hand.','Curl them up toward your shoulders.','Lower slowly.'],easy:'Use half-full bottles.'},
+ {id:'incline',n:'Couch Incline Push-Ups',p:['stand'],f:'upper',i:3,c:['Place hands on the couch arm or bed edge, body in a straight line.','Bend your elbows and lower your chest toward it.','Push back up.'],easy:'Use a wall instead of the couch.'},
+ {id:'dips',n:'Couch Triceps Dips',p:['seat'],f:'upper',i:3,c:['Sit on the edge, hands beside your hips, fingers forward.','Slide off the seat and bend your elbows to lower a little.','Press back up. Keep your back close to the couch.'],easy:'Keep your feet close and dip only slightly.'},
+ {id:'counterpush',n:'Kitchen Counter Push-Ups',p:['house'],f:'upper',i:2,c:['Place your hands on the counter edge, a bit wider than your shoulders.','Walk your feet back so your body makes a straight line.','Lower your chest toward the counter, then push back.'],easy:'Step your feet closer to the counter.'},
+ {id:'wallpush',n:'Wall Push-Ups',p:['house','stand'],f:'upper',i:1,c:['Stand an arm\'s length from a wall, hands flat at shoulder height.','Bend your elbows and lean your chest toward the wall.','Push back to start.'],easy:'Stand a little closer to the wall.'},
+ {id:'punch',n:'Seated Punches',p:['seat','stand'],f:'cardio',i:2,opt:'Hold your 2-lb dumbbells',c:['Sit tall, fists at your chin.','Punch one arm forward, then the other, quickly.','Twist slightly from your waist.'],easy:'Punch slower, no weights.'},
+ {id:'armcircles',n:'Arm Circles',p:['seat','stand'],f:'warm',i:1,c:['Reach your arms out to the sides.','Make small circles forward.','Halfway, switch to backward circles.'],easy:'Lower your arms for a moment, then continue.'},
+ // CARDIO
+ {id:'seatedmarch',n:'Seated March',p:['seat'],f:'warm',i:1,c:['Sit tall near the edge.','March your knees up one at a time.','Pump your arms to match.'],easy:'Lift your heels instead of your whole leg.'},
+ {id:'seatedjacks',n:'Seated Jacks',p:['seat'],f:'cardio',i:2,c:['Sit on the edge, feet together, arms down.','Tap your feet out wide as your arms go up overhead.','Bring them back in. Keep a steady rhythm.'],easy:'Do just the arms.'},
+ {id:'standmarch',n:'Standing March',p:['stand','house'],f:'cardio',i:2,c:['Stand tall, hold the couch if you need to.','March in place, lifting your knees high.','Swing your arms.'],easy:'March slower with lower knees.'},
+ {id:'stepjack',n:'Step Jacks (no jumping)',p:['stand'],f:'cardio',i:3,c:['Stand with your feet together.','Step one foot out wide as your arms go overhead.','Step back in and switch sides.'],easy:'Keep your arms at shoulder height.'},
+ {id:'lyingmarch',n:'Lying March',p:['bed'],f:'warm',i:1,c:['Lie on your back, knees bent.','Lift one foot a little off the bed, then the other.','Keep your belly gently tight.'],easy:'Slide your heel instead of lifting.'},
+ {id:'speedbag',n:'Speed Bag Arms',p:['seat','bed'],f:'cardio',i:1,c:['Bring your fists up in front of your chest.','Roll them around each other quickly.','Switch direction halfway.'],easy:'Go slower.'},
+ {id:'hallway',n:'Hallway Laps',p:['house'],f:'cardio',i:1,c:['Walk briskly from one end of your home to the other.','Turn and come back. Swing your arms.','Pick up the pace on each lap if you feel good.'],easy:'Walk at a comfortable pace.'},
+ {id:'roomtour',n:'Room-to-Room Power Walk',p:['house'],f:'cardio',i:2,c:['Walk a loop through every room on this floor.','Take big steps and pump your arms.','Touch a doorframe in each room before moving on.'],easy:'Skip a room or two and slow down.'},
+ {id:'tidysprint',n:'Tidy-Up Sprint',p:['house'],f:'cardio',i:2,c:['Pick a room and move fast, putting things back where they belong.','Squat down to pick things up, don\'t bend from your back.','Keep moving until the timer ends.'],easy:'Move at your normal pace.'},
+ // STAIRS
+ {id:'stairclimb',n:'Stair Climbs',p:['stairs'],f:'cardio',i:2,c:['Hold the railing and walk up the full flight at a steady pace.','Turn at the top and walk down carefully, still holding the railing.','Repeat until the timer ends.'],easy:'Climb halfway and come back down.'},
+ {id:'stepup',n:'Bottom-Step Step-Ups',p:['stairs'],f:'lower',i:1,s:true,c:['Stand at the bottom of the stairs, a hand on the railing.','Step up onto the first step with one foot, then bring the other up.','Step back down. Switch the leading foot halfway.'],easy:'Tap your foot on the step instead of stepping up.'},
+ {id:'stepcalf',n:'Stair Calf Raises',p:['stairs'],f:'lower',i:2,c:['Stand on the bottom step with your heels hanging off, holding the railing.','Rise up onto your toes.','Lower your heels slowly below the step.'],easy:'Do it on flat floor instead.'},
+ {id:'stairpush',n:'Stair Incline Push-Ups',p:['stairs'],f:'upper',i:2,c:['Place your hands on the third or fourth step.','Walk your feet back so your body makes a straight line.','Lower your chest toward the step, then push back up.'],easy:'Put your hands on a higher step.'},
+ {id:'steptap',n:'Bottom-Step Toe Taps',p:['stairs'],f:'cardio',i:2,c:['Face the stairs, a hand on the railing.','Tap one foot on the first step, then the other, quickly.','Keep a light, steady rhythm like marching.'],easy:'Go slower.'},
+ {id:'doublestep',n:'Every-Other-Step Climb',p:['stairs'],f:'lower',i:3,c:['Hold the railing and climb by skipping every other step.','Push through your whole foot and squeeze your glutes.','Walk down normally, one step at a time.'],easy:'Climb one step at a time.'},
+ {id:'stairdips',n:'Stair Triceps Dips',p:['stairs'],f:'upper',i:3,c:['Sit on the second step, hands beside your hips, fingers forward.','Lift your hips and bend your elbows to lower a little.','Press back up.'],easy:'Keep your feet close and dip only slightly.'},
+ // STRETCH
+ {id:'kneechest',n:'Knee-to-Chest Hug',p:['bed'],f:'stretch',i:1,s:true,c:['Lie on your back.','Hug one knee toward your chest and breathe.','Switch legs halfway.'],easy:'Hold behind your thigh instead of your knee.'},
+ {id:'supinetwist',n:'Lying Spinal Twist',p:['bed'],f:'stretch',i:1,s:true,c:['Lie on your back, knees bent.','Let both knees fall gently to one side.','Look the other way. Switch halfway.'],easy:'Put a pillow under your knees.'},
+ {id:'childpose',n:'Child\'s Pose',p:['bed'],f:'stretch',i:1,c:['Kneel and sit back toward your heels.','Fold forward and reach your arms out.','Let your forehead rest down. Breathe slowly.'],easy:'Put a pillow under your chest.'},
+ {id:'forwardfold',n:'Seated Forward Fold',p:['seat'],f:'stretch',i:1,c:['Sit on the edge, feet wide.','Let your chest fold toward your knees.','Let your arms and head hang heavy.'],easy:'Rest your forearms on your thighs.'},
+ {id:'neckroll',n:'Neck & Shoulder Rolls',p:['seat','bed'],f:'stretch',i:1,c:['Sit tall and relax your shoulders.','Roll your shoulders back slowly.','Gently tip your ear toward each shoulder.'],easy:'Keep the movements tiny.'},
+ {id:'cobra',n:'Gentle Cobra',p:['bed'],f:'stretch',i:1,c:['Lie on your belly, hands under your shoulders.','Press up gently to lift your chest.','Keep your hips down and breathe.'],easy:'Stay on your forearms.'},
+ {id:'catcow',n:'Cat-Cow',p:['bed'],f:'warm',i:1,c:['On hands and knees.','Breathe in, drop your belly and lift your chest.','Breathe out, round your back like a cat.'],easy:'Do it seated with hands on your knees.'},
+ {id:'figure4',n:'Seated Figure-4',p:['seat'],f:'stretch',i:1,s:true,c:['Sit tall and cross one ankle over the other knee.','Lean forward gently until you feel your hip stretch.','Switch sides halfway.'],easy:'Don\'t lean forward, just sit tall.'},
+ {id:'doorstretch',n:'Doorway Chest Stretch',p:['house'],f:'stretch',i:1,c:['Stand in a doorway with your forearms on the frame at shoulder height.','Step one foot forward and lean gently until your chest opens up.','Breathe slowly. Don\'t push into pain.'],easy:'Use one arm at a time.'},
+ {id:'standquad',n:'Standing Quad Stretch',p:['stand','house'],f:'stretch',i:1,s:true,c:['Hold the counter or a wall for balance.','Bend one knee and hold your ankle behind you.','Keep your knees side by side. Switch halfway.'],easy:'Rest your foot on a chair behind you instead.'},
+ {id:'standreach',n:'Standing Side Reach',p:['stand','house'],f:'stretch',i:1,s:true,c:['Stand tall with your feet hip-width apart.','Reach one arm up and over toward the other side.','Breathe into your side ribs. Switch halfway.'],easy:'Keep your hand on your hip and lean less.'},
+ {id:'heeltoe',n:'Heel-to-Toe Hallway Walk',p:['house'],f:'warm',i:1,c:['Walk slowly down the hallway, placing one heel right in front of the other toes.','Keep your eyes forward and arms out for balance.','Turn and come back. Touch the wall if you need to.'],easy:'Walk normally with slow, careful steps.'},
+ // WALKS (used by guided walks, hidden from the library)
+ {id:'walkeasy',n:'Easy Walk',p:['out'],f:'walk',c:['Walk at a relaxed pace, like a stroll.','Let your arms swing loosely and breathe easy.','You should be able to sing a line of a song.'],easy:'Slow down as much as you need.'},
+ {id:'walkbrisk',n:'Brisk Walk',p:['out'],f:'walk',c:['Pick up the pace, like you\'re running a little late.','Take shorter, quicker steps and pump your arms.','You can talk, but you can\'t sing.'],easy:'Drop back to an easy pace for a minute.'},
+ {id:'walkhouse',n:'House Walk',p:['house'],f:'walk',c:['Walk a loop through your home: hallway, kitchen, living room.','Keep a steady pace and swing your arms.','Turn around wherever you run out of room.'],easy:'Walk slower, or march in place.'},
+ {id:'walkbriskin',n:'Brisk House Laps',p:['house'],f:'walk',c:['Speed up your loop through the house.','Lift your knees a little higher and pump your arms.','Every few laps, add a few extra steps around the kitchen island or table.'],easy:'March in place at your own pace.'}
+];
+const EXM=Object.fromEntries(EX.map(e=>[e.id,e]));
+
+/* ---------- DATES ---------- */
+const ds=d=>{d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const hm=d=>{d=d||new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
+function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}
+function dayOf(s){return new Date(s+'T12:00')}
+function dow(d){return (d.getDay()+6)%7}
+function mondayOf(d){d=d||new Date();return addDays(d,-dow(d))}
+function toMin(s){const [h,m]=String(s||'0:0').split(':').map(Number);return (h||0)*60+(m||0)}
+function nowMin(){const d=new Date();return d.getHours()*60+d.getMinutes()}
+function t12(min){const d=new Date();d.setHours(Math.floor(min/60)%24,min%60,0,0);return d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}
+function h12(h){const d=new Date();d.setHours(h,0,0,0);return d.toLocaleTimeString([],{hour:'numeric'})}
+
+/* ---------- STATE ---------- */
+const KEY='snugfit-v1';
+const DEF={onboarded:false,voice:true,sound:true,equip:{db:true,chair:true,bottles:true,pillow:true,towel:true},history:[],planDone:[],energy:'low',place:'any',mins:7,focus:'core',tipIdx:0,
+ home:'one',stairs:false,level:1,levelCount:0,lastProg:'',meals:{b:'08:00',l:'12:30',d:'18:00'},stepGoal:6000,walkGoal:20,
+ city:{name:'Calgary',lat:51.0447,lon:-114.0719},health:{},ch:[],chDone:[],wxm:{temp:-5,cond:'clear'},body:[],units:{w:'lb',l:'in'},goalKg:null};
+let S;
+try{const raw=JSON.parse(localStorage.getItem(KEY)||'{}');S=Object.assign(JSON.parse(JSON.stringify(DEF)),raw);
+ S.equip=Object.assign({},DEF.equip,raw.equip||{});S.meals=Object.assign({},DEF.meals,raw.meals||{});S.wxm=Object.assign({},DEF.wxm,raw.wxm||{});S.units=Object.assign({},DEF.units,raw.units||{});
+ if(raw.planDone&&raw.planDone.length&&!raw.ch)S.ch=[{id:'core28',start:ds()}];
+}catch(e){S=JSON.parse(JSON.stringify(DEF))}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+let TAB='home';
+try{const h=location.hash.replace('#','');if(['home','plan','moves','me'].includes(h))TAB=h}catch(e){}
+function activeDays(){return new Set(S.history.map(h=>h.date))}
+function streak(){const a=activeDays();let d=new Date();if(!a.has(ds(d)))d=addDays(d,-1);let n=0;while(a.has(ds(d))){n++;d=addDays(d,-1)}return n}
+function walkMinsOn(date){return S.history.filter(h=>h.walk&&h.date===date).reduce((a,h)=>a+(h.mins||0),0)}
+function workoutsOn(date){return S.history.filter(h=>!h.walk&&h.date===date).length}
+function stepsOn(date){const x=S.health[date];return x&&x.steps!=null?x.steps:null}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ---------- ONGOING PROGRAM ---------- */
+const LEVELS=[null,
+ {n:'Getting comfy',w:6,e:'low',walk:10},
+ {n:'Finding your rhythm',w:7,e:'low',walk:12},
+ {n:'Building steam',w:8,e:'med',walk:15},
+ {n:'Steady mover',w:10,e:'med',walk:20},
+ {n:'Strong & steady',w:12,e:'med',walk:25},
+ {n:'Spicy',w:12,e:'high',walk:30}];
+const LEVEL_UP=10;
+const WEEK=[
+ {k:'core',title:'Core Wake-Up',focus:'core',about:'Mostly core moves, plus a little legs, arms and gentle cardio. Bed and couch friendly.'},
+ {k:'house',title:'House Circuit',focus:'home',about:'Get off the couch and move around your home: hallway laps, counter moves and stairs if you have them.'},
+ {k:'full',title:'Full-Body Flow',focus:'full',about:'A balanced mix of core, legs, arms and gentle cardio.'},
+ {k:'rest',title:'Rest & Stretch',focus:'stretch',about:'A slow 5-minute stretch to help you recover. A short walk counts too.'},
+ {k:'burn',title:'Gentle Burn',focus:'burn',about:'Gentle cardio mixed with strength to raise your heart rate, with no jumping.'},
+ {k:'house2',title:'Weekend Home Mover',focus:'home',about:'A longer circuit around the house to start the weekend.'},
+ {k:'walk',title:'Long Easy Walk',focus:'walk',about:'Your longest walk of the week, outside if the weather allows or around the house if not.'}];
+function progSession(d){d=d||new Date();const w=WEEK[dow(d)];const L=LEVELS[S.level];
+ let title=w.title;if(w.k==='house2'&&S.stairs)title='Stairs & House Mix';
+ const mins=w.k==='rest'?5:w.k==='walk'?L.walk+10:L.w;
+ return Object.assign({},w,{title,mins,energy:w.k==='rest'?'low':L.e,date:ds(d)})}
+function progDone(date){return S.history.some(h=>h.prog&&h.date===date)}
+
+/* ---------- 28-DAY CORE COMEBACK (now an optional challenge) ---------- */
+const PLAN=(()=>{const wk=[[6,'low'],[8,'low'],[9,'med'],[10,'med']];
+ const pat=['core','full','core','rest','burn','core','rest'];
+ const T={core:'Core Wake-Up',full:'Full-Body Flow',burn:'Gentle Burn',rest:'Rest & Stretch'};
+ const out=[];for(let w=0;w<4;w++)for(let i=0;i<7;i++){const f=pat[i];out.push({day:w*7+i+1,week:w+1,kind:f,focus:f==='rest'?'stretch':f,mins:f==='rest'?5:wk[w][0],energy:f==='rest'?'low':(w===3&&f==='burn'?'high':wk[w][1]),title:T[f],rest:f==='rest'})}return out})();
+const WEEKS=['Wake up your core','Build the habit','Turn it up a notch','Strong & steady'];
+function curPlanDay(){for(const p of PLAN)if(!S.planDone.includes(p.day))return p;return null}
+
+/* ---------- CHALLENGES ---------- */
+const WEEKLY=[
+ {id:'w-mealwalk',name:'After-Meal Walker',desc:'Take 5 walks within 2 hours after a meal.',metric:'mealWalks',goal:5,unit:'walks',icon:'walk'},
+ {id:'w-house',name:'Around-the-House Week',desc:'Do 4 house or stair circuits.',metric:'house',goal:4,unit:'circuits',icon:'home'},
+ {id:'w-walk100',name:'100-Minute Walk Week',desc:'Walk 100 minutes in total, indoors or out.',metric:'walkMins',goal:100,unit:'min',icon:'walk'},
+ {id:'w-five',name:'Five & Done',desc:'Finish 5 workouts of any length.',metric:'workouts',goal:5,unit:'workouts',icon:'core'},
+ {id:'w-steps',name:'Step It Up',desc:'Hit your step goal on 3 days.',metric:'stepDays',goal:3,unit:'days',icon:'feet'},
+ {id:'w-short',name:'Commercial Break Club',desc:'Squeeze in 6 workouts of 5 minutes or so.',metric:'short',goal:6,unit:'workouts',icon:'flame'},
+ {id:'w-active',name:'Show Up Daily',desc:'Move on all 7 days. Even a 5-minute walk counts.',metric:'activeDays',goal:7,unit:'days',icon:'check'}];
+const LONG=[
+ {id:'core28',name:'Core Comeback',days:28,plan:true,desc:'The original 28-day core plan. Short daily sessions from 6 to 10 minutes.',icon:'core'},
+ {id:'walk14',name:'14-Day Walk Streak',days:14,metric:'walkDays',goal:14,unit:'days',desc:'Take at least one walk every day for 14 days.',icon:'walk'},
+ {id:'house30',name:'30-Day Home Mover',days:30,metric:'house',goal:20,unit:'circuits',desc:'Do 20 house or stair circuits in 30 days.',icon:'home'},
+ {id:'walk1000',name:'1,000 Walking Minutes',days:60,metric:'walkMins',goal:1000,unit:'min',desc:'Walk 1,000 minutes in 60 days. That\'s about 17 a day.',icon:'walk'}];
+WEEKLY.forEach(w=>w.days=7);
+const CH=Object.fromEntries(WEEKLY.concat(LONG).map(c=>[c.id,c]));
+function weeklyNow(){const m=mondayOf();const n=Math.floor(dayOf(ds(m)).getTime()/(7*864e5));return WEEKLY[((n%WEEKLY.length)+WEEKLY.length)%WEEKLY.length]}
+function chWindow(c){const def=CH[c.id];return {start:c.start,end:ds(addDays(dayOf(c.start),def.days-1))}}
+function isMealTime(t){const x=toMin(t);return ['b','l','d'].some(k=>{const m=toMin(S.meals[k]);return x>=m&&x<=m+120})}
+function metric(m,hs,start,end){switch(m){
+ case 'workouts':return hs.filter(h=>!h.walk).length;
+ case 'walks':return hs.filter(h=>h.walk).length;
+ case 'mealWalks':return hs.filter(h=>h.walk&&h.t&&isMealTime(h.t)).length;
+ case 'walkMins':return hs.filter(h=>h.walk).reduce((a,h)=>a+(h.mins||0),0);
+ case 'house':return hs.filter(h=>h.kind==='house').length;
+ case 'short':return hs.filter(h=>!h.walk&&h.mins<=6).length;
+ case 'walkDays':return new Set(hs.filter(h=>h.walk).map(h=>h.date)).size;
+ case 'activeDays':return new Set(hs.map(h=>h.date)).size;
+ case 'stepDays':{let n=0;for(let d=dayOf(start);ds(d)<=end;d=addDays(d,1)){const x=S.health[ds(d)];if(x&&x.steps>=S.stepGoal)n++}return n}}
+ return 0}
+function chProg(c){const def=CH[c.id];if(def.plan)return {v:S.planDone.length,goal:28,unit:'days'};
+ const {start,end}=chWindow(c);const hs=S.history.filter(h=>h.date>=start&&h.date<=end);
+ return {v:Math.min(metric(def.metric,hs,start,end),def.goal),goal:def.goal,unit:def.unit}}
+function isWon(c){return S.chDone.some(x=>x.id===c.id&&x.start===c.start)}
+function pruneChallenges(){const t=ds();S.ch=S.ch.filter(c=>CH[c.id]&&(CH[c.id].plan?true:chWindow(c).end>=t))}
+function checkChallenges(){const won=[];for(const c of S.ch){if(isWon(c))continue;const p=chProg(c);if(p.v>=p.goal){S.chDone.push({id:c.id,start:c.start,date:ds()});won.push(CH[c.id].name)}}
+ if(won.length){save();setTimeout(()=>toast('Challenge complete: '+won[0]+'!'),900)}}
+function joinCh(id){const def=CH[id];if(S.ch.some(c=>c.id===id))return;const start=WEEKLY.includes(def)?ds(mondayOf()):ds();if(def.plan)S.planDone=[];S.ch.push({id,start});save();toast('Joined '+def.name+'. You\'ve got this!');render()}
+
+/* ---------- BUILDER ---------- */
+const ENERGY={low:{w:30,r:20,max:2,min:1,label:'Low energy'},med:{w:40,r:15,max:3,min:1,label:'Steady'},high:{w:45,r:15,max:3,min:2,label:'Spicy'}};
+function rng(seed){let s=(seed*2654435761)>>>0||7;return()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296}}
+function shuffle(a,r){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function okAvail(e){return e.f!=='walk'&&(!e.req||S.equip[e.req])&&(S.stairs||!e.p.every(x=>x==='stairs'))}
+function placeSet(place){if(place==='any')return null;if(place==='home'||place==='house')return ['house','stand'].concat(S.stairs?['stairs']:[]);if(place==='stairs')return ['stairs','stand'];return [place]}
+function okPlace(e,place){const set=placeSet(place);return !set||e.p.some(x=>set.includes(x))}
+function pick(f,place,E,r,n,used){
+ const base=e=>e.f===f&&okAvail(e);
+ const tiers=[e=>base(e)&&okPlace(e,place)&&e.i<=E.max&&e.i>=E.min,e=>base(e)&&okPlace(e,place),e=>base(e)&&(placeSet(place)===null||!e.p.every(x=>x==='bed'))];
+ const out=[];for(const t of tiers){for(const e of shuffle(EX.filter(t),r)){if(out.length>=n)break;if(!used.has(e.id)&&!out.includes(e)){out.push(e);used.add(e.id)}}if(out.length>=n)break}
+ return out}
+const RANK={bed:0,seat:1,stand:2,house:2,stairs:3,out:4};
+function build({mins,energy,place,focus,seed,title}){
+ const r=seed!=null?rng(seed):Math.random;const E=ENERGY[energy]||ENERGY.low;const used=new Set();const steps=[];
+ if(focus==='home')place='home';
+ const T=mins*60;
+ steps.push({type:'ready',secs:6});
+ if(focus==='stretch'){
+  const pool=pick('stretch',place,E,r,6,used).concat(pick('warm',place,E,r,3,used));
+  const n=Math.max(3,Math.floor(T/55));
+  for(let k=0;k<n;k++){const ex=pool[k%pool.length];steps.push({type:'work',ex,secs:45,phase:'Stretch'});if(k<n-1)steps.push({type:'rest',secs:10})}
+ } else {
+  const warm=pick('warm',place,E,r,2,used);
+  warm.forEach(ex=>{steps.push({type:'work',ex,secs:30,phase:'Warm-up'});steps.push({type:'rest',secs:10})});
+  const main=Math.max(90,T-160);const slot=E.w+E.r;const N=Math.max(3,Math.floor(main/slot));
+  const K=Math.min(N,6);
+  let order;
+  if(focus==='core')order=['core','core','lower','core','upper','cardio','core'];
+  else if(focus==='burn')order=['cardio','lower','upper','cardio','core','lower'];
+  else if(focus==='home')order=['cardio','lower','upper','cardio','lower','core'];
+  else order=['core','lower','upper','cardio','core','lower'];
+  const chosen=[];const want={};order.slice(0,K).forEach(f=>want[f]=(want[f]||0)+1);
+  const got={};for(const f in want)got[f]=pick(f,place,E,r,want[f],used);
+  const ptr={};order.slice(0,K).forEach(f=>{ptr[f]=ptr[f]||0;const e=got[f][ptr[f]++];if(e)chosen.push(e)});
+  const set=placeSet(place);const prim=e=>(set&&e.p.find(x=>set.includes(x)))||e.p[0];
+  chosen.sort((a,b)=>RANK[prim(a)]-RANK[prim(b)]);
+  for(let k=0;k<N;k++){const ex=chosen[k%chosen.length];steps.push({type:'work',ex,secs:E.w,phase:'Round '+(Math.floor(k/chosen.length)+1)});steps.push({type:'rest',secs:E.r})}
+  const cool=pick('stretch',place,E,r,2,used);
+  cool.forEach((ex,i)=>{steps.push({type:'work',ex,secs:30,phase:'Cool-down'});if(i<cool.length-1)steps.push({type:'rest',secs:10})});
+ }
+ return finalize(steps,title||'Quick Workout',{focus,energy,place});
+}
+function finalize(steps,title,extra){
+ for(let i=0;i<steps.length;i++)if(steps[i].type!=='work'){for(let j=i+1;j<steps.length;j++)if(steps[j].type==='work'){steps[i].next=steps[j].ex;break}}
+ const total=steps.reduce((a,s)=>a+s.secs,0);
+ return Object.assign({steps,total,title},extra||{});
+}
+/* Guided walk: easy warm-up, brisk/easy intervals, easy cool-down. Indoors adds stair climbs when the home has stairs. */
+function buildWalk(mins,indoor,title){
+ mins=Math.max(5,mins);const E=indoor?EXM.walkhouse:EXM.walkeasy,B=indoor?EXM.walkbriskin:EXM.walkbrisk;
+ const steps=[{type:'ready',secs:5}];let rem=mins*60-240;
+ steps.push({type:'work',ex:E,secs:120,phase:'Warm-up'});
+ let i=0;while(rem>=60){
+  if(i%2===0){const d=Math.min(180,rem);steps.push({type:'work',ex:B,secs:d,phase:'Brisk'});rem-=d}
+  else if(indoor&&S.stairs&&i%4===1){steps.push({type:'work',ex:EXM.stairclimb,secs:60,phase:'Stairs'});rem-=60}
+  else{const d=Math.min(120,rem);steps.push({type:'work',ex:E,secs:d,phase:'Easy'});rem-=d}
+  i++}
+ steps.push({type:'work',ex:E,secs:120+Math.max(0,rem),phase:'Cool-down'});
+ return finalize(steps,title||(indoor?'Indoor Walk':'Guided Walk'),{focus:'walk'});
+}
+
+/* ---------- WEATHER (Open-Meteo, free, no key) ---------- */
+const WXKEY='snugfit-wx';
+let WX={status:'idle',data:null,at:0};
+try{const c=JSON.parse(localStorage.getItem(WXKEY)||'null');if(c&&c.lat===S.city.lat&&c.lon===S.city.lon&&Date.now()-c.at<30*60e3)WX={status:'ok',data:c.data,at:c.at}}catch(e){}
+async function loadWeather(force){
+ if(WX.status==='loading')return;if(!force&&WX.status==='ok'&&Date.now()-WX.at<30*60e3)return;
+ WX={status:'loading',data:WX.data,at:WX.at};if(TAB==='home')render();
+ const {lat,lon}=S.city;
+ const url='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,wind_gusts_10m,uv_index,is_day&hourly=temperature_2m,apparent_temperature,precipitation_probability,weather_code,wind_speed_10m,uv_index,is_day&daily=sunrise,sunset,temperature_2m_min,temperature_2m_max&timezone=auto&forecast_days=1';
+ const aqUrl='https://air-quality-api.open-meteo.com/v1/air-quality?latitude='+lat+'&longitude='+lon+'&current=us_aqi,pm2_5&timezone=auto';
+ let ac=null,to=null;try{ac=new AbortController();to=setTimeout(()=>ac.abort(),8000)}catch(e){}
+ try{const res=await fetch(url,ac?{signal:ac.signal}:{});if(!res.ok)throw new Error('HTTP '+res.status);const data=await res.json();if(!data||!data.current)throw new Error('No data');
+  try{const ar=await fetch(aqUrl,ac?{signal:ac.signal}:{});if(ar.ok){const aj=await ar.json();if(aj&&aj.current&&aj.current.us_aqi!=null)data._aqi=aj.current.us_aqi}}catch(e){}
+  WX={status:'ok',data,at:Date.now()};try{localStorage.setItem(WXKEY,JSON.stringify({lat,lon,at:WX.at,data}))}catch(e){}
+ }catch(e){WX={status:'off',data:null,at:0}}
+ clearTimeout(to);if(TAB==='home')render();
+}
+function wxNow(){
+ if(WX.status==='ok'&&WX.data){const d=WX.data,c=d.current,dl=d.daily||{},h=d.hourly||{};
+  const ci=(h.time||[]).findIndex(t=>t.slice(0,13)===String(c.time).slice(0,13));
+  const at=(k)=>ci>=0&&h[k]?h[k][ci]:null;
+  return {live:true,temp:c.temperature_2m,feels:c.apparent_temperature,code:c.weather_code,wind:c.wind_speed_10m||0,uv:c.uv_index!=null?c.uv_index:(at('uv_index')||0),isDay:!!c.is_day,pp:at('precipitation_probability'),tmin:dl.temperature_2m_min?dl.temperature_2m_min[0]:null,tmax:dl.temperature_2m_max?dl.temperature_2m_max[0]:null,aqi:d._aqi!=null?Math.round(d._aqi):null}}
+ const m=S.wxm,cond=m.cond,hr=new Date().getHours(),t=Number(m.temp)||0;
+ const code={clear:0,cloudy:3,rain:61,snow:71,windy:2,icy:3}[cond]||0;const wind=cond==='windy'?35:8;
+ return {live:false,temp:t,feels:cond==='windy'?t-7:(t<5?t-3:t),code,wind,uv:(cond==='clear'&&t>12&&hr>9&&hr<17)?5:1,isDay:hr>=7&&hr<18,pp:null,ice:cond==='icy',tmin:null,tmax:null}
+}
+function wxIcon(c,day){if(c<=1)return day?'sun':'rest';if(c<=3)return 'cloud';if(c===45||c===48)return 'fog';if((c>=71&&c<=77)||c===85||c===86)return 'snow';return 'rainc'}
+function wxText(c){const T={0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Cloudy',45:'Fog',48:'Freezing fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',56:'Freezing drizzle',57:'Freezing drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',66:'Freezing rain',67:'Freezing rain',71:'Light snow',73:'Snow',75:'Heavy snow',77:'Snow grains',80:'Rain showers',81:'Rain showers',82:'Heavy showers',85:'Snow showers',86:'Heavy snow showers',95:'Thunderstorm',96:'Thunderstorm with hail',99:'Thunderstorm with hail'};return T[c]||'—'}
+/* What to wear: layers by feels-like temperature, then add-ons for wind, wet, ice, sun and darkness. */
+function wear(w){
+ const f=w.feels,c=w.code,items=[];
+ const rain=[51,53,55,61,63,65,80,81,82].includes(c),frz=[56,57,66,67].includes(c),snow=[71,73,75,77,85,86].includes(c),storm=c>=95,heavy=[65,67,75,82,86].includes(c);
+ const ice=!!(w.ice||frz||(snow&&w.temp>-6)||(w.tmin!=null&&w.tmax!=null&&w.tmin<0&&w.tmax>0));
+ let verdict='go',head='Good walking weather',max=null;
+ if(f<=-27||storm||heavy){verdict='indoor';head=storm?'Storms around. Walk indoors today':f<=-27?'Too cold for a safe walk. Stay in':'Heavy '+(snow?'snow':'rain')+'. Walk indoors today'}
+ else if(f<=-18){verdict='caution';head='Very cold. Keep it short';max=15}
+ else if(f>=32){verdict='caution';head='Very hot. Go early or late';max=20}
+ else if(ice){verdict='caution';head='Walkable, but watch for ice'}
+ else if(rain)head='Wet, but walkable';
+ else if(snow)head=f<-5?'Cold and snowy, but walkable':'Snowy walk weather';
+ else if(f<0)head='Cold but walkable';
+ if(w.aqi!=null&&verdict!=='indoor'){if(w.aqi>150){verdict='indoor';head='Smoky or unhealthy air. Walk indoors today'}else if(w.aqi>100){verdict='caution';head='Poor air quality. Keep it short and easy';max=Math.min(max||99,15)}}
+ if(f>=25)items.push(['shirt','Light, breathable top and shorts'],['hat','A cap or sun hat'],['drop','Bring water']);
+ else if(f>=18)items.push(['shirt','T-shirt with shorts or light leggings']);
+ else if(f>=10)items.push(['shirt','Long-sleeve top or a light layer'],['shirt','Leggings or joggers']);
+ else if(f>=3)items.push(['shirt','Light jacket or fleece'],['shirt','Long pants'],['hand','Light gloves if your hands run cold']);
+ else if(f>=-5)items.push(['shirt','Warm jacket over a long-sleeve top'],['hat','Toque'],['hand','Gloves'],['boot','Warm socks']);
+ else if(f>=-15)items.push(['shirt','Thermal base layer'],['shirt','Winter parka'],['hat','Toque that covers your ears'],['hand','Insulated mitts or gloves'],['wind','Scarf or neck warmer']);
+ else items.push(['shirt','Thermal base layer, top and bottom'],['shirt','Your warmest parka'],['hat','Warm toque'],['hand','Mitts (they\'re warmer than gloves)'],['wind','Face covering for the wind']);
+ if(snow||ice||f<-5)items.push(['boot',ice?'Winter boots with good grip. Add ice cleats if sidewalks are icy':'Winter boots with good grip']);
+ else items.push(['boot','Comfortable walking shoes']);
+ if(rain||frz)items.push(['drop','Waterproof jacket or an umbrella']);
+ if(w.wind>=25&&f<25)items.push(['wind','Windproof outer layer (wind '+Math.round(w.wind)+' km/h)']);
+ if(w.uv>=3&&f>=5)items.push(['sun','Sunscreen'+(w.uv>=6?', sunglasses and a hat':'')]);
+ if(!w.isDay)items.push(['bulb','Something reflective or a small light']);
+ if(w.aqi!=null&&w.aqi>100&&w.aqi<=150)items.push(['wind','Air quality index is '+w.aqi+'. Skip it if you have asthma or a heart or lung condition']);
+ if(f<=-15&&verdict!=='indoor')items.push(['clock','Cover exposed skin. Head home if your fingers or face go numb']);
+ return {verdict,head,items,max};
+}
+function bestTime(){if(WX.status!=='ok'||!WX.data)return null;const d=WX.data,h=d.hourly;if(!h||!h.time)return null;const cur=String(d.current.time).slice(0,13);let best=null;
+ for(let i=0;i<h.time.length;i++){if(h.time[i].slice(0,13)<cur||!(h.is_day&&h.is_day[i]))continue;const f=h.apparent_temperature[i];const pp=h.precipitation_probability?h.precipitation_probability[i]||0:0;const wd=h.wind_speed_10m?h.wind_speed_10m[i]||0:0;
+  const comfort=f>22?-(f-22):f<16?(f-16):0;const score=comfort-pp*0.15-wd*0.1;
+  if(!best||score>best.score)best={score,hour:+h.time[i].slice(11,13),f,pp}}
+ return best}
+function verdictNow(){return wear(wxNow()).verdict}
+function nextWalk(){
+ const n=nowMin(),walks=S.history.filter(h=>h.walk&&h.date===ds()&&h.t);
+ for(const [k,label] of [['b','breakfast'],['l','lunch'],['d','dinner']]){const m=toMin(S.meals[k]);const st=m+15,en=m+90;
+  if(walks.some(h=>{const t=toMin(h.t);return t>=m&&t<=m+120}))continue;
+  if(n<en)return {label:'After '+label,st,en,now:n>=st}}
+ if(walkMinsOn(ds())<S.walkGoal&&n<21*60+30)return {label:'Evening stroll',st:n,en:n+60,now:true};
+ return null}
+
+/* ---------- WEIGHT & WAIST CHECK-INS (stored in kg and cm) ---------- */
+const KG_LB=2.20462,CM_IN=2.54;
+const r1=v=>Math.round(v*10)/10;
+function wDisp(kg){return S.units.w==='lb'?kg*KG_LB:kg}
+function lDisp(cm){return S.units.l==='in'?cm/CM_IN:cm}
+function wIn(v){return S.units.w==='lb'?v/KG_LB:v}
+function lIn(v){return S.units.l==='in'?v*CM_IN:v}
+function fmtD(d){return dayOf(d).toLocaleDateString(undefined,{month:'short',day:'numeric'})}
+function bodySorted(){return S.body.slice().sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0)}
+function lastCheck(){const b=bodySorted();return b.length?b[b.length-1]:null}
+function checkDue(){const l=lastCheck();return !l||(dayOf(ds())-dayOf(l.date))/864e5>=7}
+function saveCheck(date,kg,cm,src){let e=S.body.find(x=>x.date===date);if(!e){e={date};S.body.push(e)}if(kg!=null)e.kg=kg;if(cm!=null)e.cm=cm;if(src)e.src=src;save()}
+const CHARTS={};
+function niceStep(x){const p=Math.pow(10,Math.floor(Math.log10(x)));const f=x/p;return (f<=1?1:f<=2?2:f<=5?5:10)*p}
+/* Single-series line: 2px line, 8px markers with a surface ring, recessive grid, last value labelled, tap/hover tooltip. */
+function lineChart(id,pts,unit,color,goal){
+ const W=320,H=160,L=36,R=46,T=16,B=26;
+ const vs=pts.map(p=>p.v).concat(goal!=null?[goal]:[]);let lo=Math.min(...vs),hi=Math.max(...vs);
+ if(hi-lo<2){const m=(hi+lo)/2;lo=m-1;hi=m+1}
+ const step=niceStep((hi-lo)/3);lo=Math.floor(lo/step)*step;hi=Math.ceil(hi/step)*step;
+ const t0=dayOf(pts[0].date).getTime(),span=dayOf(pts[pts.length-1].date).getTime()-t0;
+ const X=d=>span?L+(dayOf(d).getTime()-t0)/span*(W-L-R):L+(W-L-R)/2,Y=v=>T+(hi-v)/(hi-lo)*(H-T-B);
+ const dec=step<1?1:0;let g='';
+ for(let v=lo;v<=hi+1e-9;v+=step){const y=Y(v).toFixed(1);g+=`<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" stroke="#F3E4EE" stroke-width="1"/><text x="${L-6}" y="${(+y+3.5).toFixed(1)}" text-anchor="end" font-size="10" fill="#A597AE" font-weight="700">${v.toFixed(dec)}</text>`}
+ if(goal!=null){const y=Y(goal).toFixed(1);g+=`<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" stroke="#9DBA2A" stroke-width="1.5" stroke-dasharray="4 4"/><text x="${W-R+6}" y="${(+y+3.5).toFixed(1)}" font-size="10" fill="#6A5C75" font-weight="800">Goal</text>`}
+ const xs=pts.map(p=>X(p.date)),ys=pts.map(p=>Y(p.v)),n=pts.length;
+ const path=xs.map((x,i)=>(i?'L':'M')+x.toFixed(1)+' '+ys[i].toFixed(1)).join(' ');
+ const dots=pts.map((p,i)=>`<circle cx="${xs[i].toFixed(1)}" cy="${ys[i].toFixed(1)}" r="${i===n-1?5:4}" fill="${color}" stroke="#fff" stroke-width="2"/>`).join('');
+ const xl=`<text x="${xs[0].toFixed(1)}" y="${H-8}" font-size="10" fill="#A597AE" font-weight="700" text-anchor="${n>1?'start':'middle'}">${fmtD(pts[0].date)}</text>`+(n>1?`<text x="${xs[n-1].toFixed(1)}" y="${H-8}" font-size="10" fill="#A597AE" font-weight="700" text-anchor="end">${fmtD(pts[n-1].date)}</text>`:'');
+ CHARTS[id]={xs,ys,pts,unit,W,H};
+ return `<div class="chartwrap"><svg class="lc" data-id="${id}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${unit} over time. Latest ${pts[n-1].v} ${unit} on ${fmtD(pts[n-1].date)}.">${g}${n>1?`<path d="${path}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`:''}${dots}<text x="${(xs[n-1]+9).toFixed(1)}" y="${(ys[n-1]+4).toFixed(1)}" font-size="11.5" font-weight="800" fill="#22172B">${pts[n-1].v}</text>${xl}<g class="hov" visibility="hidden"><line y1="${T}" y2="${H-B}" stroke="#A597AE" stroke-width="1"/><circle r="6" fill="${color}" stroke="#fff" stroke-width="2"/></g><rect x="0" y="0" width="${W}" height="${H}" fill="transparent"/></svg><div class="ctip" aria-hidden="true"></div></div>`}
+function chartHover(ev){const el=ev.target&&ev.target.closest?ev.target.closest('svg.lc'):null;
+ document.querySelectorAll('svg.lc').forEach(s=>{if(s!==el){const h=s.querySelector('.hov');if(h)h.setAttribute('visibility','hidden');const t=s.parentNode.querySelector('.ctip');if(t)t.classList.remove('show')}});
+ if(!el)return;const c=CHARTS[el.dataset.id];if(!c)return;const r=el.getBoundingClientRect();const x=(ev.clientX-r.left)/r.width*c.W;
+ let bi=0;c.xs.forEach((v,i)=>{if(Math.abs(v-x)<Math.abs(c.xs[bi]-x))bi=i});
+ const g=el.querySelector('.hov');g.setAttribute('visibility','visible');const ln=g.querySelector('line');ln.setAttribute('x1',c.xs[bi]);ln.setAttribute('x2',c.xs[bi]);const ci=g.querySelector('circle');ci.setAttribute('cx',c.xs[bi]);ci.setAttribute('cy',c.ys[bi]);
+ const tip=el.parentNode.querySelector('.ctip');tip.innerHTML=`<b>${c.pts[bi].v} ${c.unit}</b>${fmtD(c.pts[bi].date)}`;tip.style.left=Math.min(88,Math.max(12,c.xs[bi]/c.W*100))+'%';tip.style.top=(c.ys[bi]/c.H*r.height)+'px';tip.classList.add('show')}
+document.addEventListener('pointermove',chartHover);document.addEventListener('pointerdown',chartHover);
+function bodyCard(){
+ const b=bodySorted(),ws=b.filter(e=>e.kg!=null),cs=b.filter(e=>e.cm!=null),uw=S.units.w,ul=S.units.l;
+ let h=`<div class="sec"><h3>Weight & waist</h3><small>weekly check-in</small></div><div class="card">`;
+ if(!b.length)h+=`<p class="fine" style="margin:0">Log your weight and waist once a week, on the same day and at the same time, ideally in the morning. The trend over several weeks matters more than any single number.</p>`;
+ if(ws.length){const last=ws[ws.length-1],first=ws[0],d=r1(wDisp(last.kg)-wDisp(first.kg));
+  h+=`<div class="bodyhead"><div><span class="fine">Latest weight · ${fmtD(last.date)}</span><div class="bigv">${r1(wDisp(last.kg))} ${uw}</div></div>${ws.length>1?`<span class="delta ${d<=0?'down':'up'}">${d<=0?'Down':'Up'} ${Math.abs(d)} ${uw} since ${fmtD(first.date)}</span>`:''}</div>`;
+  if(S.goalKg){const toGo=r1(wDisp(last.kg)-wDisp(S.goalKg)),tot=wDisp(first.kg)-wDisp(S.goalKg);h+=`<p class="fine" style="margin:8px 0 0">${toGo>0?`<b>${toGo} ${uw}</b> to go to your goal of ${r1(wDisp(S.goalKg))} ${uw}`:`You've reached your goal of ${r1(wDisp(S.goalKg))} ${uw}!`}</p><div class="meter lime"><i style="width:${tot>0?pct(wDisp(first.kg)-wDisp(last.kg),tot):100}%"></i></div>`}
+  h+=`<div class="lbl" style="margin-top:16px">Weight (${uw})</div>`+lineChart('cw',ws.map(e=>({date:e.date,v:r1(wDisp(e.kg))})),uw,'#8E3AA6',S.goalKg?r1(wDisp(S.goalKg)):null)}
+ if(cs.length){const lc=cs[cs.length-1],fc=cs[0],dc=r1(lDisp(lc.cm)-lDisp(fc.cm));
+  h+=`<div class="lbl" style="margin-top:16px">Waist (${ul}) · latest ${r1(lDisp(lc.cm))}${cs.length>1?` · ${dc<=0?'down':'up'} ${Math.abs(dc)} since ${fmtD(fc.date)}`:''}</div>`+lineChart('cc',cs.map(e=>({date:e.date,v:r1(lDisp(e.cm))})),ul,'#1F9E88',null)}
+ if(b.length&&ws.length<2&&cs.length<2)h+=`<p class="fine" style="margin:10px 0 0">Add another check-in next week to start seeing your trend.</p>`;
+ if(b.length)h+=`<details class="tbl"><summary>Show all check-ins</summary><table class="bt"><thead><tr><th>Date</th><th>Weight (${uw})</th><th>Waist (${ul})</th><th></th></tr></thead><tbody>${b.slice().reverse().map(e=>`<tr><td>${fmtD(e.date)}</td><td>${e.kg!=null?r1(wDisp(e.kg)):'—'}</td><td>${e.cm!=null?r1(lDisp(e.cm)):'—'}</td><td><button class="linkbtn" data-delbody="${e.date}" aria-label="Delete check-in from ${fmtD(e.date)}">${svg('x',14)}</button></td></tr>`).join('')}</tbody></table></details>`;
+ h+=`<button class="btn pink block" style="margin-top:14px" data-act="checkin">${svg('plus',18)} Log check-in</button>
+ <div class="setcol" style="margin-top:6px"><small>Units</small><div class="row" style="flex-wrap:nowrap;gap:14px">${chips('uw',[['lb','lb'],['kg','kg']],uw)}${chips('ul',[['in','in'],['cm','cm']],ul)}</div></div>
+ <div class="set"><div>Goal weight<small>${S.goalKg?r1(wDisp(S.goalKg))+' '+uw:'Optional. Set one when you\'re ready.'}</small></div><button class="btn soft sm" data-act="goal">${S.goalKg?'Change':'Set'}</button></div></div>`;
+ return h}
+function checkinModal(){const l=lastCheck();openModal(`<h2>Weekly check-in</h2><p>Weigh yourself in the morning, after the bathroom and before breakfast. Measure your waist at belly-button height, relaxed and not sucked in.</p><div class="times" style="grid-template-columns:1fr 1fr;margin-top:12px"><label for="ciw">Weight (${S.units.w})<input id="ciw" class="inp" type="number" inputmode="decimal" step="0.1" placeholder="${l&&l.kg!=null?r1(wDisp(l.kg)):''}"></label><label for="cil">Waist (${S.units.l})<input id="cil" class="inp" type="number" inputmode="decimal" step="0.1" placeholder="${l&&l.cm!=null?r1(lDisp(l.cm)):''}"></label></div><label class="lbl" for="cid" style="display:block">Date</label><input id="cid" class="inp" type="date" value="${ds()}" max="${ds()}"><p class="fine">Fill in one or both. Weight can swing 1 to 4 lb from day to day with water and food, so watch the trend over weeks.</p><button class="btn pink block" style="margin-top:12px" data-act="savecheck">Save check-in</button>`)}
+function goalModal(){openModal(`<h2>Goal weight</h2><p>A steady pace is about 1 to 2 lb (0.5 to 1 kg) a week. Slower is fine and easier to keep. If you're not sure what's right for you, ask your doctor.</p><label class="lbl" for="goalin" style="display:block;margin-top:12px">Goal (${S.units.w})</label><input id="goalin" class="inp" type="number" inputmode="decimal" step="0.1" value="${S.goalKg?r1(wDisp(S.goalKg)):''}"><button class="btn pink block" style="margin-top:14px" data-act="savegoal">Save goal</button>${S.goalKg?'<button class="btn soft block" style="margin-top:8px" data-act="cleargoal">Remove goal</button>':''}`)}
+
+/* ---------- APPLE HEALTH BRIDGE (iPhone Shortcut opens ?steps=…) ---------- */
+const HOSTED=/^https?:$/.test(location.protocol)&&!/claude|anthropic/i.test(location.hostname);
+function appURL(){return location.origin+location.pathname}
+(function importHealth(){try{const q=new URLSearchParams(location.search);if(!q.has('steps')&&!q.has('active')&&!q.has('weight'))return;
+ const date=/^\d{4}-\d{2}-\d{2}$/.test(q.get('date')||'')?q.get('date'):ds();const x=S.health[date]||{};
+ const st=parseInt(q.get('steps'),10),ac=parseInt(q.get('active'),10);
+ const wt=parseFloat(q.get('weight'));if(!isNaN(st))x.steps=st;if(!isNaN(ac))x.active=ac;if(!isNaN(st)||!isNaN(ac)){x.src='Apple Health';x.at=hm();S.health[date]=x}if(!isNaN(wt)&&wIn(wt)>25&&wIn(wt)<350)saveCheck(date,wIn(wt),null,'Apple Health');save();
+ history.replaceState(null,'',location.pathname+location.hash);
+ setTimeout(()=>toast('Synced '+[isNaN(st)?'':st.toLocaleString()+' steps',isNaN(wt)?'':'weight'].filter(Boolean).join(' and ')+' from Apple Health'),400)}catch(e){}})();
+
+/* ---------- AUDIO / VOICE ---------- */
+let AC=null;
+function beep(f=880,d=.12,v=.18){if(!S.sound)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.frequency.value=f;o.type='sine';g.gain.setValueAtTime(v,AC.currentTime);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.connect(g).connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}}
+let VOICE=null;
+function pickVoice(){try{const vs=speechSynthesis.getVoices();VOICE=vs.find(v=>/en/i.test(v.lang)&&/female|samantha|karen|tessa|zira|aria|jenny|google uk english female/i.test(v.name))||vs.find(v=>/^en/i.test(v.lang))||null}catch(e){}}
+try{speechSynthesis.onvoiceschanged=pickVoice;pickVoice()}catch(e){}
+function say(t){if(!S.voice)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);if(VOICE)u.voice=VOICE;u.rate=1.02;u.pitch=1.05;speechSynthesis.speak(u)}catch(e){}}
+
+/* ---------- UI HELPERS ---------- */
+const $=s=>document.querySelector(s);
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),2600)}
+function badge(f,size=46){const F=FOCUS[f]||FOCUS.core;return `<div class="badge" style="background:${F.bg};width:${size}px;height:${size}px">${svg(ICON_OF[f]||f,size*.5,F.color)}</div>`}
+function iconBadge(icon,color,bg,size=44){return `<div class="badge" style="background:${bg};width:${size}px;height:${size}px">${svg(icon,size*.5,color)}</div>`}
+function fmt(s){s=Math.round(s);const m=Math.floor(s/60),x=s%60;return m+':'+String(x).padStart(2,'0')}
+function mins(s){return Math.max(1,Math.round(s/60))}
+function pct(v,g){return Math.max(0,Math.min(100,Math.round(100*v/(g||1))))}
+function chips(name,opts,val){return `<div class="chips">${opts.map(([k,l])=>`<button class="chip ${String(val)===String(k)?'on':''}" data-set="${name}" data-v="${k}">${l}</button>`).join('')}</div>`}
+function greet(){const h=new Date().getHours();return h<12?'Good morning':h<17?'Good afternoon':'Good evening'}
+const TIPS=[
+ '<b>Lazy days count.</b> Two short sessions a day add up fast. Try one in the morning and one while your show is on.',
+ '<b>Belly fat goes with overall weight loss.</b> No single exercise burns fat from one spot. These moves build the core underneath while food and daily walking do most of the fat loss.',
+ '<b>Walk after meals.</b> A 10 to 15 minute walk after eating is one of the easiest wins for energy and blood sugar.',
+ '<b>Protein + water</b> with each meal helps you stay full and recover from workouts.',
+ '<b>Stairs are free cardio.</b> A few trips up and down between shows add real minutes to your day.',
+ '<b>Breathe out on the effort.</b> Exhale as you lift, crunch or press. It switches your core on harder.',
+ '<b>Chinook days</b> melt sidewalks in the afternoon and freeze them again at night. Wear boots with grip for evening walks.',
+ '<b>Slow beats fast.</b> Moving slowly with control works your muscles more than rushing through reps.',
+ '<b>Too cold to go out?</b> An indoor walk around the house still counts toward your walking minutes.',
+ '<b>Sleep is part of the plan.</b> Poor sleep makes cravings harder to manage. Aim for 7+ hours.'
+];
+
+/* ---------- RENDER ---------- */
+function render(){
+ const app=$('#app');
+ app.innerHTML=`<div class="top"><div class="brand"><div class="logo">${svg('db',22,'#fff',2.6)}</div><b>Snug<span>Fit</span></b></div><div class="streak" title="Day streak">${svg('flame',18,'#FF6F61',2.2)}${streak()}</div></div><div class="fadein">${TAB==='home'?home():TAB==='plan'?plan():TAB==='moves'?moves():me()}</div>`;
+ $('#tabs').innerHTML=[['home','Today','home'],['plan','Program','plan'],['moves','Moves','lib'],['me','Me','me']].map(([k,l,i])=>`<button class="tab ${TAB===k?'on':''}" data-tab="${k}">${svg(i,22)}${l}</button>`).join('');
+}
+function levelBanner(){if(S.level>=6||S.levelCount<LEVEL_UP)return '';const L=LEVELS[S.level+1];
+ return `<div class="banner">${iconBadge('trophy','#22172B','#fff',44)}<div style="flex:1;min-width:0"><b>Ready for Level ${S.level+1}?</b><span>You've done ${S.levelCount} sessions at this level. Next: ${L.w}-min workouts and ${L.walk}-min walks.</span><div class="row" style="margin-top:10px"><button class="btn pink sm" data-act="levelup">Level up</button><button class="btn soft sm" data-act="levelwait">Not yet</button></div></div></div>`}
+function hero(){
+ const p=progSession();const done=progDone(ds());const L=LEVELS[S.level];
+ const tag=`<span class="tag">${svg('flame',14,'#fff')} Level ${S.level} · ${L.n}</span>`;
+ if(done)return `<div class="hero rest"><span class="tag">${svg('check',14,'#fff')} Today's session is done</span><h2>Nice work today</h2><p>You finished ${esc(p.title)}. Keep up your walks, or add a bonus round if you're feeling it.</p><div class="row"><button class="btn white" data-act="bonus">${svg('play',18)} 5-min bonus</button><button class="btn ghost" data-act="logwalk">Log a walk</button></div><div class="deco">${svg('trophy',150,'#fff',1.6)}</div></div>`;
+ if(p.k==='rest')return `<div class="hero rest">${tag}<h2>Rest & Stretch</h2><p>Recovery is where you get stronger. Do a 5-minute gentle stretch, or take an easy walk.</p><div class="row"><button class="btn white" data-act="startprog">${svg('play',18)} 5-min stretch</button><button class="btn ghost" data-act="logwalk">I took a walk</button></div><div class="deco">${svg('rest',150,'#fff',1.6)}</div></div>`;
+ if(p.k==='walk'){const v=verdictNow();return `<div class="hero rest">${tag}<h2>${p.title}</h2><p>${p.mins} min · ${v==='indoor'?'Stay in and walk around the house today':'Outside if you can, or indoors'}</p><div class="row">${v!=='indoor'?`<button class="btn white" data-walk="out" data-wm="${p.mins}" data-prog="1">${svg('walk',18)} Walk outside</button>`:''}<button class="btn ${v==='indoor'?'white':'ghost'}" data-walk="in" data-wm="${p.mins}" data-prog="1">${svg('home',18)} Walk indoors</button></div><div class="deco">${svg('walk',150,'#fff',1.6)}</div></div>`}
+ const where=p.focus==='home'?('Around the house'+(S.stairs?' + stairs':'')):'Bed & couch friendly';
+ return `<div class="hero">${tag}<h2>${p.title}</h2><p>${p.mins} min · ${ENERGY[p.energy].label} · ${where}</p><div class="bar"><i style="width:${pct(S.levelCount,LEVEL_UP)}%"></i></div><button class="btn white" data-act="startprog">${svg('play',18)} Start today's workout</button><div class="deco">${svg(p.focus==='home'?'home':p.focus==='burn'?'cardio':'core',150,'#fff',1.6)}</div></div>`;
+}
+function walkCard(){
+ const L=LEVELS[S.level];const w=wxNow();const adv=wear(w);const nw=nextWalk();const today=ds();const wm=walkMinsOn(today);
+ let head;
+ if(WX.status==='loading'||WX.status==='idle')head=`<div class="wxtop"><div class="wxico">${svg('cloud',28,'#5A62C9')}</div><div><b>Checking ${esc(S.city.name)} weather…</b><div class="wxsub">One moment</div></div></div>`;
+ else if(w.live)head=`<div class="wxtop"><div class="wxico">${svg(wxIcon(w.code,w.isDay),30,'#5A62C9')}</div><div style="flex:1;min-width:0"><div class="wxtemp">${Math.round(w.temp)}°<small>feels ${Math.round(w.feels)}°</small></div><div class="wxsub">${wxText(w.code)} · wind ${Math.round(w.wind)} km/h${w.aqi!=null?' · air quality '+w.aqi:''} · ${esc(S.city.name)}</div></div><button class="iconbtn sm" data-act="city" aria-label="Change location">${svg('pin',19)}</button></div>`;
+ else head=`<div class="wxtop"><div class="wxico">${svg('cloud',28,'#5A62C9')}</div><div style="flex:1;min-width:0"><b>What's it like outside?</b><div class="wxsub">Live weather for ${esc(S.city.name)} can't load here, so set it yourself.</div></div><button class="iconbtn sm" data-act="wxretry" aria-label="Try live weather again">${svg('refresh',19)}</button></div>
+ <div class="manual"><label for="wxtemp">Temperature (°C)<input id="wxtemp" class="inp" type="number" inputmode="numeric" value="${esc(S.wxm.temp)}"></label><div class="chips">${[['clear','Clear'],['cloudy','Cloudy'],['rain','Rain'],['snow','Snow'],['windy','Windy'],['icy','Icy']].map(([k,l])=>`<button class="chip ${S.wxm.cond===k?'on':''}" data-wxc="${k}">${l}</button>`).join('')}</div></div>`;
+ const vcls={go:'v-go',caution:'v-caution',indoor:'v-indoor'}[adv.verdict];
+ const len=Math.min(L.walk,adv.max||99);const indoor=adv.verdict==='indoor';
+ let nwHTML='';
+ if(nw)nwHTML=`<div class="nextwalk ${nw.now?'now':''}"><div class="ico">${svg('walk',22,'#1F9E88')}</div><div style="flex:1;min-width:0"><b>${nw.now?'Good time for a walk now':'Next walk: '+nw.label.toLowerCase()}</b><span>${nw.now&&nw.label!=='Evening stroll'?nw.label+' · ':''}${nw.now?'':t12(nw.st)+' to '+t12(nw.en)+' · '}${len} min ${indoor?'indoors':'easy-to-brisk'}</span></div></div>`;
+ else nwHTML=wm>=S.walkGoal?`<div class="nextwalk"><div class="ico">${svg('check',22,'#1F9E88')}</div><div><b>Walking goal hit for today</b><span>${wm} min walked. Rest up.</span></div></div>`:`<div class="nextwalk"><div class="ico">${svg('rest',22,'#1F9E88')}</div><div><b>Getting late for a walk</b><span>${wm?wm+' min walked today. ':''}Tomorrow, try one after breakfast (${t12(toMin(S.meals.b)+15)}).</span></div></div>`;
+ let best='';if(w.live&&!indoor){const b=bestTime();best=b?`<p class="fine" style="margin:10px 0 0">Best window left today: around <b>${h12(b.hour)}</b> (feels ${Math.round(b.f)}°${b.pp>=30?', '+b.pp+'% chance of rain or snow':''}).</p>`:`<p class="fine" style="margin:10px 0 0">It's dark for the rest of today. If you head out, wear something reflective.</p>`}
+ return `<div class="sec"><h3>Walk coach</h3><small>${wm}/${S.walkGoal} min today</small></div>
+ <div class="card wx">${head}
+  <span class="verdict ${vcls}">${svg(adv.verdict==='go'?'check':adv.verdict==='indoor'?'home':'bulb',15)} ${adv.head}</span>
+  ${indoor?'':`<div class="lbl" style="margin-top:14px">What to wear</div><ul class="wear">${adv.items.map(([i,t])=>`<li><i>${svg(i,17,'#5A62C9')}</i>${t}</li>`).join('')}</ul>`}
+  ${nwHTML}${best}
+  <div class="meter teal"><i style="width:${pct(wm,S.walkGoal)}%"></i></div>
+  <div class="row" style="margin-top:14px;flex-wrap:nowrap">${indoor?'':`<button class="btn pink" style="flex:1;padding-inline:12px" data-walk="out" data-wm="${len}">${svg('walk',18)} Guided walk</button>`}<button class="btn ${indoor?'pink':'soft'}" style="flex:1;padding-inline:12px" data-walk="in" data-wm="${len}">${svg('home',18)} Indoor walk</button><button class="btn soft" style="padding-inline:14px" data-act="logwalk" aria-label="Log a walk">${svg('plus',18)}</button></div>
+ </div>`;
+}
+function chalCards(limit){
+ const out=[];
+ for(const c of S.ch){const def=CH[c.id];const p=chProg(c);const won=isWon(c);const {end}=chWindow(c);
+  const left=def.plan?'':(Math.max(0,Math.round((dayOf(end)-dayOf(ds()))/864e5))+1)+' days left';
+  let extra='';if(def.plan){const pd=curPlanDay();extra=pd?`<button class="btn pink sm" style="margin-top:10px" data-plan="${pd.day}">${svg('play',16)} Day ${pd.day}</button>`:''}
+  out.push(`<div class="chal ${won?'won':''}">${iconBadge(won?'trophy':def.icon,won?'#3C8A2E':'#8E3AA6',won?'#E2F5DC':'#F3E6F8')}<div class="body"><b>${def.name}</b><span>${won?'Complete! ':''}${p.v}/${p.goal} ${p.unit}${left?' · '+left:''}</span><div class="meter ${won?'lime':''}"><i style="width:${pct(p.v,p.goal)}%"></i></div>${extra}</div></div>`)}
+ const wk=weeklyNow();if(!S.ch.some(c=>c.id===wk.id)&&!S.chDone.some(x=>x.id===wk.id&&x.start===ds(mondayOf())))out.push(`<div class="chal offer">${iconBadge(wk.icon,'#22172B','#fff')}<div class="body"><b>This week: ${wk.name}</b><span>${wk.desc}</span><button class="btn lime sm" style="margin-top:10px" data-join="${wk.id}">Join challenge</button></div></div>`);
+ return (limit?out.slice(0,limit):out).join('');
+}
+function home(){
+ const today=ds();const todayDone=activeDays().has(today);const st=stepsOn(today);
+ const mini=`<div class="mini"><button data-act="steps"><b>${st==null?'—':st.toLocaleString()}</b><span>steps${st==null?' · add':' / '+S.stepGoal.toLocaleString()}</span><div class="meter lime"><i style="width:${pct(st||0,S.stepGoal)}%"></i></div></button><div><b>${walkMinsOn(today)}</b><span>walk min / ${S.walkGoal}</span><div class="meter teal"><i style="width:${pct(walkMinsOn(today),S.walkGoal)}%"></i></div></div><div><b>${workoutsOn(today)}</b><span>workouts today</span><div class="meter"><i style="width:${workoutsOn(today)?100:0}%"></i></div></div></div>`;
+ const ch=chalCards(2);const lc=lastCheck();
+ const nudge=checkDue()?`<button class="chal offer" style="margin-top:14px;margin-bottom:0" data-act="checkin">${iconBadge('scale','#22172B','#fff')}<div class="body"><b>Weekly check-in</b><span>${lc?'Last one was '+fmtD(lc.date)+'. ':''}Log your weight and waist. It takes 30 seconds.</span></div></button>`:'';
+ return `<div class="hello">${greet()}${todayDone?' · you moved today':''}</div><div class="h1 disp">${todayDone?'Look at you go.':'Tiny effort. Real results.'}</div>${levelBanner()}${hero()}${mini}${nudge}
+ ${walkCard()}
+ ${ch?`<div class="sec"><h3>Challenges</h3><small>optional</small></div>${ch}`:''}
+ <div class="sec"><h3>Quick workout</h3><small>your way</small></div>
+ <div class="card">
+  <div class="lbl">How do you feel?</div>${chips('energy',[['low','Low energy'],['med','Steady'],['high','Spicy']],S.energy)}
+  <div class="lbl">Where are you?</div>${chips('place',[['bed','Bed'],['seat','Couch'],['stand','Standing'],['house','Around the house']].concat(S.stairs?[['stairs','Stairs']]:[]).concat([['any','Anywhere']]),S.place)}
+  <div class="lbl">Focus</div>${chips('focus',[['core','Core'],['full','Full body'],['burn','Burn'],['stretch','Stretch']],S.focus)}
+  <div class="lbl">Minutes</div>${chips('mins',[['5','5'],['7','7'],['10','10'],['15','15']],String(S.mins))}
+  <div style="margin-top:16px"><button class="btn pink block" data-act="quick">${svg('play',18)} Start ${S.mins}-min workout</button></div>
+ </div>
+ <button class="dice" data-act="random"><div class="ico">${svg('dice',26,'#F4F28A')}</div><div><b>Surprise me</b><span>A random workout picked for you</span></div></button>
+ <div class="card tip"><div class="t-ico">${svg('bulb',20,'#F2559A')}</div><p>${TIPS[S.tipIdx%TIPS.length]}</p></div>`;
+}
+function plan(){
+ const L=LEVELS[S.level];const mon=mondayOf();const today=ds();
+ let h=`<div class="hello">Ongoing program · no end date</div><div class="h1 disp">Your program</div>
+ ${levelBanner()}
+ <div class="card"><div class="lvl"><div><small>LEVEL ${S.level} OF 6</small><br><b>${L.n}</b></div><small>${Math.min(S.levelCount,LEVEL_UP)}/${LEVEL_UP} sessions</small></div><div class="meter"><i style="width:${pct(S.levelCount,LEVEL_UP)}%"></i></div>
+ <div class="kv"><div><b>${L.w} min</b><span>workouts</span></div><div><b>${L.walk} min</b><span>walks</span></div><div><b>${ENERGY[L.e].label}</b><span>intensity</span></div></div>
+ <p class="fine" style="margin:12px 0 0">Every week mixes core, full body, house circuits, a rest day and a long walk. Moves change every day. After ${LEVEL_UP} sessions you'll be offered the next level.</p>
+ <div class="row" style="margin-top:12px"><button class="btn soft sm" data-act="leveldown" ${S.level<=1?'disabled style="opacity:.4"':''}>Make it easier</button><button class="btn soft sm" data-act="levelup" ${S.level>=6?'disabled style="opacity:.4"':''}>Make it harder</button></div></div>
+ <div class="sec"><h3>This week</h3><small>${[...Array(7)].filter((_,i)=>progDone(ds(addDays(mon,i)))).length}/7 done</small></div>`;
+ h+=[...Array(7)].map((_,i)=>{const d=addDays(mon,i);const k=ds(d);const s=progSession(d);const done=progDone(k);const isT=k===today;
+  return `<button class="wkrow ${isT?'today':''} ${done?'done':''}" data-wk="${k}"><span class="dname">${d.toLocaleDateString(undefined,{weekday:'short'})}</span>${badge(s.focus==='stretch'?'stretch':s.focus,40)}<div class="body"><b>${s.title}</b><span>${s.mins} min${isT?' · today':''}</span></div>${done?`<span class="ok">${svg('check',16,'#fff',3)}</span>`:`<span class="chev">${svg('chev',18,'#A597AE')}</span>`}</button>`}).join('');
+ h+=`<div class="sec"><h3>Challenges</h3><small>join any time</small></div>${chalCards()}`;
+ const avail=LONG.filter(c=>!S.ch.some(x=>x.id===c.id));
+ if(avail.length)h+=`<div class="lbl" style="margin-top:16px">Longer challenges</div>`+avail.map(c=>`<div class="chal">${iconBadge(c.icon,'#8E3AA6','#F3E6F8')}<div class="body"><b>${c.name}</b><span>${c.desc}</span><button class="btn soft sm" style="margin-top:10px" data-join="${c.id}">Join · ${c.days} days</button></div></div>`).join('');
+ if(S.ch.some(c=>c.id==='core28')){const cur=curPlanDay();
+  h+=`<div class="sec"><h3>Core Comeback</h3><small>${S.planDone.length}/28</small></div>`;
+  for(let w=0;w<4;w++){const days=PLAN.slice(w*7,w*7+7);h+=`<div class="weekh">Week ${w+1}: ${WEEKS[w]}<small>${days.filter(d=>!d.rest)[0].mins} min</small></div><div class="days">${days.map(d=>{const done=S.planDone.includes(d.day);const c=cur&&cur.day===d.day;return `<button class="day ${done?'done':''} ${c?'cur':''} ${d.rest?'rest':''}" data-day="${d.day}">${done?svg('check',18,'#fff',3):d.day}<small>${d.rest?'rest':d.mins+'m'}</small></button>`}).join('')}</div>`}
+  h+=`<div style="margin-top:14px" class="row"><button class="btn soft sm" data-act="resetplan">Restart Core Comeback</button><button class="btn soft sm" data-leave="core28">Leave challenge</button></div>`}
+ const won=S.chDone.length;if(won)h+=`<p class="fine" style="margin-top:14px">${svg('trophy',14,'#A597AE')} ${won} challenge${won>1?'s':''} completed so far.</p>`;
+ return h;
+}
+let LIBF='all';
+function moves(){
+ const lib=EX.filter(e=>e.f!=='walk');
+ const list=lib.filter(e=>LIBF==='all'||(LIBF==='house'||LIBF==='stairs'?e.p.includes(LIBF):e.f===LIBF));
+ return `<div class="hello">${lib.length} moves</div><div class="h1 disp">Move library</div>
+ ${chips('libf',[['all','All'],['core','Core'],['lower','Legs'],['upper','Arms'],['cardio','Cardio'],['stretch','Stretch'],['warm','Warm-up'],['house','Around the house'],['stairs','Stairs']],LIBF)}
+ ${LIBF==='stairs'&&!S.stairs?`<div class="note">You've said you don't have stairs, so these won't show up in your workouts. Turn on "I have stairs I can use" in Me if that changes.</div>`:''}
+ <div style="margin-top:14px">${list.map(e=>`<button class="ex" data-ex="${e.id}">${badge(e.f)}<div><b>${e.n}</b><span>${e.p.map(x=>PLACE[x]).join(' · ')}${e.req?' · needs '+(e.req==='db'?'dumbbells':EQUIP[e.req].toLowerCase()):''}</span></div><span class="chev">${svg('chev',20)}</span></button>`).join('')}</div>`;
+}
+function me(){
+ const a=activeDays();const tot=S.history.filter(h=>!h.walk).length;
+ const today=new Date();const di=dow(today);const monday=mondayOf(today);
+ const wkWalk=[...Array(7)].reduce((x,_,i)=>x+walkMinsOn(ds(addDays(monday,i))),0);
+ const wk=['M','T','W','T','F','S','S'].map((l,i)=>{const d=addDays(monday,i);const on=a.has(ds(d));return `<div><i class="${on?'on':''} ${i===di?'today':''}">${on?svg('check',16,'#fff',3):''}</i>${l}</div>`}).join('');
+ const hist=S.history.slice(-8).reverse();const st=stepsOn(ds());const hx=S.health[ds()];
+ return `<div class="hello">Your progress</div><div class="h1 disp">Keep the streak alive</div>
+ <div class="stats"><div class="stat"><b>${streak()}</b><span>day streak</span></div><div class="stat"><b>${tot}</b><span>workouts</span></div><div class="stat"><b>${wkWalk}</b><span>walk min this week</span></div></div>
+ <div class="sec"><h3>This week</h3><small>${[...Array(7)].filter((_,i)=>a.has(ds(addDays(monday,i)))).length}/7 active</small></div>
+ <div class="card"><div class="wk">${wk}</div></div>
+ ${bodyCard()}
+ <div class="sec"><h3>Health & devices</h3></div>
+ <div class="card">
+  <div class="set"><div>Steps today<small>${st==null?'Not synced yet':st.toLocaleString()+' of '+S.stepGoal.toLocaleString()+(hx&&hx.src?' · from '+hx.src+(hx.at?' at '+t12(toMin(hx.at)):''):' · entered by you')}</small></div><button class="btn soft sm" data-act="steps">Enter</button></div>
+  <div class="set"><div>Apple Health & Apple Watch<small>Sync steps with an iPhone Shortcut</small></div><button class="btn pink sm" data-act="health">Connect</button></div>
+  <div class="setcol"><small>Daily step goal</small>${chips('stepGoal',[['4000','4,000'],['6000','6,000'],['8000','8,000'],['10000','10,000']],S.stepGoal)}</div>
+  <div class="setcol"><small>Daily walking goal (minutes)</small>${chips('walkGoal',[['15','15'],['20','20'],['30','30'],['45','45']],S.walkGoal)}</div>
+ </div>
+ <div class="sec"><h3>Recent</h3></div>
+ <div class="card">${hist.length?hist.map(h=>`<div class="hist"><div>${esc(h.title)}<br><span>${dayOf(h.date).toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'})}${h.t?' · '+t12(toMin(h.t)):''}</span></div><span>${h.walk?h.mins+' min '+(h.where==='indoor'?'indoor walk':'walk'):h.mins+' min'}</span></div>`).join(''):'<p class="fine" style="margin:0">No workouts yet. Your first one is just a few minutes away.</p>'}</div>
+ <div class="sec"><h3>Your home</h3></div>
+ <div class="card">
+  <div class="setcol"><small>What kind of home do you have?</small>${chips('home',Object.entries(HOMES),S.home)}</div>
+  <div class="set"><div>I have stairs I can use<small>Adds stair climbs and step-ups to house circuits</small></div><button class="tog ${S.stairs?'on':''}" data-tog="stairs" aria-label="I have stairs I can use"></button></div>
+  <div class="set"><div>My equipment<small>${Object.keys(EQUIP).filter(k=>S.equip[k]).map(k=>EQUIP[k].split(' (')[0]).join(', ')||'None'}</small></div><button class="btn soft sm" data-act="equip">Edit</button></div>
+ </div>
+ <div class="sec"><h3>Walks & weather</h3></div>
+ <div class="card">
+  <div class="set"><div>Weather location<small>${esc(S.city.name)}</small></div><button class="btn soft sm" data-act="city">Change</button></div>
+  <div class="setcol"><small>Usual meal times (for after-meal walk prompts)</small><div class="times"><label for="meal-b">Breakfast<input class="inp" type="time" id="meal-b" value="${S.meals.b}"></label><label for="meal-l">Lunch<input class="inp" type="time" id="meal-l" value="${S.meals.l}"></label><label for="meal-d">Dinner<input class="inp" type="time" id="meal-d" value="${S.meals.d}"></label></div></div>
+ </div>
+ <div class="sec"><h3>Coaching</h3></div>
+ <div class="card">
+  <div class="set"><div>Voice coach<small>Talks you through each move</small></div><button class="tog ${S.voice?'on':''}" data-tog="voice" aria-label="Voice coach"></button></div>
+  <div class="set"><div>Sounds<small>Beeps for the last 3 seconds</small></div><button class="tog ${S.sound?'on':''}" data-tog="sound" aria-label="Sounds"></button></div>
+  <div class="set"><div>Reminders<small>Walk and workout reminders on your lock screen need the installed app version. For now, the Today tab tells you when to walk.</small></div></div>
+ </div>
+ <div class="sec"><h3>Safety</h3></div>
+ <div class="card"><p class="fine" style="margin:0">SnugFit offers general fitness guidance and isn't medical advice. Check with a doctor before starting a new exercise program, especially if you're pregnant, recovering from surgery or injury, or have a health condition. Hold the railing on stairs. Stop if you feel pain, dizziness or shortness of breath. In extreme cold, follow Environment Canada's wind chill warnings.</p></div>
+ <div style="margin-top:14px"><button class="btn soft block" data-act="wipe">Reset all data</button></div>
+ <p class="fine" style="text-align:center;margin-top:16px">SnugFit v2.1 · Made for lazy days</p>`;
+}
+
+/* ---------- MODALS ---------- */
+function openModal(html){$('#sheet').innerHTML='<div class="grab"></div>'+html;$('#modal').classList.add('show')}
+function closeModal(){$('#modal').classList.remove('show')}
+function equipHTML(){return `<div class="eqgrid">${Object.entries(EQUIP).map(([k,l])=>`<button class="eq ${S.equip[k]?'on':''}" data-eq="${k}"><i>${S.equip[k]?'✓':''}</i>${l}</button>`).join('')}</div>`}
+function homeHTML(){return `<div class="eqgrid">${Object.entries(HOMES).map(([k,l])=>`<button class="eq ${S.home===k?'on':''}" data-home="${k}"><i>${S.home===k?'✓':''}</i>${l}</button>`).join('')}</div>`}
+function onboarding(){openModal(`<div class="logo" style="width:56px;height:56px;border-radius:18px;margin-bottom:14px">${svg('db',30,'#fff',2.6)}</div><h2>Welcome to SnugFit</h2><p>Workouts for real life: in bed, on the couch or around the house, plus walk prompts that fit your day and the weather. No jumping.</p><div class="lbl" style="margin-top:18px">What kind of home do you have?</div><div id="homepick">${homeHTML()}</div><div class="lbl">What do you have at home?</div>${equipHTML()}<p class="fine">General fitness guidance, not medical advice. Check with your doctor before starting, and stop if anything hurts.</p><button class="btn pink block" data-act="onboarded" style="margin-top:12px">Let's go</button>`)}
+function exModal(id){const e=EXM[id];const F=FOCUS[e.f];openModal(`<div style="display:flex;gap:12px;align-items:center;margin-bottom:10px">${badge(e.f,54)}<div><h2 style="margin:0">${e.n}</h2><span class="pill" style="background:${F.bg};color:${F.color}">${F.label}</span>${e.s?'<span class="pill">Both sides</span>':''}</div></div><p>${e.p.map(x=>PLACE[x]).join(' · ')}</p><ul class="cues">${e.c.map((c,i)=>`<li><em>${i+1}</em>${c}</li>`).join('')}</ul>${e.easy?`<div class="easy">Easier: ${e.easy}</div>`:''}${e.opt?`<div class="easy" style="background:#FBFAD9;color:#6b6900">Level up: ${e.opt}</div>`:''}${e.req?`<p class="fine" style="margin-top:10px">Needs: ${EQUIP[e.req]}</p>`:''}${e.p.includes('stairs')?'<p class="fine" style="margin-top:10px">Always hold the railing. Skip stair moves on days you feel dizzy or unsteady.</p>':''}<button class="btn pink block" style="margin-top:16px" data-try="${e.id}">${svg('play',18)} Try it for 40 seconds</button>`)}
+function confirmModal(title,text,yes,fn){openModal(`<h2>${title}</h2><p>${text}</p><div class="row" style="margin-top:16px"><button class="btn soft" style="flex:1" data-act="close">Cancel</button><button class="btn pink" style="flex:1" id="yesbtn">${yes}</button></div>`);$('#yesbtn').onclick=()=>{closeModal();fn()}}
+let LW={mins:15,where:'out'};
+function logWalkModal(){const mk=()=>`<h2>Log a walk</h2><p>Walks you take with your phone or watch count here too.</p><div class="lbl" style="margin-top:14px">How long?</div><div class="chips">${[10,15,20,30,45,60].map(m=>`<button class="chip ${LW.mins===m?'on':''}" data-lwm="${m}">${m} min</button>`).join('')}</div><div class="lbl">Where?</div><div class="chips"><button class="chip ${LW.where==='out'?'on':''}" data-lww="out">Outside</button><button class="chip ${LW.where==='in'?'on':''}" data-lww="in">Indoors</button></div><button class="btn pink block" style="margin-top:18px" data-act="savewalk">Save walk</button>`;openModal(mk());logWalkModal.mk=mk}
+function stepsModal(){const st=stepsOn(ds());openModal(`<h2>Steps today</h2><p>Check the Health app or your watch and enter today's total. Or connect Apple Health to sync it.</p><label class="lbl" for="stepsin" style="display:block;margin-top:14px">Steps</label><input id="stepsin" class="inp" type="number" inputmode="numeric" min="0" placeholder="e.g. 5200" value="${st==null?'':st}"><button class="btn pink block" style="margin-top:14px" data-act="savesteps">Save</button><button class="btn soft block" style="margin-top:8px" data-act="health">Connect Apple Health instead</button>`)}
+function healthModal(){
+ const url=appURL()+'?steps=';
+ openModal(`<h2>Connect your health apps</h2>
+ <div class="lbl" style="margin-top:12px">${svg('watch',14)} Apple Health & Apple Watch</div>
+ <p>A web app can't read Apple Health directly. This iPhone Shortcut sends today's steps (including your watch's) into SnugFit with one tap, or on a schedule.</p>
+ <ol class="steps"><li>Open the <b>Shortcuts</b> app and tap <b>+</b>.</li><li>Add <b>Find Health Samples</b>. Set the type to <b>Steps</b> and the start date to <b>Today</b>.</li><li>Add <b>Calculate Statistics</b> and choose <b>Sum</b>.</li><li>Add <b>Round Number</b>.</li><li>Add <b>Open URLs</b>, paste this address, then insert the <b>Rounded Number</b> at the end:<span class="code" id="hurl">${esc(url)}</span><button class="btn soft sm" data-act="copyurl">Copy address</button></li><li>Run it once and allow Health access. SnugFit opens with your steps.</li><li>Optional, to send your weight too: add <b>Find Health Samples</b> (type <b>Weight</b>, sort by <b>Start Date</b>, latest first, limit <b>1</b>) and add <b>&amp;weight=</b> plus that sample's value to the end of the address. Use the same unit (lb or kg) you picked in SnugFit.</li><li>To make it automatic: <b>Automation → + → Time of Day</b> (say 8 PM), run this shortcut, and turn off "Ask before running".</li></ol>
+ <p class="fine">Menu names can differ slightly between iOS versions.</p>
+ ${HOSTED?'':'<div class="note">This only works in the hosted version of SnugFit. The preview you\'re using now can\'t receive data from the Shortcut, so enter steps by hand here for now.</div>'}
+ <div class="lbl" style="margin-top:18px">Android, Fitbit, Garmin</div>
+ <p>Google Health Connect and full Apple Health access (workouts, heart rate, weight) need the installed app version. Fitbit and Garmin can connect through their own sign-in once SnugFit has an account system.</p>
+ <button class="btn pink block" style="margin-top:14px" data-act="steps">Enter steps by hand</button>`)}
+let CITYRES=[];
+function cityModal(){openModal(`<h2>Weather location</h2><p>Walk and clothing tips use the weather here. Currently: <b>${esc(S.city.name)}</b>.</p><div class="row" style="margin-top:12px;flex-wrap:nowrap"><input id="cityq" class="inp" type="search" placeholder="Search a city" autocomplete="off"><button class="btn pink" data-act="citysearch">Search</button></div><div class="cityres" id="cityres"></div><div class="row" style="margin-top:14px"><button class="btn soft sm" data-act="geo">${svg('pin',16)} Use my location</button><button class="btn soft sm" data-act="calgary">Calgary</button></div>`)}
+function setCity(c){S.city=c;save();WX={status:'idle',data:null,at:0};closeModal();toast('Weather location: '+c.name);loadWeather(true);render()}
+
+/* ---------- PLAYER ---------- */
+let P=null;
+function startWorkout(w,meta={}){
+ P={w,meta,i:0,left:w.steps[0].secs,running:true,last:performance.now(),elapsed:0,spokenHalf:false,beeped:{}};
+ try{if(navigator.wakeLock)navigator.wakeLock.request('screen').then(l=>P&&(P.lock=l)).catch(()=>{})}catch(e){}
+ beep(660,.08,.05);
+ $('#ov').classList.add('show');document.body.style.overflow='hidden';
+ announce();drawPlayer();
+ clearInterval(startWorkout._t);startWorkout._t=setInterval(tick,200);
+}
+function startWalk(m,indoor,meta){meta=meta||{};const w=buildWalk(m,indoor,meta.title);startWorkout(w,Object.assign({walk:true,indoor},meta))}
+function durWords(s){return s>=60?Math.round(s/60)+(Math.round(s/60)===1?' minute':' minutes'):s+' seconds'}
+function announce(){const s=P.w.steps[P.i];if(!s)return;
+ if(s.type==='ready')say(`Let's go. ${P.w.title}. First up, ${s.next.n}.`);
+ else if(s.type==='work')say(`${s.ex.n}. ${durWords(s.secs)}. ${s.ex.c[s.ex.f==='walk'?0:1]}`);
+ else say(`Rest. Next up, ${s.next?s.next.n:'cool down'}.`);
+}
+function tick(){if(!P||!P.running)return;const now=performance.now();const dt=(now-P.last)/1000;P.last=now;P.left-=dt;P.elapsed+=dt;
+ const s=P.w.steps[P.i];const L=Math.ceil(P.left);
+ if(L<=3&&L>=1&&!P.beeped[L]){P.beeped[L]=1;beep(L===1?990:740)}
+ if(s.type==='work'&&s.ex.s&&!P.spokenHalf&&P.left<=s.secs/2){P.spokenHalf=true;say('Switch sides');beep(520,.15)}
+ if(P.left<=0){go(1,true);return}
+ updatePlayer();
+}
+function go(d,auto){if(!P)return;const ni=P.i+d;if(ni<0)return;if(ni>=P.w.steps.length){finish();return}
+ if(auto&&P.w.steps[P.i].type==='work')beep(1180,.25,.2);
+ P.i=ni;P.left=P.w.steps[ni].secs;P.spokenHalf=false;P.beeped={};P.last=performance.now();announce();drawPlayer()}
+function workIndex(){let n=0,c=0;P.w.steps.forEach((s,i)=>{if(s.type==='work'){n++;if(i<=P.i)c++}});return [c,n]}
+function bigTime(){const l=Math.max(0,P.left);return l>=60?fmt(Math.ceil(l)):String(Math.ceil(l))}
+function drawPlayer(){const s=P.w.steps[P.i];const ex=s.type==='work'?s.ex:s.next;const F=FOCUS[ex?ex.f:'core'];const isWork=s.type==='work';const [c,n]=workIndex();
+ const color=isWork?F.color:'#2EBFA5';const long=P.left>=60;
+ $('#ov').innerHTML=`<div class="player ${isWork?'':'restmode'}">
+ <div class="ptop"><button class="iconbtn" data-act="quitask" aria-label="End workout">${svg('x',20)}</button><div class="prog"><i id="pbar"></i></div><button class="iconbtn" data-act="voice" aria-label="Voice coach">${svg('volume',20,S.voice?'#F2559A':'#C9BCD2')}</button></div>
+ <div class="phase">${isWork?s.phase+' · '+c+' of '+n:s.type==='ready'?'Get ready':'Rest'}</div>
+ <div class="ringwrap"><svg class="ring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="none" stroke="${isWork?F.bg:'#E1F7F2'}" stroke-width="10"/><circle id="ringc" cx="60" cy="60" r="54" fill="none" stroke="${color}" stroke-width="10" stroke-linecap="round" stroke-dasharray="339.3" stroke-dashoffset="0"/></svg>
+ <div class="ringin" style="background:${isWork?F.bg:'#EFFBF8'}"><div><div class="${P.running?'pulse':''}" style="display:grid;place-items:center;margin-bottom:6px">${svg(isWork?ex.f:'rest',38,color)}</div><div class="big ${long?'sm':''}" id="tleft">${bigTime()}</div><div class="sub">${long?'min left':'seconds'}</div></div></div></div>
+ <div class="pname disp">${isWork?ex.n:s.type==='ready'?(P.meta.walk&&!P.meta.indoor?'Shoes on':'Get comfy'):'Breathe'}</div>
+ <div class="pmeta">${isWork?(ex.s?'Switch sides halfway · ':'')+ex.p.map(x=>PLACE[x]).join(' / '):'Next up: <b>'+(ex?ex.n:'')+'</b>'}</div>
+ ${isWork?`<ul class="cues">${ex.c.map((x,i)=>`<li><em>${i+1}</em>${x}</li>`).join('')}</ul>${ex.easy?`<div class="easy">Easier: ${ex.easy}</div>`:''}`:(ex?`<ul class="cues">${ex.c.slice(0,1).map(x=>`<li><em>1</em>${x}</li>`).join('')}</ul>`:'')}
+ <div class="ctrls"><button class="cbtn" data-act="prev" aria-label="Previous">${svg('prev',22)}</button><button class="cbtn main" data-act="pause" aria-label="Pause or play">${svg(P.running?'pause':'play',30,'#fff')}</button><button class="cbtn" data-act="next" aria-label="Next">${svg('next',22)}</button></div>
+ <div class="nextup">${fmt(remaining())} left in ${P.meta.walk?'walk':'workout'}</div>
+ </div>`;updatePlayer()}
+function remaining(){let t=Math.max(0,P.left);for(let j=P.i+1;j<P.w.steps.length;j++)t+=P.w.steps[j].secs;return t}
+function updatePlayer(){const s=P.w.steps[P.i];const el=$('#tleft');if(el){el.textContent=bigTime();el.classList.toggle('sm',P.left>=60)}const rc=$('#ringc');if(rc)rc.setAttribute('stroke-dashoffset',String(339.3*(1-Math.max(0,P.left)/s.secs)));const pb=$('#pbar');if(pb)pb.style.width=(100*(1-remaining()/P.w.total))+'%';const nu=document.querySelector('.nextup');if(nu)nu.textContent=fmt(remaining())+' left in '+(P.meta.walk?'walk':'workout')}
+function stopTimer(){clearInterval(startWorkout._t);try{speechSynthesis.cancel()}catch(e){}try{P&&P.lock&&P.lock.release()}catch(e){}}
+function quit(){stopTimer();P=null;$('#ov').classList.remove('show');document.body.style.overflow='';render()}
+function creditProg(){if(S.lastProg!==ds()){S.lastProg=ds();S.levelCount++}}
+function finish(){stopTimer();const meta=P.meta;const m=mins(P.elapsed);
+ if(!meta.trial){
+  if(meta.walk)S.history.push({date:ds(),t:hm(),mins:m,title:P.w.title,walk:true,where:meta.indoor?'indoor':'outdoor',prog:!!meta.prog});
+  else S.history.push({date:ds(),t:hm(),mins:m,title:P.w.title,kind:meta.house?'house':'workout',prog:!!meta.prog});
+  if(meta.prog)creditProg();
+  if(meta.planDay&&!S.planDone.includes(meta.planDay))S.planDone.push(meta.planDay);
+  S.tipIdx++;save();checkChallenges()}
+ say(meta.trial?'Nice work!':meta.walk?'Walk complete. Great job getting your steps in!':'Workout complete. You showed up, and that\'s everything. Amazing job!');
+ const st=streak();const mon=mondayOf();const wkWalk=[...Array(7)].reduce((x,_,i)=>x+walkMinsOn(ds(addDays(mon,i))),0);
+ $('#ov').innerHTML=`<div class="player"><div class="done-wrap"><div class="trophy">${svg(meta.walk?'walk':'trophy',60,'#22172B',2)}</div><h2 class="disp" style="font-size:32px;margin-top:22px">${meta.trial?'Nice!':'You did it!'}</h2><p style="color:var(--ink2);font-weight:700;margin:8px 0 22px">${esc(P.w.title)} · ${m} min</p>${meta.trial?'':`<div class="stats" style="margin-bottom:22px"><div class="stat"><b>${st}</b><span>day streak</span></div><div class="stat"><b>${S.history.filter(h=>!h.walk).length}</b><span>workouts</span></div><div class="stat"><b>${wkWalk}</b><span>walk min this week</span></div></div>`}<button class="btn pink block" data-act="closeov">Done</button>${meta.trial||meta.walk?'':'<button class="btn soft block" style="margin-top:10px" data-act="again">Feeling good? Go again</button>'}</div></div>`;
+ if(!meta.trial)confetti();
+}
+function confetti(){const c=document.createElement('div');c.className='confetti';const cols=['#F2559A','#C25BD0','#DCDA2E','#FF8CC0','#2EBFA5','#FFA03A'];for(let i=0;i<70;i++){const p=document.createElement('i');p.style.left=Math.random()*100+'%';p.style.background=cols[i%cols.length];p.style.animationDuration=(1.8+Math.random()*1.8)+'s';p.style.animationDelay=(Math.random()*.6)+'s';c.appendChild(p)}document.body.appendChild(c);setTimeout(()=>c.remove(),4500)}
+
+/* ---------- ACTIONS ---------- */
+function startPlan(p){p=p||curPlanDay();if(!p)return;const w=build({mins:p.mins,energy:p.energy,place:'any',focus:p.focus,seed:p.day*97,title:'Core Comeback Day '+p.day+': '+p.title});startWorkout(w,{planDay:p.day})}
+function startProg(dateStr){const d=dateStr?dayOf(dateStr):new Date();const s=progSession(d);
+ if(s.focus==='walk'){startWalk(s.mins,verdictNow()==='indoor',{prog:true,title:s.title});return}
+ const seed=Math.floor(dayOf(ds(d)).getTime()/864e5)*97;
+ startWorkout(build({mins:s.mins,energy:s.energy,place:s.focus==='home'?'home':'any',focus:s.focus,seed,title:s.title}),{prog:true,house:s.focus==='home'})}
+function randomWorkout(){const pk=a=>a[Math.floor(Math.random()*a.length)];const f=pk(['core','full','burn','core','stretch','home']);const names={core:['Couch Core Crush','Pillow-Top Abs','Belly Wake-Up'],full:['Lazy Sunday Flow','Blanket Burrito Burn','Snooze-Button Sculpt'],burn:['Netflix Sweat','Sofa Sizzle','Remote-Control Cardio'],stretch:['Melt-Into-Bed Stretch','Unwind & Unkink'],home:['Hallway Hustle','Kitchen Counter Club','Grand House Tour']};const w=build({mins:pk([5,7,10]),energy:pk(['low','med','med','high']),place:f==='home'?'home':pk(['any','bed','seat','any']),focus:f,title:pk(names[f])});startWorkout(w,{house:f==='home'})}
+function savePref(k,v){if(k==='uw'||k==='ul'){S.units[k==='uw'?'w':'l']=v;save();return}const num=['mins','stepGoal','walkGoal'];S[k]=num.includes(k)?+v:v;if(k==='home'){S.stairs=(v==='two'||v==='split');if(S.place==='stairs'&&!S.stairs)S.place='any'}save()}
+document.addEventListener('click',ev=>{
+ const t=ev.target.closest('button');if(!t||t.disabled)return;
+ if(t.dataset.tab){TAB=t.dataset.tab;try{history.replaceState(null,'','#'+TAB)}catch(e){try{location.hash=TAB}catch(_){}}render();window.scrollTo(0,0);if(TAB==='home')loadWeather();return}
+ if(t.dataset.set){const k=t.dataset.set,v=t.dataset.v;if(k==='libf'){LIBF=v}else savePref(k,v);render();return}
+ if(t.dataset.ex){exModal(t.dataset.ex);return}
+ if(t.dataset.try){closeModal();const e=EXM[t.dataset.try];startWorkout(finalize([{type:'ready',secs:5},{type:'work',ex:e,secs:40,phase:'Practice'}],e.n),{trial:true});return}
+ if(t.dataset.eq){S.equip[t.dataset.eq]=!S.equip[t.dataset.eq];save();t.classList.toggle('on');t.querySelector('i').textContent=S.equip[t.dataset.eq]?'✓':'';return}
+ if(t.dataset.home){savePref('home',t.dataset.home);const hp=$('#homepick');if(hp)hp.innerHTML=homeHTML();return}
+ if(t.dataset.tog){S[t.dataset.tog]=!S[t.dataset.tog];if(t.dataset.tog==='stairs'&&!S.stairs&&S.place==='stairs')S.place='any';save();t.classList.toggle('on');return}
+ if(t.dataset.wxc){S.wxm.cond=t.dataset.wxc;save();render();return}
+ if(t.dataset.walk){startWalk(+t.dataset.wm||LEVELS[S.level].walk,t.dataset.walk==='in',{prog:!!t.dataset.prog,title:t.dataset.prog?progSession().title:undefined});return}
+ if(t.dataset.delbody){const d=t.dataset.delbody;confirmModal('Delete this check-in?','The check-in from '+fmtD(d)+' will be removed.','Delete',()=>{S.body=S.body.filter(e=>e.date!==d);save();render()});return}
+ if(t.dataset.join){joinCh(t.dataset.join);return}
+ if(t.dataset.leave){const id=t.dataset.leave;confirmModal('Leave '+CH[id].name+'?','Your workouts and walks stay in your history.','Leave',()=>{S.ch=S.ch.filter(c=>c.id!==id);save();render()});return}
+ if(t.dataset.lwm){LW.mins=+t.dataset.lwm;$('#sheet').innerHTML='<div class="grab"></div>'+logWalkModal.mk();return}
+ if(t.dataset.lww){LW.where=t.dataset.lww;$('#sheet').innerHTML='<div class="grab"></div>'+logWalkModal.mk();return}
+ if(t.dataset.city){const c=CITYRES[+t.dataset.city];if(c)setCity(c);return}
+ if(t.dataset.wk){const s=progSession(dayOf(t.dataset.wk));const done=progDone(t.dataset.wk);const isT=t.dataset.wk===ds();
+  openModal(`<div style="display:flex;gap:12px;align-items:center;margin-bottom:6px">${badge(s.focus,54)}<div><h2 style="margin:0">${s.title}</h2><span class="pill">${dayOf(t.dataset.wk).toLocaleDateString(undefined,{weekday:'long'})}${done?' · done':''}</span></div></div><p>${s.mins} minutes · ${ENERGY[s.energy].label}</p><p>${s.about}</p>${s.focus==='walk'?`<div class="row" style="margin-top:12px"><button class="btn pink" style="flex:1" data-walk="out" data-wm="${s.mins}" ${isT?'data-prog="1"':''}>${svg('walk',18)} Outside</button><button class="btn soft" style="flex:1" data-walk="in" data-wm="${s.mins}" ${isT?'data-prog="1"':''}>${svg('home',18)} Indoors</button></div>`:`<button class="btn pink block" style="margin-top:12px" data-progday="${t.dataset.wk}">${svg('play',18)} ${isT?'Start today\'s session':'Do this one now'}</button>`}`);return}
+ if(t.dataset.progday){closeModal();const k=t.dataset.progday;if(k===ds())startProg();else{const s=progSession(dayOf(k));startWorkout(build({mins:s.mins,energy:s.energy,place:s.focus==='home'?'home':'any',focus:s.focus,seed:Math.floor(dayOf(k).getTime()/864e5)*97,title:s.title}),{house:s.focus==='home'})}return}
+ if(t.dataset.day){const d=PLAN[+t.dataset.day-1];const done=S.planDone.includes(d.day);openModal(`<h2>Day ${d.day}: ${d.title}</h2><p>${d.mins} minutes · ${ENERGY[d.energy].label}${done?' · completed':''}</p><p>${d.rest?'A slow, gentle stretch to help you recover.':d.focus==='core'?'Mostly core moves, plus a little legs, arms and cardio.':d.focus==='burn'?'Gentle cardio mixed with strength to raise your heart rate, with no jumping.':'A balanced mix of core, legs, arms and gentle cardio.'}</p><button class="btn pink block" style="margin-top:12px" data-plan="${d.day}">${svg('play',18)} ${done?'Do it again':'Start Day '+d.day}</button>`);return}
+ if(t.dataset.plan){closeModal();startPlan(PLAN[+t.dataset.plan-1]);return}
+ const a=t.dataset.act;if(!a)return;
+ ({
+  startprog:()=>startProg(),
+  bonus:()=>startWorkout(build({mins:5,energy:S.energy,place:'any',focus:'core',title:'Bonus Round'}),{}),
+  quick:()=>{const T={core:'Quick Core',full:'Quick Full Body',burn:'Quick Burn',stretch:'Quick Stretch'};startWorkout(build({mins:S.mins,energy:S.energy,place:S.place,focus:S.focus,title:T[S.focus]}),{house:['house','stairs'].includes(S.place)})},
+  random:randomWorkout,
+  logwalk:logWalkModal,
+  savewalk:()=>{const p=progSession();const cp=curPlanDay();const isProg=(p.k==='rest'||p.k==='walk')&&!progDone(ds());
+   S.history.push({date:ds(),t:hm(),mins:LW.mins,title:LW.where==='in'?'Indoor walk':'Walk',walk:true,where:LW.where==='in'?'indoor':'outdoor',prog:isProg});
+   if(isProg)creditProg();if(S.ch.some(c=>c.id==='core28')&&cp&&cp.rest&&!S.planDone.includes(cp.day))S.planDone.push(cp.day);
+   save();checkChallenges();closeModal();toast(LW.mins+'-min walk logged. Nice!');render()},
+  checkin:checkinModal,
+  savecheck:()=>{const w=parseFloat(($('#ciw')||{}).value),l=parseFloat(($('#cil')||{}).value),d=($('#cid')||{}).value||ds();
+   const kg=isNaN(w)?null:wIn(w),cm=isNaN(l)?null:lIn(l);
+   if(kg==null&&cm==null){toast('Enter your weight, your waist, or both');return}
+   if(kg!=null&&(kg<25||kg>350)){toast('That weight looks off. Check the unit ('+S.units.w+')');return}
+   if(cm!=null&&(cm<40||cm>250)){toast('That waist looks off. Check the unit ('+S.units.l+')');return}
+   if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||d>ds()){toast('Pick a date up to today');return}
+   saveCheck(d,kg,cm);closeModal();toast('Check-in saved');render()},
+  goal:goalModal,
+  savegoal:()=>{const v=parseFloat(($('#goalin')||{}).value);if(isNaN(v)||wIn(v)<25||wIn(v)>350){toast('Enter a goal weight in '+S.units.w);return}S.goalKg=wIn(v);save();closeModal();toast('Goal saved');render()},
+  cleargoal:()=>{S.goalKg=null;save();closeModal();render()},
+  steps:stepsModal,
+  savesteps:()=>{const v=parseInt(($('#stepsin')||{}).value,10);if(isNaN(v)||v<0){toast('Enter a number of steps');return}const x=S.health[ds()]||{};x.steps=v;x.src='';x.at=hm();S.health[ds()]=x;save();checkChallenges();closeModal();toast('Steps saved');render()},
+  health:healthModal,
+  copyurl:()=>{const u=appURL()+'?steps=';try{navigator.clipboard.writeText(u).then(()=>toast('Address copied'),()=>{selectText('#hurl');toast('Select and copy the address')})}catch(e){selectText('#hurl');toast('Select and copy the address')}},
+  city:cityModal,
+  calgary:()=>setCity({name:'Calgary',lat:51.0447,lon:-114.0719}),
+  citysearch:citySearch,
+  geo:()=>{try{navigator.geolocation.getCurrentPosition(p=>setCity({name:'My location',lat:+p.coords.latitude.toFixed(3),lon:+p.coords.longitude.toFixed(3)}),()=>toast('Location isn\'t available here. Search for your city instead.'),{timeout:8000})}catch(e){toast('Location isn\'t available here. Search for your city instead.')}},
+  wxretry:()=>loadWeather(true),
+  levelup:()=>{if(S.level<6){S.level++;S.levelCount=0;save();toast('Level '+S.level+': '+LEVELS[S.level].n);render()}},
+  levelwait:()=>{S.levelCount=Math.max(0,LEVEL_UP-5);save();render()},
+  leveldown:()=>{if(S.level>1){S.level--;S.levelCount=0;save();toast('Level '+S.level+': '+LEVELS[S.level].n);render()}},
+  pause:()=>{P.running=!P.running;P.last=performance.now();if(!P.running){try{speechSynthesis.cancel()}catch(e){}}drawPlayer()},
+  next:()=>go(1),prev:()=>go(-1),
+  voice:()=>{S.voice=!S.voice;save();if(!S.voice)try{speechSynthesis.cancel()}catch(e){};drawPlayer()},
+  quitask:()=>{const was=P.running;P.running=false;confirmModal('End '+(P.meta.walk?'walk':'workout')+'?','This session won\'t be saved.','End it',quit);$('#modal').dataset.resume=was?'1':''},
+  close:()=>{closeModal();if(P&&$('#modal').dataset.resume){P.running=true;P.last=performance.now();$('#modal').dataset.resume=''}},
+  closeov:()=>{P=null;$('#ov').classList.remove('show');document.body.style.overflow='';render()},
+  again:()=>startWorkout(build({mins:5,energy:'low',place:'any',focus:'core',title:'Bonus Round'}),{}),
+  equip:()=>openModal(`<h2>My equipment</h2><p>Moves that need something you don't have will be skipped.</p>${equipHTML()}<button class="btn pink block" data-act="eqdone">Save</button>`),
+  eqdone:()=>{closeModal();render()},
+  onboarded:()=>{S.onboarded=true;save();closeModal();render()},
+  resetplan:()=>confirmModal('Restart Core Comeback?','Your streak and history stay. Only the 28-day challenge goes back to Day 1.','Restart',()=>{S.planDone=[];save();render()}),
+  wipe:()=>confirmModal('Reset everything?','This clears your streak, history, level, challenges and check-ins on this device. Your home, equipment, units and location settings stay.','Reset',()=>{const keep={units:S.units,equip:S.equip,home:S.home,stairs:S.stairs,city:S.city,meals:S.meals,stepGoal:S.stepGoal,walkGoal:S.walkGoal};S=Object.assign(JSON.parse(JSON.stringify(DEF)),keep,{onboarded:true});save();render()})
+ })[a]?.();
+});
+function selectText(sel){try{const el=$(sel);const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r)}catch(e){}}
+async function citySearch(){const q=(($('#cityq')||{}).value||'').trim();const box=$('#cityres');if(!q||!box)return;box.innerHTML='<p class="fine">Searching…</p>';
+ try{const res=await fetch('https://geocoding-api.open-meteo.com/v1/search?name='+encodeURIComponent(q)+'&count=5&language=en&format=json');const d=await res.json();
+  CITYRES=(d.results||[]).map(r=>({name:r.name+(r.admin1?', '+r.admin1:''),lat:+r.latitude.toFixed(3),lon:+r.longitude.toFixed(3),sub:r.country||''}));
+  box.innerHTML=CITYRES.length?CITYRES.map((c,i)=>`<button class="btn soft block" style="justify-content:flex-start" data-city="${i}">${svg('pin',16)} ${esc(c.name)} <span class="fine">${esc(c.sub)}</span></button>`).join(''):'<p class="fine">No places found. Try another spelling.</p>'}
+ catch(e){box.innerHTML='<p class="fine">City search can\'t reach the internet from this preview. It works in the hosted version.</p>'}}
+document.addEventListener('change',ev=>{const t=ev.target;if(!t||!t.id)return;
+ if(t.id.startsWith('meal-')){const k=t.id.slice(5);if(/^\d{2}:\d{2}$/.test(t.value)){S.meals[k]=t.value;save()}return}
+ if(t.id==='wxtemp'){const v=parseFloat(t.value);if(!isNaN(v)){S.wxm.temp=Math.max(-50,Math.min(50,v));save();render()}return}});
+document.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&ev.target&&ev.target.id==='cityq'){ev.preventDefault();citySearch()}});
+$('#modal').addEventListener('click',e=>{if(e.target.id==='modal'){if(!S.onboarded)return;closeModal();if(P&&$('#modal').dataset.resume){P.running=true;P.last=performance.now();$('#modal').dataset.resume=''}}});
+window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');if(['home','plan','moves','me'].includes(h)&&h!==TAB){TAB=h;render()}});
+pruneChallenges();save();
+render();
+loadWeather();
+if(!S.onboarded)onboarding();
+</script>
+</body>
+</html>
