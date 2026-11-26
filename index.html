@@ -878,11 +878,12 @@ function goalModal(){openModal(`<h2>Goal weight</h2><p>A steady pace is about 1 
 /* ---------- APPLE HEALTH BRIDGE (iPhone Shortcut opens ?steps=…) ---------- */
 const HOSTED=/^https?:$/.test(location.protocol)&&!/claude|anthropic/i.test(location.hostname);
 function appURL(){return location.origin+location.pathname}
-function importHealth(){try{const q=new URLSearchParams(location.search);if(!q.has('steps')&&!q.has('active')&&!q.has('weight'))return;
+function logLaunch(){try{const u=location.href;const L=(S.launches||[]).filter(x=>x.u!==u||Date.now()-x.t>5000);L.push({t:Date.now(),u});S.launches=L.slice(-4);save()}catch(e){}}
+function importHealth(){try{logLaunch();let q=new URLSearchParams(location.search);if(/^#(steps|weight|active)=/.test(location.hash))q=new URLSearchParams(location.hash.slice(1));if(!q.has('steps')&&!q.has('active')&&!q.has('weight'))return;
  const date=/^\d{4}-\d{2}-\d{2}$/.test(q.get('date')||'')?q.get('date'):ds();const x=S.health[date]||{};
  const st=parseInt(q.get('steps'),10),ac=parseInt(q.get('active'),10);
  const wt=parseFloat(q.get('weight'));if(!isNaN(st))x.steps=st;if(!isNaN(ac))x.active=ac;if(!isNaN(st)||!isNaN(ac)){x.src='Apple Health';x.at=hm();S.health[date]=x}if(!isNaN(wt)&&wIn(wt)>25&&wIn(wt)<350)saveCheck(date,wIn(wt),null,'Apple Health');save();
- history.replaceState(null,'',location.pathname+location.hash);
+ history.replaceState(null,'',location.pathname+(/^#(steps|weight|active)=/.test(location.hash)?'':location.hash));
  setTimeout(()=>toast('Synced '+[isNaN(st)?'':st.toLocaleString()+' steps',isNaN(wt)?'':'weight'].filter(Boolean).join(' and ')+' from Apple Health'),400);return true}catch(e){}}
 importHealth();
 /* iPhone may bring an already-open Home Screen app forward with the Shortcut's address instead of reloading it: check again then */
@@ -1109,12 +1110,13 @@ function confirmModal(title,text,yes,fn){openModal(`<h2>${title}</h2><p>${text}<
 let LW={mins:15,where:'out'};
 function logWalkModal(){const mk=()=>`<h2>Log a walk</h2><p>Walks you take with your phone or watch count here too.</p><div class="lbl" style="margin-top:14px">How long?</div><div class="chips">${[10,15,20,30,45,60].map(m=>`<button class="chip ${LW.mins===m?'on':''}" data-lwm="${m}">${m} min</button>`).join('')}</div><div class="lbl">Where?</div><div class="chips"><button class="chip ${LW.where==='out'?'on':''}" data-lww="out">Outside</button><button class="chip ${LW.where==='in'?'on':''}" data-lww="in">Indoors</button></div><button class="btn pink block" style="margin-top:18px" data-act="savewalk">Save walk</button>`;openModal(mk());logWalkModal.mk=mk}
 function stepsModal(){const st=stepsOn(ds());openModal(`<h2>Steps today</h2><p>Check the Health app or your watch and enter today's total. Or connect Apple Health to sync it.</p><label class="lbl" for="stepsin" style="display:block;margin-top:14px">Steps</label><input id="stepsin" class="inp" type="number" inputmode="numeric" min="0" placeholder="e.g. 5200" value="${st==null?'':st}"><button class="btn pink block" style="margin-top:14px" data-act="savesteps">Save</button><button class="btn soft block" style="margin-top:8px" data-act="health">Connect Apple Health instead</button>`)}
-function healthURL(){const u=appURL()+'?steps=';return (typeof STANDALONE!=='undefined'&&STANDALONE&&IOS)?u.replace(/^https?:\/\//,'webapp://'):u}
+function healthURL(){const sa=typeof STANDALONE!=='undefined'&&STANDALONE&&IOS;return sa?(appURL()+'#steps=').replace(/^https?:\/\//,'webapp://'):appURL()+'?steps='}
 function healthModal(){
  const url=healthURL();const web=url.startsWith('webapp://');const step=(n,html)=>`<li><em>${n}</em><div>${html}</div></li>`;
  openModal(`<h2>Connect Apple Health</h2>
  <p>An iPhone Shortcut can send today's steps (your phone's and your Apple Watch's) into SnugFit. You set it up once, in about 3 minutes.</p>
  <div class="hstart"><b>First, copy SnugFit's address</b><span class="code" id="hurl">${esc(url)}</span><button class="btn pink sm" data-act="copyurl">${svg('check',16)} Copy address</button>${web?'<span class="fine">This address opens the Home Screen app, so your steps land where you use SnugFit.</span>':''}</div>
+ ${(S.launches||[]).length?`<details class="hmore"><summary>Troubleshooting: how SnugFit was last opened</summary><p class="fine">If your shortcut ran, its address should show here with your step count at the end.</p>${S.launches.slice().reverse().map(x=>`<span class="code">${new Date(x.t).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})} · ${esc(x.u)}</span>`).join('')}</details>`:''}
  <div class="lbl" style="margin-top:16px">Make the shortcut</div>
  <ol class="hsteps">
  ${step(1,'Open the <b>Shortcuts</b> app. Tap <b>+</b> at the top right.')}

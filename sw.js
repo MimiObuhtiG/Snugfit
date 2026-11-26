@@ -1,7 +1,7 @@
 /* SnugFit offline support.
    App files: network first (so updates show up right away), cached copy when offline.
    Google Fonts: cache first. Weather and other sites: always live, never cached. */
-const VERSION='snugfit-v2.6.3';
+const VERSION='snugfit-v2.6.4';
 const SHELL=['./','./index.html','./demos.js','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./icons/apple-touch-icon.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(VERSION).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==VERSION).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
