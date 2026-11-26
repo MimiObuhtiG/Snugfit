@@ -878,12 +878,16 @@ function goalModal(){openModal(`<h2>Goal weight</h2><p>A steady pace is about 1 
 /* ---------- APPLE HEALTH BRIDGE (iPhone Shortcut opens ?steps=…) ---------- */
 const HOSTED=/^https?:$/.test(location.protocol)&&!/claude|anthropic/i.test(location.hostname);
 function appURL(){return location.origin+location.pathname}
-(function importHealth(){try{const q=new URLSearchParams(location.search);if(!q.has('steps')&&!q.has('active')&&!q.has('weight'))return;
+function importHealth(){try{const q=new URLSearchParams(location.search);if(!q.has('steps')&&!q.has('active')&&!q.has('weight'))return;
  const date=/^\d{4}-\d{2}-\d{2}$/.test(q.get('date')||'')?q.get('date'):ds();const x=S.health[date]||{};
  const st=parseInt(q.get('steps'),10),ac=parseInt(q.get('active'),10);
  const wt=parseFloat(q.get('weight'));if(!isNaN(st))x.steps=st;if(!isNaN(ac))x.active=ac;if(!isNaN(st)||!isNaN(ac)){x.src='Apple Health';x.at=hm();S.health[date]=x}if(!isNaN(wt)&&wIn(wt)>25&&wIn(wt)<350)saveCheck(date,wIn(wt),null,'Apple Health');save();
  history.replaceState(null,'',location.pathname+location.hash);
- setTimeout(()=>toast('Synced '+[isNaN(st)?'':st.toLocaleString()+' steps',isNaN(wt)?'':'weight'].filter(Boolean).join(' and ')+' from Apple Health'),400)}catch(e){}})();
+ setTimeout(()=>toast('Synced '+[isNaN(st)?'':st.toLocaleString()+' steps',isNaN(wt)?'':'weight'].filter(Boolean).join(' and ')+' from Apple Health'),400);return true}catch(e){}}
+importHealth();
+/* iPhone may bring an already-open Home Screen app forward with the Shortcut's address instead of reloading it: check again then */
+['pageshow','focus'].forEach(ev=>window.addEventListener(ev,()=>{if(importHealth()&&typeof render==='function')render()}));
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&importHealth()&&typeof render==='function')render()});
 
 /* ---------- AUDIO / VOICE ---------- */
 let AC=null;
@@ -1135,9 +1139,9 @@ function healthModal(){
  </div>
  <p class="fine">The <b>Open</b> line must show the address <b>and</b> Rounded Number. If it only shows Rounded Number, redo steps 8 to 10.</p>
  <details class="hmore"><summary>Make it run by itself every evening</summary><ol class="hsteps">
- ${step(1,'In Shortcuts, tap <b>Automation</b> at the bottom, then <b>+</b>.')}
- ${step(2,'Tap <b>Time of Day</b>. Pick <b>8:00 PM</b> and <b>Daily</b>. Tap <b>Next</b>.')}
- ${step(3,'Choose <b>Run Immediately</b>, then tap <b>Next</b>.')}
+ ${step(1,'In Shortcuts, go back to the very first screen (tap <b>&lt;</b> at the top left until there\'s no back arrow). Find <b>Automation</b> in the bar at the bottom or in the list.')}
+ ${step(2,'Tap <b>Automation</b>, then <b>+</b> (or <b>Create Personal Automation</b>). Note: the <b>Automation</b> button you see after tapping <b>+</b> on a new shortcut is a list of actions, not this.')}
+ ${step(3,'Tap <b>Time of Day</b>. Pick <b>8:00 PM</b> and <b>Daily</b>. Choose <b>Run Immediately</b>. Tap <b>Next</b>.')}
  ${step(4,'Pick <b>Send steps to SnugFit</b>. Tap <b>Done</b>.')}
  </ol></details>
  <details class="hmore"><summary>Also send your weight (optional)</summary><ol class="hsteps">
