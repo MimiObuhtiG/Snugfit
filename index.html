@@ -364,6 +364,21 @@ input[type=range]{width:100%;accent-color:var(--pink);margin-top:10px}
 .fstrip span{font-size:12.5px;color:var(--ink3);font-weight:700}
 .tabs .tab{font-size:11px}
 
+.hstart{background:var(--raise);border-radius:16px;padding:14px;margin-top:12px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.hstart .code{margin:0;width:100%;background:var(--card)}
+.hsteps{list-style:none;margin:6px 0 0;padding:0}
+.hsteps li{display:flex;gap:12px;padding:9px 0;border-bottom:1.5px solid var(--line);font-size:14.5px;line-height:1.45;color:var(--ink2);font-weight:600}
+.hsteps li:last-child{border-bottom:0}
+.hsteps li b{color:var(--ink)}
+.hsteps em{font-style:normal;flex:none;width:26px;height:26px;border-radius:9px;background:var(--fb-core);color:var(--pink);display:grid;place-items:center;font-weight:800;font-size:13px}
+.scprev{background:#1C1C1E;border-radius:18px;padding:8px;display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.scprev>div{background:#2C2C2E;border-radius:12px;padding:10px 12px;color:#fff;font-size:13.5px;font-weight:600;line-height:1.5}
+.scprev i{font-style:normal;color:#4DA3FF;background:rgba(77,163,255,.14);padding:1px 6px;border-radius:6px;margin:0 2px}
+.scprev small{display:block;color:#C7C7CC;font-size:12.5px;margin-top:4px}
+.scprev .ic{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;background:#3A3A3C;font-size:12px;margin-right:6px}
+.scprev .mono{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:#4DA3FF;word-break:break-all}
+.hmore{margin-top:12px;border:1.5px solid var(--line);border-radius:16px;padding:12px 14px}
+.hmore summary{font-weight:800;cursor:pointer;color:var(--ink)}
 /* sheets: close button, swipe-down to close, no accidental page refresh */
 html,body{overscroll-behavior-y:none}
 .sheet{position:relative;overscroll-behavior:contain;touch-action:pan-y}
@@ -1090,17 +1105,53 @@ function confirmModal(title,text,yes,fn){openModal(`<h2>${title}</h2><p>${text}<
 let LW={mins:15,where:'out'};
 function logWalkModal(){const mk=()=>`<h2>Log a walk</h2><p>Walks you take with your phone or watch count here too.</p><div class="lbl" style="margin-top:14px">How long?</div><div class="chips">${[10,15,20,30,45,60].map(m=>`<button class="chip ${LW.mins===m?'on':''}" data-lwm="${m}">${m} min</button>`).join('')}</div><div class="lbl">Where?</div><div class="chips"><button class="chip ${LW.where==='out'?'on':''}" data-lww="out">Outside</button><button class="chip ${LW.where==='in'?'on':''}" data-lww="in">Indoors</button></div><button class="btn pink block" style="margin-top:18px" data-act="savewalk">Save walk</button>`;openModal(mk());logWalkModal.mk=mk}
 function stepsModal(){const st=stepsOn(ds());openModal(`<h2>Steps today</h2><p>Check the Health app or your watch and enter today's total. Or connect Apple Health to sync it.</p><label class="lbl" for="stepsin" style="display:block;margin-top:14px">Steps</label><input id="stepsin" class="inp" type="number" inputmode="numeric" min="0" placeholder="e.g. 5200" value="${st==null?'':st}"><button class="btn pink block" style="margin-top:14px" data-act="savesteps">Save</button><button class="btn soft block" style="margin-top:8px" data-act="health">Connect Apple Health instead</button>`)}
+function healthURL(){const u=appURL()+'?steps=';return (typeof STANDALONE!=='undefined'&&STANDALONE&&IOS)?u.replace(/^https?:\/\//,'webapp://'):u}
 function healthModal(){
- const url=appURL()+'?steps=';
- openModal(`<h2>Connect your health apps</h2>
- <div class="lbl" style="margin-top:12px">${svg('watch',14)} Apple Health & Apple Watch</div>
- <p>A web app can't read Apple Health directly. This iPhone Shortcut sends today's steps (including your watch's) into SnugFit with one tap, or on a schedule.</p>
- <ol class="steps"><li>Open the <b>Shortcuts</b> app and tap <b>+</b>.</li><li>Add <b>Find Health Samples</b>. Set the type to <b>Steps</b> and the start date to <b>Today</b>.</li><li>Add <b>Calculate Statistics</b> and choose <b>Sum</b>.</li><li>Add <b>Round Number</b>.</li><li>Add <b>Open URLs</b>, paste this address, then insert the <b>Rounded Number</b> at the end:<span class="code" id="hurl">${esc(url)}</span><button class="btn soft sm" data-act="copyurl">Copy address</button></li><li>Run it once and allow Health access. SnugFit opens with your steps.</li><li>Optional, to send your weight too: add <b>Find Health Samples</b> (type <b>Weight</b>, sort by <b>Start Date</b>, latest first, limit <b>1</b>) and add <b>&amp;weight=</b> plus that sample's value to the end of the address. Use the same unit (lb or kg) you picked in SnugFit.</li><li>To make it automatic: <b>Automation → + → Time of Day</b> (say 8 PM), run this shortcut, and turn off "Ask before running".</li></ol>
- <p class="fine">Menu names can differ slightly between iOS versions.</p>
- ${HOSTED?'':'<div class="note">This only works in the hosted version of SnugFit. The preview you\'re using now can\'t receive data from the Shortcut, so enter steps by hand here for now.</div>'}
+ const url=healthURL();const web=url.startsWith('webapp://');const step=(n,html)=>`<li><em>${n}</em><div>${html}</div></li>`;
+ openModal(`<h2>Connect Apple Health</h2>
+ <p>An iPhone Shortcut can send today's steps (your phone's and your Apple Watch's) into SnugFit. You set it up once, in about 3 minutes.</p>
+ <div class="hstart"><b>First, copy SnugFit's address</b><span class="code" id="hurl">${esc(url)}</span><button class="btn pink sm" data-act="copyurl">${svg('check',16)} Copy address</button>${web?'<span class="fine">This address opens the Home Screen app, so your steps land where you use SnugFit.</span>':''}</div>
+ <div class="lbl" style="margin-top:16px">Make the shortcut</div>
+ <ol class="hsteps">
+ ${step(1,'Open the <b>Shortcuts</b> app. Tap <b>+</b> at the top right.')}
+ ${step(2,'Tap <b>Search Actions</b> at the bottom. Type <b>Find Health Samples</b> and tap it.')}
+ ${step(3,'Next to <b>Type is</b>, tap the blue word and choose <b>Steps</b>.')}
+ ${step(4,'Tap <b>Add Filter</b>. It adds <b>Start Date is today</b>. Leave it.')}
+ ${step(5,'Tap <b>Search Actions</b>, type <b>Calculate Statistics</b> and tap it. Tap the blue word <b>Average</b> and change it to <b>Sum</b>.')}
+ ${step(6,'Tap <b>Search Actions</b>, type <b>Round Number</b> and tap it. Leave it.')}
+ ${step(7,'Tap <b>Search Actions</b>, type <b>Open URLs</b> and tap it. It says <b>Open Rounded Number</b>.')}
+ ${step(8,'Tap the blue <b>Rounded Number</b> bubble, then tap <b>delete ⌫</b> on the keyboard so the box is empty.')}
+ ${step(9,'Tap the empty box again and choose <b>Paste</b>. The SnugFit address appears.')}
+ ${step(10,'In the bar just above the keyboard, tap <b>Rounded Number</b>. It joins the end of the address. Tap <b>Done</b>.')}
+ ${step(11,'Tap the name at the top, choose <b>Rename</b>, and call it <b>Send steps to SnugFit</b>.')}
+ ${step(12,'Tap <b>▶</b> at the bottom right. Tap <b>Allow</b> when it asks about Health. SnugFit opens with your steps.')}
+ </ol>
+ <div class="lbl" style="margin-top:16px">Check it looks like this</div>
+ <div class="scprev">
+  <div><span class="ic">♥</span>Find <i>Health Samples</i> where <i>All</i> of the following are true<small>Type is <i>Steps</i> · Start Date <i>is today</i></small></div>
+  <div><span class="ic">▥</span>Calculate the <i>Sum</i> of <i>Health Samples</i></div>
+  <div><span class="ic">≡</span>Round <i>Sum</i> to <i>Integer</i></div>
+  <div><span class="ic">↗</span>Open <span class="mono">${esc(url.replace(/^(https?|webapp):\/\//,''))}</span><i>Rounded Number</i></div>
+ </div>
+ <p class="fine">The <b>Open</b> line must show the address <b>and</b> Rounded Number. If it only shows Rounded Number, redo steps 8 to 10.</p>
+ <details class="hmore"><summary>Make it run by itself every evening</summary><ol class="hsteps">
+ ${step(1,'In Shortcuts, tap <b>Automation</b> at the bottom, then <b>+</b>.')}
+ ${step(2,'Tap <b>Time of Day</b>. Pick <b>8:00 PM</b> and <b>Daily</b>. Tap <b>Next</b>.')}
+ ${step(3,'Choose <b>Run Immediately</b>, then tap <b>Next</b>.')}
+ ${step(4,'Pick <b>Send steps to SnugFit</b>. Tap <b>Done</b>.')}
+ </ol></details>
+ <details class="hmore"><summary>Also send your weight (optional)</summary><ol class="hsteps">
+ ${step(1,'Open your <b>Send steps to SnugFit</b> shortcut.')}
+ ${step(2,'Tap <b>Search Actions</b>, type <b>Find Health Samples</b> and tap it. A second one appears at the bottom.')}
+ ${step(3,'Next to <b>Type is</b>, choose <b>Weight</b>. Set <b>Sort by</b> to <b>Start Date</b>, <b>Order</b> to <b>Latest First</b>, and turn on <b>Limit</b> with <b>1</b>.')}
+ ${step(4,'Press and hold this new action and drag it up so it sits just above <b>Open</b>.')}
+ ${step(5,'In the <b>Open</b> line, tap right after <b>Rounded Number</b> and type <b>&amp;weight=</b>')}
+ ${step(6,'In the bar above the keyboard, tap the new <b>Health Samples</b>. Tap that bubble, choose <b>Value</b>, then tap <b>Done</b>.')}
+ </ol><p class="fine">Weight comes in the unit you use in the Health app, so set SnugFit to the same unit (lb or kg) under Me.</p></details>
+ ${HOSTED?'':'<div class="note">This only works in the installed SnugFit app. The preview you\'re using now can\'t receive data from the Shortcut, so enter steps by hand here.</div>'}
  <div class="lbl" style="margin-top:18px">Android, Fitbit, Garmin</div>
- <p>Google Health Connect and full Apple Health access (workouts, heart rate, weight) need the installed app version. Fitbit and Garmin can connect through their own sign-in once SnugFit has an account system.</p>
- <button class="btn pink block" style="margin-top:14px" data-act="steps">Enter steps by hand</button>`)}
+ <p>Google Health Connect and full Apple Health access (workouts, heart rate) need the app-store version of SnugFit.</p>
+ <button class="btn soft block" style="margin-top:14px" data-act="steps">Enter steps by hand instead</button>`)}
 let CITYRES=[];
 function cityModal(){openModal(`<h2>Weather location</h2><p>Walk and clothing tips use the weather here. Currently: <b>${esc(S.city.name)}</b>.</p><div class="row" style="margin-top:12px;flex-wrap:nowrap"><input id="cityq" class="inp" type="search" placeholder="Search a city" autocomplete="off"><button class="btn pink" data-act="citysearch">Search</button></div><div class="cityres" id="cityres"></div><div class="row" style="margin-top:14px"><button class="btn soft sm" data-act="geo">${svg('pin',16)} Use my location</button><button class="btn soft sm" data-act="calgary">Calgary</button></div>`)}
 function setCity(c){S.city=c;save();WX={status:'idle',data:null,at:0};closeModal();toast('Weather location: '+c.name);loadWeather(true);render()}
@@ -1433,7 +1484,7 @@ document.addEventListener('click',ev=>{
   steps:stepsModal,
   savesteps:()=>{const v=parseInt(($('#stepsin')||{}).value,10);if(isNaN(v)||v<0){toast('Enter a number of steps');return}const x=S.health[ds()]||{};x.steps=v;x.src='';x.at=hm();S.health[ds()]=x;save();checkChallenges();closeModal();toast('Steps saved');render()},
   health:healthModal,
-  copyurl:()=>{const u=appURL()+'?steps=';try{navigator.clipboard.writeText(u).then(()=>toast('Address copied'),()=>{selectText('#hurl');toast('Select and copy the address')})}catch(e){selectText('#hurl');toast('Select and copy the address')}},
+  copyurl:()=>{const u=healthURL();try{navigator.clipboard.writeText(u).then(()=>toast('Address copied'),()=>{selectText('#hurl');toast('Select and copy the address')})}catch(e){selectText('#hurl');toast('Select and copy the address')}},
   city:cityModal,
   calgary:()=>setCity({name:'Calgary',lat:51.0447,lon:-114.0719}),
   citysearch:citySearch,
