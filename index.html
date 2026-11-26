@@ -313,6 +313,54 @@ html.dark .nextwalk{background:#17302E}html.dark .nextwalk span{color:#8FE0CE}
 html.dark .nextwalk.now{background:linear-gradient(135deg,#17302E,#221C38)}
 html.dark .chal.won{background:#1F2E1E;border-color:#335A2E}
 html.dark .modal{background:rgba(5,2,8,.6)}
+/* fasting (v2.6) */
+.fcard{background:var(--card);border:1.5px solid var(--line);border-radius:28px;padding:18px;box-shadow:var(--shadow)}
+.fhead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.fplanbtn{display:inline-flex;align-items:center;gap:6px;background:var(--raise);padding:8px 12px;border-radius:999px;font-weight:800;font-size:14px;color:var(--plum)}
+.fring{position:relative;width:min(70vw,260px);aspect-ratio:1;margin:12px auto 0}
+.fring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.fin{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.fin .t{font-family:Fredoka;font-size:42px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.fin .s{font-size:12.5px;font-weight:800;color:var(--ink3);margin-top:6px}
+.fin .k{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.frow{display:flex;gap:10px;margin-top:14px}
+.frow>div{flex:1;background:var(--raise);border-radius:16px;padding:10px 12px}
+.frow small{display:block;font-size:11px;font-weight:800;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em}
+.frow b{font-size:15px}
+.frow button{font-size:12.5px;font-weight:800;color:var(--pink);padding:0;margin-top:2px}
+.fnow{margin-top:14px;padding:12px 14px;border-radius:16px;display:flex;gap:12px;align-items:flex-start}
+.fnow svg{flex:none}
+.fnow b{display:block;font-size:15px}
+.fnow span{font-size:13.5px;font-weight:600;color:var(--ink2);line-height:1.4}
+.phases{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none;margin:0 -2px}
+.phases::-webkit-scrollbar{display:none}
+.ph{flex:none;width:122px;padding:12px;border-radius:18px;background:var(--card);border:1.5px solid var(--line)}
+.ph i{display:block;width:10px;height:10px;border-radius:50%;margin-bottom:8px}
+.ph b{display:block;font-size:13.5px;line-height:1.25}
+.ph span{font-size:11.5px;color:var(--ink3);font-weight:800}
+.ph.on{box-shadow:0 0 0 2px var(--pink) inset}
+.ph.past{opacity:.55}
+.bars{display:flex;align-items:flex-end;gap:8px;height:110px;position:relative;margin-top:18px}
+.bars .b{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative;z-index:1}
+.bars .b i{width:100%;max-width:30px;border-radius:9px 9px 4px 4px;background:linear-gradient(180deg,var(--pink2),var(--pink));min-height:3px}
+.bars .b i.miss{background:var(--scene2)}
+.bars .b i.none{background:var(--raise)}
+.blbl{display:flex;gap:8px;margin-top:6px}.blbl span{flex:1;text-align:center;font-size:11px;font-weight:800;color:var(--ink3)}
+.gline{position:absolute;left:0;right:0;border-top:2px dashed var(--plum2);opacity:.6;z-index:0}
+.gline span{position:absolute;right:0;top:-18px;font-size:10.5px;font-weight:800;color:var(--plum2)}
+.plancard{display:flex;gap:12px;align-items:center;padding:13px 14px;border-radius:18px;border:1.5px solid var(--line);margin-bottom:8px;width:100%;text-align:left;background:var(--card)}
+.plancard.on{border-color:var(--pink);background:var(--fb-core)}
+.plancard .big{font-family:Fredoka;font-size:21px;font-weight:700;color:var(--plum);min-width:62px}
+.plancard b{display:block;font-size:14.5px}
+.plancard span{font-size:12.5px;color:var(--ink3);font-weight:700}
+.plancard .lv{font-size:11px;font-weight:800;padding:4px 8px;border-radius:99px;background:var(--fb-lower);color:var(--plum);flex:none}
+input[type=range]{width:100%;accent-color:var(--pink);margin-top:10px}
+.fstrip{display:flex;align-items:center;gap:12px;margin-top:14px;padding:14px 16px;border-radius:var(--r);background:var(--card);border:1.5px solid var(--line);width:100%;text-align:left}
+.fstrip .fi{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;flex:none}
+.fstrip b{display:block;font-size:15.5px;font-variant-numeric:tabular-nums}
+.fstrip span{font-size:12.5px;color:var(--ink3);font-weight:700}
+.tabs .tab{font-size:11px}
+
 /* sheets: close button, swipe-down to close, no accidental page refresh */
 html,body{overscroll-behavior-y:none}
 .sheet{position:relative;overscroll-behavior:contain;touch-action:pan-y}
@@ -478,6 +526,14 @@ const EX=[
  {id:'standquad',n:'Standing Quad Stretch',p:['stand','house'],f:'stretch',i:1,s:true,c:['Hold the counter or a wall for balance.','Bend one knee and hold your ankle behind you.','Keep your knees side by side. Switch halfway.'],easy:'Rest your foot on a chair behind you instead.'},
  {id:'standreach',n:'Standing Side Reach',p:['stand','house'],f:'stretch',i:1,s:true,c:['Stand tall with your feet hip-width apart.','Reach one arm up and over toward the other side.','Breathe into your side ribs. Switch halfway.'],easy:'Keep your hand on your hip and lean less.'},
  {id:'heeltoe',n:'Heel-to-Toe Hallway Walk',p:['house'],f:'warm',i:1,c:['Walk slowly down the hallway, placing one heel right in front of the other toes.','Keep your eyes forward and arms out for balance.','Turn and come back. Touch the wall if you need to.'],easy:'Walk normally with slow, careful steps.'},
+ {id:'shouldercar',n:'Shoulder CARs',p:['stand','seat'],f:'warm',i:1,s:true,c:['Stand or sit tall and brace your belly a little, so only your arm moves.','Slowly lift one straight arm forward and up past your ear, then turn your palm out and circle it back behind you as far as is comfortable.','Bring it down by your side and reverse the circle. Switch arms halfway.'],easy:'Make the circle smaller, or bend your elbow.'},
+ {id:'hipcar',n:'Hip CARs',p:['stand'],f:'warm',i:1,s:true,c:['Hold the counter or a chair. Lift one knee up in front of you.','Swing that knee out to the side, then rotate it back so your foot comes up behind you.','Lower it slowly, then reverse the circle. Switch legs halfway.'],easy:'Keep the circle small, or do it lying on your back.'},
+ {id:'hipcircle',n:'Hip Circles',p:['stand'],f:'warm',i:1,c:['Stand with feet hip-width apart, hands on your hips.','Draw big, slow circles with your hips, like a hula hoop.','Halfway, switch direction.'],easy:'Make smaller circles.'},
+ {id:'torsotwist',n:'Standing Torso Twists',p:['stand','seat'],f:'warm',i:1,c:['Stand with feet hip-width apart, arms loose.','Turn your upper body side to side and let your arms swing and wrap around you.','Let your back heel lift as you turn. Keep it easy and relaxed.'],easy:'Sit down and twist slowly instead.'},
+ {id:'legswing',n:'Leg Swings',p:['stand'],f:'warm',i:1,s:true,c:['Hold the counter or a chair and stand on one leg.','Swing the other leg forward and back like a pendulum.','Start small and let the swing grow. Switch legs halfway.'],easy:'Keep the swings small and slow.'},
+ {id:'hinge',n:'Hip Hinge (Good Mornings)',p:['stand'],f:'warm',i:1,c:['Stand with feet hip-width apart, hands crossed on your chest.','Soften your knees and push your hips back, tipping your chest forward with a flat back.','Squeeze your glutes to stand tall again.'],easy:'Only tip forward a little.'},
+ {id:'openbook',n:'Open Book',p:['bed'],f:'warm',i:1,s:true,c:['Lie on your side with knees bent and arms straight out in front, palms together.','Lift your top arm up and over to open your chest toward the ceiling. Follow your hand with your eyes.','Bring it back to close the book. Switch sides halfway.'],easy:'Only open partway.'},
+ {id:'squatreach',n:'Squat to Reach',p:['stand'],f:'warm',i:1,c:['Stand with feet a little wider than your hips.','Sit back into a small, easy squat with your arms forward.','Stand up and reach both arms high overhead. Keep a steady rhythm.'],easy:'Hold the counter and keep the squat shallow.'},
  // WALKS (used by guided walks, hidden from the library)
  {id:'walkeasy',n:'Easy Walk',p:['out'],f:'walk',c:['Walk at a relaxed pace, like a stroll.','Let your arms swing loosely and breathe easy.','You should be able to sing a line of a song.'],easy:'Slow down as much as you need.'},
  {id:'walkbrisk',n:'Brisk Walk',p:['out'],f:'walk',c:['Pick up the pace, like you\'re running a little late.','Take shorter, quicker steps and pump your arms.','You can talk, but you can\'t sing.'],easy:'Drop back to an easy pace for a minute.'},
@@ -502,15 +558,16 @@ function h12(h){const d=new Date();d.setHours(h,0,0,0);return d.toLocaleTimeStri
 const KEY='snugfit-v1';
 const DEF={onboarded:false,voice:true,sound:true,equip:{db:true,chair:true,bottles:true,pillow:true,towel:true},history:[],planDone:[],energy:'low',place:'any',mins:7,focus:'core',tipIdx:0,
  home:'one',stairs:false,level:1,levelCount:0,lastProg:'',meals:{b:'08:00',l:'12:30',d:'18:00'},stepGoal:6000,walkGoal:20,
- city:{name:'Calgary',lat:51.0447,lon:-114.0719},health:{},theme:'auto',cond:[],goalType:'',pace:'steady',paceStart:null,setup2:false,habits:{},waterGoal:8,vegGoal:5,ch:[],chDone:[],wxm:{temp:-5,cond:'clear'},body:[],units:{w:'lb',l:'in'},goalKg:null};
+ city:{name:'Calgary',lat:51.0447,lon:-114.0719},health:{},theme:'auto',cond:[],goalType:'',pace:'steady',paceStart:null,setup2:false,habits:{},waterGoal:8,vegGoal:5,ch:[],chDone:[],wxm:{temp:-5,cond:'clear'},body:[],units:{w:'lb',l:'in'},goalKg:null,
+ fast:{active:null,planId:'14:10',custom:[],hist:[],safety:false,startHour:20}};
 let S;
 try{const raw=JSON.parse(localStorage.getItem(KEY)||'{}');S=Object.assign(JSON.parse(JSON.stringify(DEF)),raw);
- S.equip=Object.assign({},DEF.equip,raw.equip||{});S.meals=Object.assign({},DEF.meals,raw.meals||{});S.wxm=Object.assign({},DEF.wxm,raw.wxm||{});S.units=Object.assign({},DEF.units,raw.units||{});
+ S.equip=Object.assign({},DEF.equip,raw.equip||{});S.meals=Object.assign({},DEF.meals,raw.meals||{});S.wxm=Object.assign({},DEF.wxm,raw.wxm||{});S.units=Object.assign({},DEF.units,raw.units||{});S.fast=Object.assign(JSON.parse(JSON.stringify(DEF.fast)),raw.fast||{});
  if(raw.planDone&&raw.planDone.length&&!raw.ch)S.ch=[{id:'core28',start:ds()}];
 }catch(e){S=JSON.parse(JSON.stringify(DEF))}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 let TAB='home';
-try{const h=location.hash.replace('#','');if(['home','plan','moves','me'].includes(h))TAB=h}catch(e){}
+try{const h=location.hash.replace('#','');if(['home','plan','fast','moves','me'].includes(h))TAB=h}catch(e){}
 function activeDays(){return new Set(S.history.map(h=>h.date))}
 function streak(){const a=activeDays();let d=new Date();if(!a.has(ds(d)))d=addDays(d,-1);let n=0;while(a.has(ds(d))){n++;d=addDays(d,-1)}return n}
 function walkMinsOn(date){return S.history.filter(h=>h.walk&&h.date===date).reduce((a,h)=>a+(h.mins||0),0)}
@@ -599,10 +656,10 @@ function shuffle(a,r){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.flo
 /* Moves skipped for health conditions picked in the health check. A general, conservative guide, not medical advice. */
 const COND={knee:'Knees',back:'Lower back',wrist:'Wrists or shoulders',balance:'Balance or dizziness',preg:'Pregnant or recently gave birth',heart:'Heart condition or high blood pressure',injury:'Recent surgery or injury'};
 const AVOID={
- knee:['wallsit','doublestep','chairsquat','laundrysquat','tidysprint','stepcalf'],
+ knee:['squatreach','wallsit','doublestep','chairsquat','laundrysquat','tidysprint','stepcalf'],
  back:['flutter','bicycle','revcrunch','kneetuck','leanback','legraise','forwardfold','laundrysquat','tidysprint'],
  wrist:['incline','counterpush','stairpush','dips','stairdips','press','sideplank','counterplank','birddog','donkey','catcow'],
- balance:['heeltoe','standquad','standcrunch','counterkick','stepjack','doublestep'],
+ balance:['legswing','hipcar','heeltoe','standquad','standcrunch','counterkick','stepjack','doublestep'],
  preg:['deadbug','pelvictilt','toetaps','revcrunch','bicycle','legraise','flutter','bridge','chestpress','lyingmarch','kneechest','supinetwist','cobra','leanback','kneetuck','sideplank','doublestep']};
 function hasCond(c){return (S.cond||[]).includes(c)}
 function avoidReason(e){for(const c of (S.cond||[])){if(c==='balance'&&e.p.every(x=>x==='stairs'))return COND[c];if(AVOID[c]&&AVOID[c].includes(e.id))return COND[c]}return ''}
@@ -626,9 +683,11 @@ function build({mins,energy,place,focus,seed,title}){
   const n=Math.max(3,Math.floor(T/55));
   for(let k=0;k<n;k++){const ex=pool[k%pool.length];steps.push({type:'work',ex,secs:45,phase:'Stretch'});if(k<n-1)steps.push({type:'rest',secs:10})}
  } else {
-  const warm=pick('warm',place,E,r,2,used);
+  const nw=mins>=7?3:2;
+  const warm=shuffle(MOB.map(id=>EXM[id]).filter(e=>e&&okAvail(e)&&(place==='any'?!e.p.every(x=>x==='bed'):okPlace(e,place))&&!used.has(e.id)),r).slice(0,nw);warm.forEach(e=>used.add(e.id));
+  if(warm.length<nw)warm.push(...pick('warm',place,E,r,nw-warm.length,used));
   warm.forEach(ex=>{steps.push({type:'work',ex,secs:30,phase:'Warm-up'});steps.push({type:'rest',secs:10})});
-  const main=Math.max(90,T-160);const slot=E.w+E.r;const N=Math.max(3,Math.floor(main/slot));
+  const main=Math.max(90,T-80-warm.length*40);const slot=E.w+E.r;const N=Math.max(3,Math.floor(main/slot));
   const K=Math.min(N,6);
   let order;
   if(focus==='core')order=['core','core','lower','core','upper','cardio','core'];
@@ -847,8 +906,8 @@ try{MQ&&MQ.addEventListener('change',()=>{if(S.theme==='auto')render()})}catch(e
 function render(){
  applyTheme();
  const app=$('#app');
- app.innerHTML=`<div class="top"><div class="brand"><div class="logo">${svg('db',22,'#fff',2.6)}</div><b>Snug<span>Fit</span></b></div><div class="streak" title="Day streak">${svg('flame',18,'var(--coral)',2.2)}${streak()}</div></div><div class="fadein">${TAB==='home'?home():TAB==='plan'?plan():TAB==='moves'?moves():me()}</div>`;
- $('#tabs').innerHTML=[['home','Today','home'],['plan','Program','plan'],['moves','Moves','lib'],['me','Me','me']].map(([k,l,i])=>`<button class="tab ${TAB===k?'on':''}" data-tab="${k}">${svg(i,22)}${l}</button>`).join('');
+ app.innerHTML=`<div class="top"><div class="brand"><div class="logo">${svg('db',22,'#fff',2.6)}</div><b>Snug<span>Fit</span></b></div><div class="streak" title="Day streak">${svg('flame',18,'var(--coral)',2.2)}${streak()}</div></div><div class="fadein">${TAB==='home'?home():TAB==='plan'?plan():TAB==='fast'?fastTab():TAB==='moves'?moves():me()}</div>`;
+ $('#tabs').innerHTML=[['home','Today','home'],['plan','Program','plan'],['fast','Fast','clock'],['moves','Moves','lib'],['me','Me','me']].map(([k,l,i])=>`<button class="tab ${TAB===k?'on':''}" data-tab="${k}">${svg(i,22)}${l}</button>`).join('');
 }
 function levelBanner(){if(S.level>=6||S.levelCount<LEVEL_UP)return '';const L=LEVELS[S.level+1];
  return `<div class="banner">${iconBadge('trophy','var(--tile-ink)','var(--tile)',44)}<div style="flex:1;min-width:0"><b>Ready for Level ${S.level+1}?</b><span>You've done ${S.levelCount} sessions at this level. Next: ${L.w}-min workouts and ${L.walk}-min walks.</span><div class="row" style="margin-top:10px"><button class="btn pink sm" data-act="levelup">Level up</button><button class="btn soft sm" data-act="levelwait">Not yet</button></div></div></div>`}
@@ -897,10 +956,11 @@ function home(){
  const mini=`<div class="mini"><button data-act="steps"><b>${st==null?'—':st.toLocaleString()}</b><span>steps${st==null?' · add':' / '+S.stepGoal.toLocaleString()}</span><div class="meter lime"><i style="width:${pct(st||0,S.stepGoal)}%"></i></div></button><div><b>${walkMinsOn(today)}</b><span>walk min / ${S.walkGoal}</span><div class="meter teal"><i style="width:${pct(walkMinsOn(today),S.walkGoal)}%"></i></div></div><div><b>${workoutsOn(today)}</b><span>workouts today</span><div class="meter"><i style="width:${workoutsOn(today)?100:0}%"></i></div></div></div>`;
  const ch=chalCards(2);const lc=lastCheck();
  const nudge=checkDue()?`<button class="chal offer" style="margin-top:14px;margin-bottom:0" data-act="checkin">${iconBadge('scale','var(--tile-ink)','var(--tile)')}<div class="body"><b>Weekly check-in</b><span>${lc?'Last one was '+fmtD(lc.date)+'. ':''}Log your weight and waist. It takes 30 seconds.</span></div></button>`:'';
- return `<div class="hello">${greet()}${todayDone?' · you moved today':''}</div><div class="h1 disp">${todayDone?'Look at you go.':'Tiny effort. Real results.'}</div>${levelBanner()}${S.onboarded&&!S.setup2?`<button class="chal offer" style="margin-bottom:14px" data-act="setup">${iconBadge('trophy','var(--tile-ink)','var(--tile)')}<div class="body"><b>Personalize SnugFit</b><span>Set your goal and a quick health check so workouts fit you. 1 minute.</span></div></button>`:''}${hero()}${mini}${nudge}
+ return `<div class="hello">${greet()}${todayDone?' · you moved today':''}</div><div class="h1 disp">${todayDone?'Look at you go.':'Tiny effort. Real results.'}</div>${levelBanner()}${S.onboarded&&!S.setup2?`<button class="chal offer" style="margin-bottom:14px" data-act="setup">${iconBadge('trophy','var(--tile-ink)','var(--tile)')}<div class="body"><b>Personalize SnugFit</b><span>Set your goal and a quick health check so workouts fit you. 1 minute.</span></div></button>`:''}${hero()}${mini}${fastStrip()}${nudge}
  ${walkCard()}
  ${ch?`<div class="sec"><h3>Challenges</h3><small>optional</small></div>${ch}`:''}
  ${habitsCard()}
+ ${warmCard()}
  <div class="sec"><h3>Quick workout</h3><small>your way</small></div>
  <div class="card">
   <div class="lbl">How do you feel?</div>${chips('energy',[['low','Low energy'],['med','Steady'],['high','Spicy']],S.energy)}
@@ -939,6 +999,7 @@ function moves(){
  const list=lib.filter(e=>LIBF==='all'||(LIBF==='house'||LIBF==='stairs'?e.p.includes(LIBF):e.f===LIBF));
  return `<div class="hello">${lib.length} moves</div><div class="h1 disp">Move library</div>
  ${chips('libf',[['all','All'],['core','Core'],['lower','Legs'],['upper','Arms'],['cardio','Cardio'],['stretch','Stretch'],['warm','Warm-up'],['house','Around the house'],['stairs','Stairs']],LIBF)}
+ ${LIBF==='all'||LIBF==='warm'?warmCard(true):''}
  ${LIBF==='stairs'&&!S.stairs?`<div class="note">You've said you don't have stairs, so these won't show up in your workouts. Turn on "I have stairs I can use" in Me if that changes.</div>`:''}
  <div style="margin-top:14px">${list.map(e=>`<button class="ex" data-ex="${e.id}">${badge(e.f)}<div><b>${e.n}</b><span>${e.p.map(x=>PLACE[x]).join(' · ')}${e.req?' · needs '+(e.req==='db'?'dumbbells':EQUIP[e.req].toLowerCase()):''}${avoidReason(e)?'<br><span class="condtag">Skipped for your '+avoidReason(e).toLowerCase()+'</span>':''}</span></div><span class="chev">${svg('chev',20)}</span></button>`).join('')}</div>`;
 }
@@ -990,7 +1051,7 @@ function me(){
   <div class="set"><div>Reminders<small>Lock-screen reminders are coming next. They need the installed app plus sign-in, which is the next step we're building. For now, the Today tab tells you when to walk.</small></div></div>
  </div>
  <div class="sec"><h3>Safety</h3></div>
- <div class="card"><p class="fine" style="margin:0">SnugFit offers general fitness guidance and isn't medical advice. Check with a doctor before starting a new exercise program, especially if you're pregnant, recovering from surgery or injury, or have a health condition. Hold the railing on stairs. Stop if you feel pain, dizziness or shortness of breath. In extreme cold, follow Environment Canada's wind chill warnings.</p></div>
+ <div class="card"><p class="fine" style="margin:0">SnugFit offers general fitness and fasting guidance and isn't medical advice. Check with a doctor before starting a new exercise or fasting routine, especially if you're pregnant or breastfeeding, have diabetes or take blood-sugar medication, have a history of eating disorders, recovering from surgery or injury, or have a health condition. Hold the railing on stairs. Stop if you feel pain, dizziness or shortness of breath. In extreme cold, follow Environment Canada's wind chill warnings.</p></div>
  <div style="margin-top:14px"><button class="btn soft block" data-act="wipe">Reset all data</button></div>
  <p class="fine" style="text-align:center;margin-top:16px">SnugFit v2.5 · Made for lazy days</p>`;
 }
@@ -1096,6 +1157,155 @@ function habitsCard(){const h=habitsOn(ds());const pm=h.p.filter(Boolean).length
  </div>`}
 function habitsWeek(){const mon=mondayOf();let wd=0,pm=0,vd=0,days=0;for(let i=0;i<7;i++){const d=addDays(mon,i);if(ds(d)>ds())break;days++;const h=habitsOn(ds(d));if(h.w>=S.waterGoal)wd++;pm+=h.p.filter(Boolean).length;if(h.v>=S.vegGoal)vd++}return {wd,pm,vd,days}}
 
+/* ---------- FULL-BODY WARM-UP (v2.6) ---------- */
+const MOB=['shouldercar','hipcircle','torsotwist','hipcar','legswing','hinge','squatreach','openbook','armcircles','catcow'];
+const WARMUP_FLOW=['neckroll','shouldercar','armcircles','torsotwist','hipcircle','hipcar','legswing','hinge','squatreach'];
+const WARMUP_ALT=['seatedmarch','pelvictilt','catcow','openbook','lyingmarch','seatedtwist'];
+function warmupWorkout(){let ids=WARMUP_FLOW.filter(id=>EXM[id]&&okAvail(EXM[id]));
+ for(const id of WARMUP_ALT){if(ids.length>=8)break;if(EXM[id]&&okAvail(EXM[id])&&!ids.includes(id))ids.push(id)}
+ const steps=[{type:'ready',secs:6}];ids.forEach((id,i)=>{steps.push({type:'work',ex:EXM[id],secs:EXM[id].s?40:30,phase:'Warm-up'});if(i<ids.length-1)steps.push({type:'rest',secs:6})});
+ return finalize(steps,'Full-Body Warm-Up',{focus:'warm',energy:'low',place:'any'})}
+function warmCard(lib){const w=warmupWorkout();const n=w.steps.filter(x=>x.type==='work').length;
+ return `<button class="chal offer" style="${lib?'margin-top:14px':'margin-top:14px;margin-bottom:0'}" data-act="warmup">${iconBadge('warm','var(--f-warm)','var(--fb-warm)')}<div class="body"><b>Full-body warm-up · ${Math.round(w.total/60)} min</b><span>${n} moves for shoulders, spine and hips, each with a demo. Do it before any workout, or on its own when you feel stiff.</span></div></button>`}
+
+/* ---------- FASTING (v2.6) ---------- */
+const FPRESETS=[
+ {id:'12:12',h:12,name:'Gentle Start',lv:'Beginner',d:'Half your day fasting, mostly while you sleep. The easiest way in.'},
+ {id:'13:11',h:13,name:'Circadian Rhythm',lv:'Beginner',d:'Finish dinner early, eat again at breakfast. Lines up with your body clock.'},
+ {id:'14:10',h:14,name:'Steady',lv:'Beginner',d:'A small step up. Skip late-night snacks and push breakfast a little later.'},
+ {id:'16:8',h:16,name:'The Classic',lv:'Intermediate',d:'The most popular plan. Usually means skipping breakfast.'},
+ {id:'18:6',h:18,name:'Lean',lv:'Intermediate',d:'Two meals in a 6-hour window. Try once 16:8 feels easy.'},
+ {id:'20:4',h:20,name:'Warrior',lv:'Advanced',d:'One big meal plus a snack in a 4-hour window.'},
+ {id:'OMAD',h:23,name:'One Meal a Day',lv:'Advanced',d:'All your eating in about an hour. Not an everyday plan for most people.'}
+];
+const PHASES=[
+ {h:0,n:'Digesting',c:'#FFA03A',d:'Your body is still using energy from your last meal.'},
+ {h:4,n:'Blood sugar settling',c:'#E5B800',d:'Insulin and blood sugar drift back toward normal.'},
+ {h:8,n:'Switching fuel',c:'#2EBFA5',d:'Your body starts drawing on its stored carbs (glycogen).'},
+ {h:12,n:'Using more fat',c:'#F2559A',d:'As stored carbs run low, your body burns more fat for energy.'},
+ {h:16,n:'Deeper fat burn',c:'#C25BD0',d:'Fat becomes a bigger share of your fuel. Ketones start to rise for many people.'},
+ {h:18,n:'Ketosis may begin',c:'#8E3AA6',d:'Ketones may rise enough for light ketosis. Timing varies a lot from person to person.'},
+ {h:24,n:'Extended fast',c:'#5A62C9',d:'Past 24 hours. Check with your doctor before fasting this long regularly.'}
+];
+const FTIPS=[
+ '<b>Water, black coffee and plain tea</b> are fine while you fast. Sugar, milk and juice break it.',
+ '<b>Hunger comes in waves.</b> It usually passes in 15 to 20 minutes. A glass of water helps.',
+ '<b>Break your fast with protein</b> like eggs, Greek yogurt, beans or chicken. It keeps you full longer and protects muscle.',
+ '<b>Don\'t make up for it.</b> Eat normal, balanced meals in your window. Fasting works best without a big binge after.',
+ '<b>Sleep counts.</b> Most of a 12 to 14 hour fast happens overnight. Start right after dinner.',
+ '<b>Go gentle on long fasts.</b> On days you fast 16+ hours, pick a low-energy or stretch workout.',
+ '<b>Consistency beats length.</b> A 14-hour fast you keep every day does more than an 18-hour one you quit.'
+];
+const HOUR=3600000;
+function allPlans(){return FPRESETS.concat(S.fast.custom.map(c=>({id:c.id,h:c.h,name:c.name,lv:'Custom',d:c.h+'-hour fast',custom:true})))}
+function curFPlan(){return allPlans().find(p=>p.id===S.fast.planId)||FPRESETS[2]}
+function fastLabel(h){return h<24?h+':'+(24-h):h+'h'}
+function phaseAt(h){let p=PHASES[0];for(const x of PHASES)if(h>=x.h)p=x;return p}
+function pad2(n){return String(n).padStart(2,'0')}
+function hms(ms){ms=Math.max(0,ms);const s=Math.floor(ms/1000);return pad2(Math.floor(s/3600))+':'+pad2(Math.floor(s/60)%60)+':'+pad2(s%60)}
+function fhm(ms){ms=Math.max(0,ms);const m=Math.round(ms/60000);return Math.floor(m/60)+'h '+pad2(m%60)+'m'}
+function fclock(ts){const d=new Date(ts);const t=d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});const k=ds(d);return (k===ds()?'Today':k===ds(addDays(new Date(),1))?'Tomorrow':k===ds(addDays(new Date(),-1))?'Yesterday':d.toLocaleDateString([],{weekday:'short'}))+' '+t}
+function hourLabel(h){h=((h%24)+24)%24;const d=new Date(2020,0,1,Math.floor(h),0);return d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}
+function toLocalInput(ts){const d=new Date(ts);return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())+'T'+pad2(d.getHours())+':'+pad2(d.getMinutes())}
+function fastMet(f){return (f.end-f.start)>=f.goalH*HOUR*0.98}
+function fastStreak(){const days=new Set(S.fast.hist.filter(fastMet).map(f=>ds(new Date(f.end))));let d=new Date();if(!days.has(ds(d)))d=addDays(d,-1);let n=0;while(days.has(ds(d))){n++;d=addDays(d,-1)}return n}
+function fastStrip(){const A=S.fast.active;const p=curFPlan();
+ if(A){const el=Date.now()-A.start;const ph=phaseAt(el/HOUR);return `<button class="fstrip" data-tab="fast"><div class="fi" style="background:${ph.c}26">${svg('clock',24,ph.c)}</div><div style="flex:1;min-width:0"><b id="fsHome">Fasting ${fhm(el)}</b><span>${fastLabel(A.goalH)} · ${ph.n}${el>16*HOUR?' · keep workouts gentle':''}</span></div>${svg('chev',20,'var(--ink3)')}</button>`}
+ return `<button class="fstrip" data-tab="fast"><div class="fi" style="background:var(--fb-core)">${svg('clock',24,'var(--pink)')}</div><div style="flex:1;min-width:0"><b>Fasting · ${fastLabel(p.h)}</b><span>Start your fast when you finish eating</span></div>${svg('chev',20,'var(--ink3)')}</button>`}
+function fastTab(){
+ const A=S.fast.active;const p=curFPlan();const now=Date.now();let ring;
+ if(A){const el=now-A.start;const g=A.goalH*HOUR;const ph=phaseAt(el/HOUR);const done=el>=g;
+  ring=`<div class="fhead"><span class="fplanbtn" style="background:${ph.c}24;color:${ph.c}">${svg('flame',15,ph.c)}<span id="fphn">${ph.n}</span></span><button class="fplanbtn" data-act="fplans">${fastLabel(A.goalH)} ${svg('chev',14)}</button></div>
+  <div class="fring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="none" stroke="var(--raise)" stroke-width="9"/><circle id="fringc" cx="60" cy="60" r="54" fill="none" stroke="${ph.c}" stroke-width="9" stroke-linecap="round" stroke-dasharray="339.3" stroke-dashoffset="${339.3*(1-Math.min(1,el/g))}"/></svg>
+  <div class="fin"><div><div class="k" id="fk" style="color:${done?'var(--won)':ph.c}">${done?'Goal reached!':'Elapsed '+Math.floor(100*el/g)+'%'}</div><div class="t" id="fel">${hms(el)}</div><div class="s" id="fleft">${done?'+'+fhm(el-g)+' past goal':fhm(g-el)+' to go'}</div></div></div></div>
+  <div class="frow"><div><small>Started</small><b>${fclock(A.start)}</b><br><button data-act="fedit">Edit start</button></div><div><small>Goal</small><b>${fclock(A.start+g)}</b><br><span class="fine">${A.goalH} hours</span></div></div>
+  <div class="fnow" style="background:${ph.c}1a">${svg('bulb',22,ph.c)}<div><b>${ph.n}</b><span>${ph.d}</span></div></div>
+  <button class="btn ${done?'pink':'soft'} block" style="margin-top:14px" data-act="fend">${done?'End fast & log it':'End fast'}</button>`}
+ else{const last=S.fast.hist[S.fast.hist.length-1];const since=last?now-last.end:0;const win=(24-Math.min(p.h,23))*HOUR;
+  ring=`<div class="fhead"><span class="fplanbtn">${svg('check',15)} Eating window</span><button class="fplanbtn" data-act="fplans">${fastLabel(p.h)} · ${esc(p.name)} ${svg('chev',14)}</button></div>
+  <div class="fring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="none" stroke="var(--raise)" stroke-width="9"/>${last?`<circle cx="60" cy="60" r="54" fill="none" stroke="var(--c-teal)" stroke-width="9" stroke-linecap="round" stroke-dasharray="339.3" stroke-dashoffset="${339.3*(1-Math.min(1,since/win))}"/>`:''}</svg>
+  <div class="fin"><div><div class="k" style="color:var(--c-teal)">${!last?'Ready when you are':since>=win?'Ready to fast':'Eating for'}</div><div class="t" id="fel">${last?hms(since):fastLabel(p.h)}</div><div class="s">${p.h<24?`Fast ${hourLabel(S.fast.startHour)} → ${hourLabel(S.fast.startHour+p.h)}`:`${p.h}-hour fast`}</div></div></div></div>
+  <button class="btn pink block" style="margin-top:16px" data-act="fstart">${svg('play',18)} Start ${p.h}-hour fast</button>
+  <button class="btn soft block" style="margin-top:8px" data-act="fedit">Started earlier? Set start time</button>`}
+ const curH=A?(now-A.start)/HOUR:-1;
+ const phases=PHASES.map((x,i)=>{const nx=PHASES[i+1];const on=A&&curH>=x.h&&(!nx||curH<nx.h);const past=A&&nx&&curH>=nx.h;return `<div class="ph ${on?'on':''} ${past?'past':''}"><i style="background:${x.c}"></i><b>${x.n}</b><span>${x.h}h+</span></div>`}).join('');
+ const days=[...Array(7)].map((_,i)=>addDays(new Date(),i-6));
+ const maxH=Math.max(p.h,...S.fast.hist.map(f=>(f.end-f.start)/HOUR),1)+2;
+ const bars=days.map(d=>{const fs=S.fast.hist.filter(f=>ds(new Date(f.end))===ds(d));const h=fs.reduce((m,f)=>Math.max(m,(f.end-f.start)/HOUR),0);const met=fs.some(fastMet);return `<div class="b"><i class="${!fs.length?'none':met?'':'miss'}" style="height:${fs.length?Math.max(4,h/maxH*100):4}%"></i></div>`}).join('');
+ const blbl=days.map(d=>`<span>${'MTWTFSS'[(d.getDay()+6)%7]}</span>`).join('');
+ const n=S.fast.hist.length;const avg=n?S.fast.hist.reduce((a,f)=>a+(f.end-f.start),0)/n/HOUR:0;const longest=n?Math.max(...S.fast.hist.map(f=>(f.end-f.start)/HOUR)):0;
+ const hw=habitsOn(ds());const recent=S.fast.hist.slice(-5).reverse();const lc=lastCheck();
+ return `<div class="hello">Intermittent fasting</div><div class="h1 disp">${A?'You\'re fasting':'Eat, then rest'}</div>
+ <div class="fcard">${ring}</div>
+ <div class="sec"><h3>Body stages</h3><small>approximate</small></div>
+ <div class="phases">${phases}</div>
+ <p class="fine" style="margin:6px 2px 0">Timing varies with your last meal, activity and body. These stages are a general guide, not a measurement.</p>
+ <div class="sec"><h3>Your week</h3><small>${fastStreak()} day fast streak</small></div>
+ <div class="card"><div class="bars"><div class="gline" style="bottom:${p.h/maxH*100}%"><span>${p.h}h goal</span></div>${bars}</div><div class="blbl">${blbl}</div></div>
+ <div class="stats" style="margin-top:10px"><div class="stat"><b>${n}</b><span>fasts</span></div><div class="stat"><b>${avg?avg.toFixed(1):0}h</b><span>average</span></div><div class="stat"><b>${longest?longest.toFixed(1):0}h</b><span>longest</span></div></div>
+ <div class="sec"><h3>While you fast</h3></div>
+ <div class="card"><div class="habit"><div class="hl"><b>Water</b><span>${hw.w>=S.waterGoal?'Goal reached. Nice!':'Water helps with hunger during a fast'}</span><div class="drops">${[...Array(S.waterGoal)].map((_,i)=>`<i class="${i<hw.w?'on':''}"></i>`).join('')}</div></div><div class="stepper"><button data-hab="w-" aria-label="One less glass">${svg('minus',16)}</button><output>${hw.w}/${S.waterGoal}</output><button data-hab="w+" aria-label="One more glass">${svg('plus',16)}</button></div></div>
+ <div class="habit"><div class="hl"><b>Weekly check-in</b><span>${lc?'Last one '+fmtD(lc.date)+'. See your trend under Me.':'Track weight and waist to see fasting\'s effect over time.'}</span></div><button class="btn soft sm" data-act="checkin">Log</button></div></div>
+ ${recent.length?`<div class="sec"><h3>Recent fasts</h3></div><div class="card">${recent.map(f=>{const h=(f.end-f.start)/HOUR;return `<div class="hist"><div>${fhm(f.end-f.start)} <span style="color:${fastMet(f)?'var(--won)':'var(--ink3)'}">· ${fastMet(f)?'goal met':Math.round(100*h/f.goalH)+'% of '+f.goalH+'h'}</span><br><span>${fclock(f.end)}${f.mood?' · felt '+f.mood.toLowerCase():''}${f.note?' · '+esc(f.note):''}</span></div><button data-fdelh="${f.start}" aria-label="Delete fast" style="color:var(--ink3);padding:6px">${svg('x',16)}</button></div>`}).join('')}</div>`:''}
+ <div class="card tip"><div class="t-ico">${svg('bulb',20,'var(--pink)')}</div><p>${FTIPS[(n+new Date().getDate())%FTIPS.length]}</p></div>`;
+}
+function updateFast(){const A=S.fast.active;
+ const h=$('#fsHome');if(h&&A)h.textContent='Fasting '+fhm(Date.now()-A.start);
+ if(TAB!=='fast'||$('#ov').classList.contains('show'))return;
+ const el=$('#fel');if(!el)return;
+ if(A){const e=Date.now()-A.start;const g=A.goalH*HOUR;const ph=phaseAt(e/HOUR);
+  if($('#fphn')&&$('#fphn').textContent!==ph.n&&!$('#modal').classList.contains('show')){render();return}
+  el.textContent=hms(e);
+  $('#fringc').setAttribute('stroke-dashoffset',String(339.3*(1-Math.min(1,e/g))));
+  $('#fk').textContent=e>=g?'Goal reached!':'Elapsed '+Math.floor(100*e/g)+'%';
+  $('#fleft').textContent=e>=g?'+'+fhm(e-g)+' past goal':fhm(g-e)+' to go'}
+ else{const last=S.fast.hist[S.fast.hist.length-1];if(last)el.textContent=hms(Date.now()-last.end)}
+}
+function safetySheet(then){const preg=hasCond('preg');
+ openModal(`<h2>Before you fast</h2>${preg?'<div class="note">You told SnugFit you\'re pregnant or recently gave birth. Fasting usually isn\'t recommended then. Please talk to your doctor or midwife first.</div>':''}<p>Fasting is safe for most healthy adults, but <b>check with your doctor first</b> if you:</p><ul class="cues"><li><em>1</em>Are pregnant, breastfeeding or trying to conceive</li><li><em>2</em>Have diabetes or take medication that lowers blood sugar</li><li><em>3</em>Have or have had an eating disorder</li><li><em>4</em>Are under 18, or have a medical condition</li></ul><p>Stop your fast and eat if you feel dizzy, faint, shaky or unwell. Ending early is always okay.</p><button class="btn pink block" style="margin-top:12px" id="safeok">I understand</button>`);
+ $('#safeok').onclick=()=>{S.fast.safety=true;save();closeModal();then()}}
+function startFast(ts){const p=curFPlan();S.fast.active={start:Math.min(ts||Date.now(),Date.now()),goalH:p.h,planId:p.id};save();beep(660,.1,.08);toast(`Fast started. Goal: ${p.h} hours`);render()}
+function plansSheet(){const cur=S.fast.planId;const sh=S.fast.startHour;
+ const card=p=>`<button class="plancard ${cur===p.id?'on':''}" data-fplan="${p.id}"><div class="big">${fastLabel(p.h)}</div><div style="min-width:0;flex:1"><b>${esc(p.name)}</b><span>${p.h<24?'Eat '+hourLabel(sh+p.h)+' to '+hourLabel(sh):p.d}</span></div><span class="lv">${p.lv}</span>${p.custom?`<span data-fdel="${p.id}" role="button" aria-label="Delete plan" style="padding:4px;color:var(--ink3)">${svg('x',16)}</span>`:''}</button>`;
+ openModal(`<h2>Fasting plans</h2><p>Pick a plan. New to fasting? Try 12:12 or 14:10 for a week or two, then step up.</p>
+ <label class="lbl" for="fsh" style="display:block;margin-top:14px">I usually stop eating at</label><select class="inp" id="fsh">${[...Array(24)].map((_,i)=>`<option value="${i}" ${i===sh?'selected':''}>${hourLabel(i)}</option>`).join('')}</select>
+ <div class="lbl">Popular plans</div>${FPRESETS.map(card).join('')}
+ ${S.fast.custom.length?`<div class="lbl">My plans</div>${allPlans().filter(x=>x.custom).map(card).join('')}`:''}
+ <div class="lbl">Create your own</div><div class="card" style="padding:14px"><input class="inp" id="cname" placeholder="Name it (e.g. Weekday plan)" maxlength="24"><div style="display:flex;justify-content:space-between;margin-top:14px;font-weight:800"><span>Fasting hours</span><span id="chl" style="color:var(--pink)">${fastLabel(15)}</span></div><input type="range" id="chours" min="10" max="36" step="1" value="15" aria-label="Fasting hours"><div class="note">Fasts longer than 24 hours aren't recommended without your doctor's OK.</div><button class="btn pink block" style="margin-top:12px" data-act="fcustom">Save my plan</button></div>`)}
+function editStartSheet(){const A=S.fast.active;openModal(`<h2>${A?'Edit start time':'When did you start?'}</h2><p>Forgot to tap start? Set when you finished your last meal.</p><input class="inp" type="datetime-local" id="fstartin" value="${toLocalInput(A?A.start:Date.now()-2*HOUR)}" max="${toLocalInput(Date.now())}"><button class="btn pink block" style="margin-top:14px" data-act="fstartsave">${A?'Save':'Start fast from then'}</button>`)}
+let MOOD='';
+function endSheet(){const A=S.fast.active;const e=Date.now()-A.start;const g=A.goalH*HOUR;MOOD='';
+ openModal(`<h2>${e>=g?'Amazing, you did it!':'End your fast?'}</h2><p>${e>=g?'You fasted for <b>'+fhm(e)+'</b>. Break your fast with protein and veggies.':'You\'re at <b>'+fhm(e)+'</b> of '+A.goalH+' hours. Ending early is fine. Every hour counts.'}</p>
+ <div class="lbl" style="margin-top:14px">How do you feel?</div><div class="chips">${['Great','Good','Okay','Tired','Hungry'].map(m=>`<button class="chip" data-mood="${m}">${m}</button>`).join('')}</div>
+ <label class="lbl" for="fendin" style="display:block">Ended at</label><input class="inp" type="datetime-local" id="fendin" value="${toLocalInput(Date.now())}" max="${toLocalInput(Date.now())}">
+ <label class="lbl" for="fnote" style="display:block">Note (optional)</label><input class="inp" id="fnote" placeholder="e.g. Slept well, easy morning" maxlength="80">
+ <button class="btn pink block" style="margin-top:14px" data-act="fsave">Save fast</button>
+ <div class="row" style="margin-top:8px"><button class="btn soft" style="flex:1" data-act="close">Keep fasting</button><button class="btn soft" style="flex:1;color:var(--ink3)" data-act="fdiscard">Discard</button></div>`)}
+const FAST_ACTS={
+ fplans:plansSheet,
+ fstart:()=>{if(!S.fast.safety)safetySheet(()=>startFast());else startFast()},
+ fedit:editStartSheet,
+ fstartsave:()=>{const v=new Date($('#fstartin').value).getTime();if(!v||isNaN(v)){toast('Pick a valid time');return}if(v>Date.now()+60000){toast('Start time can\'t be in the future');return}if(Date.now()-v>72*HOUR){toast('That\'s more than 3 days ago');return}closeModal();if(S.fast.active){S.fast.active.start=Math.min(v,Date.now());save();render()}else if(!S.fast.safety)safetySheet(()=>startFast(v));else startFast(v)},
+ fend:endSheet,
+ fsave:()=>{const A=S.fast.active;if(!A){closeModal();return}let end=new Date($('#fendin').value).getTime();if(!end||isNaN(end))end=Date.now();end=Math.min(end,Date.now());if(end<=A.start){toast('End time must be after the start');return}
+  const f={start:A.start,end,goalH:A.goalH,mood:MOOD,note:($('#fnote').value||'').trim().slice(0,80)};S.fast.hist.push(f);S.fast.active=null;save();closeModal();
+  if(fastMet(f)){confetti();say('Fast complete. Amazing work!')}toast(fastMet(f)?'Fast logged. Goal met!':'Fast logged. Nice effort!');render()},
+ fdiscard:()=>{closeModal();confirmModal('Discard this fast?','It won\'t be saved to your history.','Discard',()=>{S.fast.active=null;save();render()})},
+ fcustom:()=>{const h=+$('#chours').value;const name=($('#cname').value||'').trim().slice(0,24)||('My '+fastLabel(h));const id='c'+Date.now();S.fast.custom.push({id,h,name});S.fast.planId=id;if(S.fast.active){S.fast.active.goalH=h;S.fast.active.planId=id}save();closeModal();render();toast('Saved: '+name)}
+};
+function fastClick(ev){
+ const del=ev.target.closest('[data-fdel]');if(del){ev.stopImmediatePropagation();const id=del.dataset.fdel;S.fast.custom=S.fast.custom.filter(c=>c.id!==id);if(S.fast.planId===id)S.fast.planId='14:10';if(S.fast.active&&S.fast.active.planId===id)S.fast.active.planId='14:10';save();plansSheet();render();return}
+ const t=ev.target.closest('button');if(!t)return;
+ if(t.dataset.fplan){ev.stopImmediatePropagation();S.fast.planId=t.dataset.fplan;if(S.fast.active){S.fast.active.goalH=curFPlan().h;S.fast.active.planId=t.dataset.fplan}save();closeModal();render();toast('Plan set: '+fastLabel(curFPlan().h));return}
+ if(t.dataset.fdelh){ev.stopImmediatePropagation();const st=+t.dataset.fdelh;confirmModal('Delete this fast?','It will be removed from your history.','Delete',()=>{S.fast.hist=S.fast.hist.filter(f=>f.start!==st);save();render()});return}
+ if(t.dataset.mood){ev.stopImmediatePropagation();MOOD=MOOD===t.dataset.mood?'':t.dataset.mood;document.querySelectorAll('[data-mood]').forEach(b=>b.classList.toggle('on',b.dataset.mood===MOOD));return}
+ const a=t.dataset.act;if(a&&FAST_ACTS[a]){ev.stopImmediatePropagation();FAST_ACTS[a]();return}
+}
+document.addEventListener('click',fastClick,true);
+document.addEventListener('input',e=>{if(e.target&&e.target.id==='chours'){const l=$('#chl');if(l)l.textContent=fastLabel(+e.target.value)}});
+document.addEventListener('change',e=>{if(e.target&&e.target.id==='fsh'){S.fast.startHour=+e.target.value;save();plansSheet()}});
+setInterval(updateFast,1000);
+
 /* ---------- PLAYER ---------- */
 let P=null;
 function startWorkout(w,meta={}){
@@ -1197,6 +1407,7 @@ document.addEventListener('click',ev=>{
  const a=t.dataset.act;if(!a)return;
  ({
   startprog:()=>startProg(),
+  warmup:()=>startWorkout(warmupWorkout(),{}),
   bonus:()=>startWorkout(build({mins:5,energy:S.energy,place:'any',focus:'core',title:'Bonus Round'}),{}),
   quick:()=>{const T={core:'Quick Core',full:'Quick Full Body',burn:'Quick Burn',stretch:'Quick Stretch'};startWorkout(build({mins:S.mins,energy:S.energy,place:S.place,focus:S.focus,title:T[S.focus]}),{house:['house','stairs'].includes(S.place)})},
   random:randomWorkout,
@@ -1256,7 +1467,7 @@ document.addEventListener('change',ev=>{const t=ev.target;if(!t||!t.id)return;
 document.addEventListener('input',ev=>{const t=ev.target;if(t&&(t.id==='su-cur'||t.id==='su-goal')){suCollect();const el=$('#su-pace');if(el)el.textContent=PACES[S.pace].n+': '+PACES[S.pace].lb+', capped at 1% of your weight per week. '+paceText(SU.cur?wIn(+SU.cur):0,SU.goal?wIn(+SU.goal):0)}});
 document.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&ev.target&&ev.target.id==='cityq'){ev.preventDefault();citySearch()}});
 $('#modal').addEventListener('click',e=>{if(e.target.id==='modal')dismissModal()});
-window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');if(['home','plan','moves','me'].includes(h)&&h!==TAB){TAB=h;render()}});
+window.addEventListener('hashchange',()=>{const h=location.hash.replace('#','');if(['home','plan','fast','moves','me'].includes(h)&&h!==TAB){TAB=h;render()}});
 /* ---------- INSTALL & OFFLINE ---------- */
 const STANDALONE=(()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}})();
 const IOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);

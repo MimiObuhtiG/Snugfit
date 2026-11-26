@@ -133,6 +133,15 @@ const D={
  standreach:{s:'floor',k:[P('stand'),P('stand',{t:-12,h:{r:[4,-28]},H:[97,74]})],d:1500},
  heeltoe:{s:'house',k:walk(7,0,80).map(p=>Object.assign({},p,{h:[110,58],H:[90,58]})),d:700},
  seatedmarchwarm:null,
+ // full-body mobility warm-up (v2.6)
+ shouldercar:{s:'floor',k:[P('stand',{h:{r:[4,27]}}),P('stand',{h:{r:[27,2]}}),P('stand',{h:{r:[4,-28]}}),P('stand',{h:{r:[-22,-12]}}),P('stand',{h:{r:[-12,24]}})],d:950},
+ hipcar:{s:'counter',k:[P('stand',{h:[124,70],H:[122,70]}),P('stand',{h:[124,70],H:[122,70],f:[118,104]}),P('stand',{t:4,h:[124,70],H:[122,70],f:[100,100]}),P('stand',{t:10,h:[124,70],H:[122,70],f:[74,108]}),P('stand',{h:[124,70],H:[122,70],f:[96,126]})],d:950},
+ hipcircle:{s:'floor',k:[P('stand',{x:106,t:-8,h:{r:[0,31]},H:{r:[0,31]}}),P('stand',{x:100,y:82,h:{r:[0,31]},H:{r:[0,31]}}),P('stand',{x:94,t:8,h:{r:[0,31]},H:{r:[0,31]}}),P('stand',{x:100,y:78,h:{r:[0,31]},H:{r:[0,31]}})],d:700},
+ torsotwist:{s:'floor',k:[P('stand',{t:-3,h:{r:[22,12]},H:{r:[-16,14]}}),P('stand',{h:{r:[6,22]},H:{r:[6,22]}}),P('stand',{t:3,h:{r:[-16,14]},H:{r:[22,12]}}),P('stand',{h:{r:[6,22]},H:{r:[6,22]}})],d:650},
+ legswing:{s:'counter',k:[P('stand',{h:[124,70],H:[122,70],f:[132,108]}),P('stand',{h:[124,70],H:[122,70],f:[102,126]}),P('stand',{t:6,h:[124,70],H:[122,70],f:[72,114]}),P('stand',{h:[124,70],H:[122,70],f:[102,126]})],d:600},
+ hinge:{s:'floor',k:[P('stand',{h:{r:[9,8]},H:{r:[9,8]}}),P('stand',{x:90,y:83,t:58,h:{r:[9,8]},H:{r:[9,8]}})],d:1300},
+ openbook:{s:'bed',k:[P('back',{h:{r:[24,6]},H:{r:[24,6]},f:[136,94],F:[134,96]}),P('back',{h:{r:[28,-4]},H:{r:[24,6]},f:[136,94],F:[134,96]}),P('back',{h:{r:[6,-26]},H:{r:[24,6]},f:[136,94],F:[134,96]}),P('back',{h:{r:[28,-4]},H:{r:[24,6]},f:[136,94],F:[134,96]})],d:1100},
+ squatreach:{s:'floor',k:[P('stand',{h:{r:[14,16]},H:{r:[14,16]}}),P('stand',{x:92,y:100,t:24,h:{r:[24,4]},H:{r:[24,4]}}),P('stand',{y:79,h:{r:[3,-28]},H:{r:[1,-28]}})],d:1000},
  // walks
  walkeasy:{s:'out',k:walk(14,12),d:440},
  walkbrisk:{s:'out',k:walk(18,18),d:320},

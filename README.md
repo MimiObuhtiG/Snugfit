@@ -20,6 +20,8 @@ A single-page web app for short, low-effort workouts at home, plus walk prompts 
 - **Daily habits (v2.4).** Water, protein at each meal, and veggies & fruit, with weekly totals and three habit challenges. No calorie counting.
 - **Easier pop-ups (v2.4).** Close button, swipe down to close, and no accidental page refresh.
 - **Installable & offline (v2.5).** Add to Home Screen from Safari (or Install in Chrome). A service worker (`sw.js`) keeps the app working offline; weather refreshes when back online. Icons in `icons/`, app details in `manifest.webmanifest`.
+- **Intermittent fasting (v2.6).** A Fast tab with a live timer ring, body-stage guide (approximate), plans from 12:12 to One Meal a Day plus your own custom plans (10 to 36 hours), usual start time and eating window, edit start/end times, mood and note when you finish, a 7-day chart, fasting streak, water and weekly check-in shortcuts, and a one-time safety screen. A fasting strip on Today shows the current fast.
+- **Full-body warm-up (v2.6).** Eight new mobility moves with animated demos (Shoulder CARs, Hip CARs, Hip Circles, Standing Torso Twists, Leg Swings, Hip Hinge, Open Book, Squat to Reach). A guided 5-minute Full-Body Warm-Up on Today and in Moves, and every workout now opens with 2 or 3 mobility moves.
 - **Steps.** Enter steps by hand, or sync them from Apple Health (including Apple Watch) with an iPhone Shortcut that opens `…/index.html?steps=1234`. The steps are in the app under Me → Connect.
 
 ## Hosting (needed for live weather and the Health Shortcut)
