@@ -979,7 +979,7 @@ function home(){
  const mini=`<div class="mini"><button data-act="steps"><b>${st==null?'—':st.toLocaleString()}</b><span>steps${st==null?' · add':' / '+S.stepGoal.toLocaleString()}</span><div class="meter lime"><i style="width:${pct(st||0,S.stepGoal)}%"></i></div></button><div><b>${walkMinsOn(today)}</b><span>walk min / ${S.walkGoal}</span><div class="meter teal"><i style="width:${pct(walkMinsOn(today),S.walkGoal)}%"></i></div></div><div><b>${workoutsOn(today)}</b><span>workouts today</span><div class="meter"><i style="width:${workoutsOn(today)?100:0}%"></i></div></div></div>`;
  const ch=chalCards(2);const lc=lastCheck();
  const nudge=checkDue()?`<button class="chal offer" style="margin-top:14px;margin-bottom:0" data-act="checkin">${iconBadge('scale','var(--tile-ink)','var(--tile)')}<div class="body"><b>Weekly check-in</b><span>${lc?'Last one was '+fmtD(lc.date)+'. ':''}Log your weight and waist. It takes 30 seconds.</span></div></button>`:'';
- return `<div class="hello">${greet()}${todayDone?' · you moved today':''}</div><div class="h1 disp">${todayDone?'Look at you go.':'Tiny effort. Real results.'}</div>${levelBanner()}${S.onboarded&&!S.setup2?`<button class="chal offer" style="margin-bottom:14px" data-act="setup">${iconBadge('trophy','var(--tile-ink)','var(--tile)')}<div class="body"><b>Personalize SnugFit</b><span>Set your goal and a quick health check so workouts fit you. 1 minute.</span></div></button>`:''}${hero()}${mini}${fastStrip()}${nudge}
+ return `<div class="hello">${greet()}${todayDone?' · you moved today':''}</div><div class="h1 disp">${todayDone?'Look at you go.':'Tiny effort. Real results.'}</div>${levelBanner()}${S.onboarded&&!S.setup2?`<button class="chal offer" style="margin-bottom:14px" data-act="setup">${iconBadge('trophy','var(--tile-ink)','var(--tile)')}<div class="body"><b>Personalize SnugFit</b><span>Set your goal and a quick health check so workouts fit you. 1 minute.</span></div></button>`:''}${stepsBanner()}${hero()}${mini}${fastStrip()}${nudge}
  ${walkCard()}
  ${ch?`<div class="sec"><h3>Challenges</h3><small>optional</small></div>${ch}`:''}
  ${habitsCard()}
@@ -1109,14 +1109,41 @@ function exModal(id){const e=EXM[id];const F=FOCUS[e.f];openModal(`<div style="d
 function confirmModal(title,text,yes,fn){openModal(`<h2>${title}</h2><p>${text}</p><div class="row" style="margin-top:16px"><button class="btn soft" style="flex:1" data-act="close">Cancel</button><button class="btn pink" style="flex:1" id="yesbtn">${yes}</button></div>`);$('#yesbtn').onclick=()=>{closeModal();fn()}}
 let LW={mins:15,where:'out'};
 function logWalkModal(){const mk=()=>`<h2>Log a walk</h2><p>Walks you take with your phone or watch count here too.</p><div class="lbl" style="margin-top:14px">How long?</div><div class="chips">${[10,15,20,30,45,60].map(m=>`<button class="chip ${LW.mins===m?'on':''}" data-lwm="${m}">${m} min</button>`).join('')}</div><div class="lbl">Where?</div><div class="chips"><button class="chip ${LW.where==='out'?'on':''}" data-lww="out">Outside</button><button class="chip ${LW.where==='in'?'on':''}" data-lww="in">Indoors</button></div><button class="btn pink block" style="margin-top:18px" data-act="savewalk">Save walk</button>`;openModal(mk());logWalkModal.mk=mk}
-function stepsModal(){const st=stepsOn(ds());openModal(`<h2>Steps today</h2><p>Check the Health app or your watch and enter today's total. Or connect Apple Health to sync it.</p><label class="lbl" for="stepsin" style="display:block;margin-top:14px">Steps</label><input id="stepsin" class="inp" type="number" inputmode="numeric" min="0" placeholder="e.g. 5200" value="${st==null?'':st}"><button class="btn pink block" style="margin-top:14px" data-act="savesteps">Save</button><button class="btn soft block" style="margin-top:8px" data-act="health">Connect Apple Health instead</button>`)}
-function healthURL(){const sa=typeof STANDALONE!=='undefined'&&STANDALONE&&IOS;return sa?(appURL()+'#steps=').replace(/^https?:\/\//,'webapp://'):appURL()+'?steps='}
+/* Home Screen app: the Shortcut copies today's step total; one tap pastes it in */
+function applySteps(v,src){const d=ds();const x=S.health[d]||{};x.steps=v;x.src=src||'';x.at=hm();x.ts=Date.now();S.health[d]=x;save();try{checkChallenges()}catch(e){}}
+function pasteSteps(){const fail=()=>{stepsModal();toast('Press and hold the box, then tap Paste')};
+ try{if(!navigator.clipboard||!navigator.clipboard.readText)return fail();
+  navigator.clipboard.readText().then(t=>{const m=String(t||'').replace(/[,\s]/g,'').match(/^(\d{1,6})$/);
+   if(!m){toast('No step count found. Run your Shortcut first.');return}
+   const v=parseInt(m[1],10);if(v>150000){toast('That number looks too big for steps');return}
+   S.healthMode='clip';applySteps(v,'Apple Health');closeModal();toast('Added '+v.toLocaleString()+' steps from Apple Health');render()},fail)}catch(e){fail()}}
+function stepsBanner(){if(!(isHomeApp()&&S.healthMode==='clip'))return '';const x=S.health[ds()];if(x&&x.ts&&Date.now()-x.ts<30*60000)return '';
+ return `<button class="fstrip" data-act="pastesteps" style="margin-top:0;margin-bottom:14px">${iconBadge('walk','var(--c-teal)','var(--rest-in)',44)}<div style="flex:1;min-width:0"><b>Add steps from Apple Health</b><span>Just ran your Shortcut? Tap, then tap Paste.</span></div>${svg('chev',20,'var(--ink3)')}</button>`}
+function stepsModal(){const st=stepsOn(ds());openModal(`<h2>Steps today</h2><p>Check the Health app or your watch and enter today's total. Or connect Apple Health to sync it.</p><label class="lbl" for="stepsin" style="display:block;margin-top:14px">Steps</label><input id="stepsin" class="inp" type="number" inputmode="numeric" min="0" placeholder="e.g. 5200" value="${st==null?'':st}"><button class="btn pink block" style="margin-top:14px" data-act="savesteps">Save</button>${isHomeApp()?'<button class="btn soft block" style="margin-top:8px" data-act="pastesteps">Paste from my Shortcut</button>':''}<button class="btn soft block" style="margin-top:8px" data-act="health">Connect Apple Health instead</button>`)}
+function isHomeApp(){return typeof STANDALONE!=='undefined'&&STANDALONE&&IOS}
+function healthURL(){return isHomeApp()?appURL().replace(/^https?:\/\//,'webapp://'):appURL()+'?steps='}
 function healthModal(){
- const url=healthURL();const web=url.startsWith('webapp://');const step=(n,html)=>`<li><em>${n}</em><div>${html}</div></li>`;
+ const url=healthURL();const clip=isHomeApp();const step=(n,html)=>`<li><em>${n}</em><div>${html}</div></li>`;
+ const tail=clip?[
+  step(7,'Tap <b>Search Actions</b>, type <b>Copy to Clipboard</b> and tap it. It says <b>Copy Rounded Number to clipboard</b>. Leave it.'),
+  step(8,'Tap <b>Search Actions</b>, type <b>Open URLs</b> and tap it. Tap the blue bubble in it, then tap <b>delete ⌫</b> until the box is empty.'),
+  step(9,'Tap the empty box and choose <b>Paste</b>. The SnugFit address appears. Tap <b>Done</b>.'),
+  step(10,'Tap the name at the top, choose <b>Rename</b>, and call it <b>Send steps to SnugFit</b>.'),
+  step(11,'Tap <b>▶</b>. Tap <b>Allow</b> if it asks about Health. SnugFit opens.'),
+  step(12,'In SnugFit, tap <b>Add steps from Apple Health</b> at the top of Today, then tap <b>Paste</b> in the little bubble. Done!')
+ ]:[
+  step(7,'Tap <b>Search Actions</b>, type <b>Open URLs</b> and tap it. It says <b>Open Rounded Number</b>.'),
+  step(8,'Tap the blue <b>Rounded Number</b> bubble, then tap <b>delete ⌫</b> on the keyboard so the box is empty.'),
+  step(9,'Tap the empty box again and choose <b>Paste</b>. The SnugFit address appears.'),
+  step(10,'In the bar just above the keyboard, tap <b>Rounded Number</b>. It joins the end of the address. Tap <b>Done</b>.'),
+  step(11,'Tap the name at the top, choose <b>Rename</b>, and call it <b>Send steps to SnugFit</b>.'),
+  step(12,'Tap <b>▶</b>. Tap <b>Allow</b> when it asks about Health. SnugFit opens with your steps.')];
+ const prevOpen=clip?`<div><span class="ic">⧉</span>Copy <i>Rounded Number</i> to clipboard</div><div><span class="ic">↗</span>Open <span class="mono">${esc(url.replace(/^(https?|webapp):\/\//,''))}</span></div>`
+  :`<div><span class="ic">↗</span>Open <span class="mono">${esc(url.replace(/^(https?|webapp):\/\//,''))}</span><i>Rounded Number</i></div>`;
  openModal(`<h2>Connect Apple Health</h2>
  <p>An iPhone Shortcut can send today's steps (your phone's and your Apple Watch's) into SnugFit. You set it up once, in about 3 minutes.</p>
- <div class="hstart"><b>First, copy SnugFit's address</b><span class="code" id="hurl">${esc(url)}</span><button class="btn pink sm" data-act="copyurl">${svg('check',16)} Copy address</button>${web?'<span class="fine">This address opens the Home Screen app, so your steps land where you use SnugFit.</span>':''}</div>
- ${(S.launches||[]).length?`<details class="hmore"><summary>Troubleshooting: how SnugFit was last opened</summary><p class="fine">If your shortcut ran, its address should show here with your step count at the end.</p>${S.launches.slice().reverse().map(x=>`<span class="code">${new Date(x.t).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})} · ${esc(x.u)}</span>`).join('')}</details>`:''}
+ ${clip&&S.healthMode!=='clip'&&(S.launches||[]).length?'<div class="note">Already made the shortcut? iPhone drops the step number when it opens the Home Screen app, so it needs one small change: add <b>Copy to Clipboard</b> (step 7) just above <b>Open</b>, then paste the new address below into <b>Open</b> with nothing after it. Press and hold an action to drag it.</div>':''}
+ <div class="hstart"><b>First, copy SnugFit's address</b><span class="code" id="hurl">${esc(url)}</span><button class="btn pink sm" data-act="copyurl">${svg('check',16)} Copy address</button></div>
  <div class="lbl" style="margin-top:16px">Make the shortcut</div>
  <ol class="hsteps">
  ${step(1,'Open the <b>Shortcuts</b> app. Tap <b>+</b> at the top right.')}
@@ -1125,35 +1152,23 @@ function healthModal(){
  ${step(4,'Tap <b>Add Filter</b>. It adds <b>Start Date is today</b>. Leave it.')}
  ${step(5,'Tap <b>Search Actions</b>, type <b>Calculate Statistics</b> and tap it. Tap the blue word <b>Average</b> and change it to <b>Sum</b>.')}
  ${step(6,'Tap <b>Search Actions</b>, type <b>Round Number</b> and tap it. Leave it.')}
- ${step(7,'Tap <b>Search Actions</b>, type <b>Open URLs</b> and tap it. It says <b>Open Rounded Number</b>.')}
- ${step(8,'Tap the blue <b>Rounded Number</b> bubble, then tap <b>delete ⌫</b> on the keyboard so the box is empty.')}
- ${step(9,'Tap the empty box again and choose <b>Paste</b>. The SnugFit address appears.')}
- ${step(10,'In the bar just above the keyboard, tap <b>Rounded Number</b>. It joins the end of the address. Tap <b>Done</b>.')}
- ${step(11,'Tap the name at the top, choose <b>Rename</b>, and call it <b>Send steps to SnugFit</b>.')}
- ${step(12,'Tap <b>▶</b> at the bottom right. Tap <b>Allow</b> when it asks about Health. SnugFit opens with your steps.')}
+ ${tail.join('')}
  </ol>
  <div class="lbl" style="margin-top:16px">Check it looks like this</div>
  <div class="scprev">
   <div><span class="ic">♥</span>Find <i>Health Samples</i> where <i>All</i> of the following are true<small>Type is <i>Steps</i> · Start Date <i>is today</i></small></div>
   <div><span class="ic">▥</span>Calculate the <i>Sum</i> of <i>Health Samples</i></div>
   <div><span class="ic">≡</span>Round <i>Sum</i> to <i>Integer</i></div>
-  <div><span class="ic">↗</span>Open <span class="mono">${esc(url.replace(/^(https?|webapp):\/\//,''))}</span><i>Rounded Number</i></div>
+  ${prevOpen}
  </div>
- <p class="fine">The <b>Open</b> line must show the address <b>and</b> Rounded Number. If it only shows Rounded Number, redo steps 8 to 10.</p>
+ ${clip?'':'<p class="fine">The <b>Open</b> line must show the address <b>and</b> Rounded Number. If it only shows Rounded Number, redo steps 8 to 10.</p>'}
  <details class="hmore"><summary>Make it run by itself every evening</summary><ol class="hsteps">
  ${step(1,'In Shortcuts, go back to the very first screen (tap <b>&lt;</b> at the top left until there\'s no back arrow). Find <b>Automation</b> in the bar at the bottom or in the list.')}
  ${step(2,'Tap <b>Automation</b>, then <b>+</b> (or <b>Create Personal Automation</b>). Note: the <b>Automation</b> button you see after tapping <b>+</b> on a new shortcut is a list of actions, not this.')}
  ${step(3,'Tap <b>Time of Day</b>. Pick <b>8:00 PM</b> and <b>Daily</b>. Choose <b>Run Immediately</b>. Tap <b>Next</b>.')}
  ${step(4,'Pick <b>Send steps to SnugFit</b>. Tap <b>Done</b>.')}
- </ol></details>
- <details class="hmore"><summary>Also send your weight (optional)</summary><ol class="hsteps">
- ${step(1,'Open your <b>Send steps to SnugFit</b> shortcut.')}
- ${step(2,'Tap <b>Search Actions</b>, type <b>Find Health Samples</b> and tap it. A second one appears at the bottom.')}
- ${step(3,'Next to <b>Type is</b>, choose <b>Weight</b>. Set <b>Sort by</b> to <b>Start Date</b>, <b>Order</b> to <b>Latest First</b>, and turn on <b>Limit</b> with <b>1</b>.')}
- ${step(4,'Press and hold this new action and drag it up so it sits just above <b>Open</b>.')}
- ${step(5,'In the <b>Open</b> line, tap right after <b>Rounded Number</b> and type <b>&amp;weight=</b>')}
- ${step(6,'In the bar above the keyboard, tap the new <b>Health Samples</b>. Tap that bubble, choose <b>Value</b>, then tap <b>Done</b>.')}
- </ol><p class="fine">Weight comes in the unit you use in the Health app, so set SnugFit to the same unit (lb or kg) under Me.</p></details>
+ </ol>${clip?'<p class="fine">When SnugFit pops up in the evening, tap <b>Add steps from Apple Health</b> and <b>Paste</b>. If you miss it, it\'s still waiting next time you open SnugFit, as long as you haven\'t copied something else.</p>':''}</details>
+ ${(S.launches||[]).length?`<details class="hmore"><summary>Troubleshooting: how SnugFit was last opened</summary>${S.launches.slice().reverse().map(x=>`<span class="code">${new Date(x.t).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})} · ${esc(x.u)}</span>`).join('')}</details>`:''}
  ${HOSTED?'':'<div class="note">This only works in the installed SnugFit app. The preview you\'re using now can\'t receive data from the Shortcut, so enter steps by hand here.</div>'}
  <div class="lbl" style="margin-top:18px">Android, Fitbit, Garmin</div>
  <p>Google Health Connect and full Apple Health access (workouts, heart rate) need the app-store version of SnugFit.</p>
@@ -1488,9 +1503,10 @@ document.addEventListener('click',ev=>{
   savegoal:()=>{const v=parseFloat(($('#goalin')||{}).value);if(isNaN(v)||wIn(v)<25||wIn(v)>350){toast('Enter a goal weight in '+S.units.w);return}S.goalKg=wIn(v);const lc2=lastCheck();S.paceStart={date:ds(),kg:lc2&&lc2.kg!=null?lc2.kg:S.goalKg};save();closeModal();toast('Goal saved');render()},
   cleargoal:()=>{S.goalKg=null;save();closeModal();render()},
   steps:stepsModal,
+  pastesteps:()=>pasteSteps(),
   savesteps:()=>{const v=parseInt(($('#stepsin')||{}).value,10);if(isNaN(v)||v<0){toast('Enter a number of steps');return}const x=S.health[ds()]||{};x.steps=v;x.src='';x.at=hm();S.health[ds()]=x;save();checkChallenges();closeModal();toast('Steps saved');render()},
   health:healthModal,
-  copyurl:()=>{const u=healthURL();try{navigator.clipboard.writeText(u).then(()=>toast('Address copied'),()=>{selectText('#hurl');toast('Select and copy the address')})}catch(e){selectText('#hurl');toast('Select and copy the address')}},
+  copyurl:()=>{const u=healthURL();if(isHomeApp()){S.healthMode='clip';save()}try{navigator.clipboard.writeText(u).then(()=>toast('Address copied'),()=>{selectText('#hurl');toast('Select and copy the address')})}catch(e){selectText('#hurl');toast('Select and copy the address')}},
   city:cityModal,
   calgary:()=>setCity({name:'Calgary',lat:51.0447,lon:-114.0719}),
   citysearch:citySearch,
